@@ -7,3 +7,21 @@ __pycache__/
 .venv/
 venv/
 .DS_Store
+
+# Next.js
+.next/
+out/
+
+# Build
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# Evaluation raw results (reports are committed, raw outputs are not)
+evaluation/results/raw/
+
+# OS
+Thumbs.db

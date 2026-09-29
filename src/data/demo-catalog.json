@@ -1,0 +1,66 @@
+[
+  {
+    "sku": "WH-1001",
+    "asin": "B0DEMO1001",
+    "product_name": "Wireless Headphones (Noise Cancelling)",
+    "category": "Consumer Electronics",
+    "expected_components": [
+      { "name": "Headphones", "essential": true },
+      { "name": "Charging case", "essential": true },
+      { "name": "USB-C cable", "essential": false },
+      { "name": "3.5mm audio cable", "essential": false },
+      { "name": "User manual", "essential": false }
+    ]
+  },
+  {
+    "sku": "SKU-SERUM-30",
+    "asin": "B0DUMMY031",
+    "product_name": "Hydrating Face Serum 30ml",
+    "category": "Beauty",
+    "expected_components": [
+      { "name": "Serum bottle", "essential": true },
+      { "name": "Dropper", "essential": true },
+      { "name": "Product leaflet", "essential": false }
+    ]
+  },
+  {
+    "sku": "SKU-CABLE-USBC",
+    "asin": "B0DUMMY261",
+    "product_name": "USB-C Charging Cable 2m",
+    "category": "Consumer Electronics",
+    "expected_components": [
+      { "name": "Cable", "essential": true }
+    ]
+  },
+  {
+    "sku": "SKU-PUZZLE-500",
+    "asin": "B0DUMMY729",
+    "product_name": "500-Piece Jigsaw Puzzle",
+    "category": "Toys",
+    "expected_components": [
+      { "name": "Puzzle pieces", "essential": true },
+      { "name": "Reference poster", "essential": false }
+    ]
+  },
+  {
+    "sku": "SKU-LAMP-LED",
+    "asin": "B0DUMMY357",
+    "product_name": "LED Desk Lamp",
+    "category": "Home",
+    "expected_components": [
+      { "name": "Lamp", "essential": true },
+      { "name": "USB power cable", "essential": true },
+      { "name": "User manual", "essential": false }
+    ]
+  },
+  {
+    "sku": "SKU-PROT-1KG",
+    "asin": "B0DUMMY357",
+    "product_name": "Whey Protein Powder 1kg",
+    "category": "Sports Nutrition",
+    "expected_components": [
+      { "name": "Protein tub", "essential": true },
+      { "name": "Scoop", "essential": false }
+    ]
+  }
+]
