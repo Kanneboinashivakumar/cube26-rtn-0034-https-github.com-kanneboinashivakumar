@@ -7,15 +7,20 @@
  * This is documented honestly — we do not claim RLS unless it is actually written.
  */
 
-import { supabase } from "./client";
+import { getClient } from "./client";
 import type { EvidenceRecord, OverrideRecord } from "@/lib/schemas";
 
 const TABLE = "inspections";
 
+// Helper: gets client lazily — never called at module load time
+function db() {
+  return getClient();
+}
+
 // ─── Insert ───────────────────────────────────────────────────────────────────
 
 export async function insertInspection(record: EvidenceRecord): Promise<void> {
-  const { error } = await supabase.from(TABLE).insert({
+  const { error } = await db().from(TABLE).insert({
     record_id: record.record_id,
     schema_version: record.schema_version,
     organization_id: record.organization_id,
@@ -43,7 +48,7 @@ export async function getInspection(
   record_id: string,
   organization_id: string
 ): Promise<EvidenceRecord | null> {
-  const { data, error } = await supabase
+  const { data, error } = await db()
     .from(TABLE)
     .select("*")
     .eq("record_id", record_id)
@@ -68,7 +73,7 @@ export async function applyOverride(
   new_content_hash: string
 ): Promise<void> {
   // Fetch current overrides first
-  const { data, error: fetchError } = await supabase
+  const { data, error: fetchError } = await db()
     .from(TABLE)
     .select("overrides")
     .eq("record_id", record_id)
@@ -79,7 +84,7 @@ export async function applyOverride(
 
   const currentOverrides: OverrideRecord[] = (data?.overrides as OverrideRecord[]) ?? [];
 
-  const { error: updateError } = await supabase
+  const { error: updateError } = await db()
     .from(TABLE)
     .update({
       overrides: [...currentOverrides, override],
@@ -99,7 +104,7 @@ export async function confirmInspection(
   record_id: string,
   organization_id: string
 ): Promise<void> {
-  const { error } = await supabase
+  const { error } = await db()
     .from(TABLE)
     .update({
       status: "resolved",
