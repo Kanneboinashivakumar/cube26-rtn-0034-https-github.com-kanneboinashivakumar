@@ -81,13 +81,53 @@ Report: verdict, confidence, grade (if PASS), observed_state, observation string
 If a model number, SKU, ASIN, serial number, or product label is CLEARLY READABLE in any photo, report it.
 Do NOT report partially visible or guessed identifiers.
 
+=== REQUIRED JSON RESPONSE STRUCTURE ===
+Return a single JSON object with this exact shape:
+{
+  "identity": {
+    "verdict": "PASS" | "FAIL" | "UNCERTAIN",
+    "confidence": 0.0-1.0,
+    "observations": ["string"],
+    "evidence_refs": ["image_1"]
+  },
+  "completeness": {
+    "verdict": "PASS" | "FAIL" | "UNCERTAIN",
+    "confidence": 0.0-1.0,
+    "components": [
+      {
+        "name": "Exact component name from expected_components",
+        "observed": true | false | "uncertain"
+      }
+    ],
+    "observations": ["string"],
+    "evidence_refs": ["image_1"]
+  },
+  "condition": {
+    "verdict": "PASS" | "UNCERTAIN",
+    "confidence": 0.0-1.0,
+    "grade": "New" | "Used - Like New" | "Used - Very Good" | "Used - Good" | "Used - Acceptable",
+    "observed_state": "factory_sealed" | "opened_unused" | "signs_of_use" | "damaged" | "empty_box" | "uncertain",
+    "observations": ["string"],
+    "evidence_refs": ["image_1"]
+  },
+  "visible_identifiers": [
+    {
+      "type": "model_number",
+      "value": "WH-1001",
+      "image_ref": "image_1"
+    }
+  ]
+}
+
+Note: In "condition", include "grade" ONLY when verdict is "PASS". When verdict is "UNCERTAIN", omit the "grade" key entirely.
+"visible_identifiers" should be an empty list [] if no barcodes/labels are readable.
+
 === CRITICAL RULES ===
 1. Each check is INDEPENDENT. A damaged item can still have PASS identity. A wrong product can still have an assessable condition.
 2. If evidence is insufficient for any check, return UNCERTAIN — never guess or infer what you cannot see.
 3. Never output a disposition (restock/refurbish/liquidate/dispose). That is not your job.
 4. Never decide whether a component is "essential". Report only what you observe.
-5. Never add fields not in the schema below.
-6. Return ONLY valid JSON. No commentary, no markdown, no explanation outside the JSON.`;
+5. Return ONLY the valid JSON object conforming to the structure above. No markdown fences, no text outside the JSON.`;
 
 // ─── GeminiProvider ───────────────────────────────────────────────────────────
 
