@@ -140,6 +140,12 @@ export const InspectionInput = z.object({
     .array(z.enum(["image/jpeg", "image/png", "image/webp"]))
     .min(1)
     .max(5),
+  /** Optional reference/catalogue standard images (base64). */
+  reference_images: z.array(z.string().min(1)).max(5).optional(),
+  reference_image_mime_types: z
+    .array(z.enum(["image/jpeg", "image/png", "image/webp"]))
+    .max(5)
+    .optional(),
 });
 
 export type InspectionInput = z.infer<typeof InspectionInput>;

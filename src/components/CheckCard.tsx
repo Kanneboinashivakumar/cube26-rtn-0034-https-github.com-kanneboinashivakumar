@@ -14,7 +14,7 @@ import VerdictBadge from "./VerdictBadge";
 const CHECK_TITLES: Record<string, string> = {
   identity: "Identity Check",
   completeness: "Completeness Check",
-  condition: "Condition Check",
+  condition: "Condition Assessment",
 };
 
 const CHECK_ICONS: Record<string, string> = {
@@ -100,24 +100,33 @@ export default function CheckCard({ check }: CheckCardProps) {
         </div>
 
         {/* Condition-specific: grade & observed_state */}
-        {check.check_key === "condition" && (check.grade || check.observed_state) && (
-          <div className="grid grid-cols-2 gap-3">
-            {check.grade && (
-              <div className="rounded-lg bg-blue-50 border border-blue-100 px-3 py-2">
-                <div className="text-[10px] uppercase tracking-wide text-blue-500 font-semibold mb-0.5">
-                  Condition Grade
-                </div>
-                <div className="text-sm font-semibold text-blue-900">{check.grade}</div>
-              </div>
-            )}
-            {check.observed_state && (
-              <div className="rounded-lg bg-gray-50 border border-gray-200 px-3 py-2">
-                <div className="text-[10px] uppercase tracking-wide text-gray-400 font-semibold mb-0.5">
-                  Observed State
-                </div>
-                <div className="text-sm font-medium text-gray-700">
-                  {check.observed_state.replace(/_/g, " ")}
-                </div>
+        {check.check_key === "condition" && (
+          <div className="space-y-2">
+            <p className="text-[11px] text-slate-500 italic bg-slate-50 border border-slate-100 px-2.5 py-1.5 rounded">
+              {check.verdict === "PASS"
+                ? "PASS indicates sufficient visual evidence was available to assign a condition grade."
+                : "UNCERTAIN indicates visual evidence was insufficient to assign a condition grade."}
+            </p>
+            {(check.grade || check.observed_state) && (
+              <div className="grid grid-cols-2 gap-3">
+                {check.grade && (
+                  <div className="rounded-lg bg-blue-50 border border-blue-100 px-3 py-2">
+                    <div className="text-[10px] uppercase tracking-wide text-blue-500 font-semibold mb-0.5">
+                      Condition Grade
+                    </div>
+                    <div className="text-sm font-semibold text-blue-900">{check.grade}</div>
+                  </div>
+                )}
+                {check.observed_state && (
+                  <div className="rounded-lg bg-gray-50 border border-gray-200 px-3 py-2">
+                    <div className="text-[10px] uppercase tracking-wide text-gray-400 font-semibold mb-0.5">
+                      Observed State
+                    </div>
+                    <div className="text-sm font-medium text-gray-700">
+                      {check.observed_state.replace(/_/g, " ")}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

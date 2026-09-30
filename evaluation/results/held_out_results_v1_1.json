@@ -1,0 +1,4431 @@
+{
+  "protocol_version": "1.1-held-out",
+  "evaluated_at": "2026-09-30T16:49:53.469Z",
+  "total_cases": 52,
+  "summary": {
+    "identity_accuracy_pct": 53.8,
+    "completeness_accuracy_pct": 48.1,
+    "condition_verdict_accuracy_pct": 50,
+    "condition_grade_accuracy_pct": 48.1,
+    "disposition_accuracy_pct": 59.6,
+    "critical_error_rate_pct": 0
+  },
+  "confusion_matrices": {
+    "identity": {
+      "PASS": {
+        "PASS": 23,
+        "FAIL": 0,
+        "UNCERTAIN": 24
+      },
+      "FAIL": {
+        "PASS": 0,
+        "FAIL": 4,
+        "UNCERTAIN": 0
+      },
+      "UNCERTAIN": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNCERTAIN": 1
+      }
+    },
+    "completeness": {
+      "PASS": {
+        "PASS": 21,
+        "FAIL": 3,
+        "UNCERTAIN": 17
+      },
+      "FAIL": {
+        "PASS": 0,
+        "FAIL": 3,
+        "UNCERTAIN": 7
+      },
+      "UNCERTAIN": {
+        "PASS": 0,
+        "FAIL": 0,
+        "UNCERTAIN": 1
+      }
+    },
+    "condition_verdict": {
+      "PASS": {
+        "PASS": 23,
+        "UNCERTAIN": 26
+      },
+      "UNCERTAIN": {
+        "PASS": 0,
+        "UNCERTAIN": 3
+      }
+    }
+  },
+  "uncertain_rates": {
+    "identity_pct": 48.1,
+    "completeness_pct": 48.1,
+    "condition_pct": 55.8
+  },
+  "binary_metrics": {
+    "identity": {
+      "FP": 0,
+      "FN": 0
+    },
+    "completeness": {
+      "FP": 0,
+      "FN": 3
+    }
+  },
+  "human_agreement": {
+    "raw_agreement_pct": 100,
+    "cohens_kappa": 1,
+    "ai_vs_annotator_1_pct": 59.6,
+    "ai_vs_annotator_2_pct": 59.6
+  },
+  "latency_ms": {
+    "mean": 6244,
+    "median": 5542,
+    "p90": 9665,
+    "p95": 10084
+  },
+  "estimated_cost_usd": "0.0146",
+  "disagreements_count": 21,
+  "cases": [
+    {
+      "case_id": "EVAL-001",
+      "sku": "WH-1001",
+      "product_name": "Wireless Headphones (Noise Cancelling)",
+      "category": "Consumer Electronics",
+      "evaluation_type": "pristine_sealed",
+      "latency_ms": 8323,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Headphones": true,
+            "Charging case": true,
+            "USB-C cable": true,
+            "3.5mm audio cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "New",
+          "observed_state": "factory_sealed"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product SKU WH-1001 and product name Wireless Headphones (Noise Cancelling) are clearly indicated on the packaging labels in the evidence photos.; The item matches the expected order details."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": true
+            },
+            {
+              "name": "Charging case",
+              "observed": true
+            },
+            {
+              "name": "USB-C cable",
+              "observed": true
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": true
+            },
+            {
+              "name": "User manual",
+              "observed": true
+            }
+          ],
+          "detail": "Verified complete via intact factory seal and manifest details showing all expected components present."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "New",
+          "observed_state": "factory_sealed",
+          "detail": "The product is in original manufacturer packaging with factory shrinkwrap and tamper seals completely intact.; Unbroken factory film and verified barcode."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Customer unopened return, original shrinkwrap intact"
+    },
+    {
+      "case_id": "EVAL-002",
+      "sku": "SKU-LAMP-LED",
+      "product_name": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "evaluation_type": "pristine_sealed",
+      "latency_ms": 3528,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Lamp": true,
+            "USB power cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "New",
+          "observed_state": "factory_sealed"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product SKU SKU-LAMP-LED and LED Desk Lamp description are clearly visible in the top banner of the evidence images."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Lamp",
+              "observed": true
+            },
+            {
+              "name": "USB power cable",
+              "observed": true
+            },
+            {
+              "name": "User manual",
+              "observed": true
+            }
+          ],
+          "detail": "All expected components are verified complete via intact factory seal and manifest state in the evidence images."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "New",
+          "observed_state": "factory_sealed",
+          "detail": "Product is in original manufacturer packaging with factory-sealed status and unbroken manufacturer security seals."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Desk lamp returned in sealed retail carton with tape intact"
+    },
+    {
+      "case_id": "EVAL-003",
+      "sku": "SKU-SERUM-30",
+      "product_name": "Hydrating Face Serum 30ml",
+      "category": "Beauty & Personal Care",
+      "evaluation_type": "pristine_sealed",
+      "latency_ms": 7132,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Serum bottle": true,
+            "Dropper": true,
+            "Product leaflet": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "New",
+          "observed_state": "factory_sealed"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product packaging clearly indicates Hydrating Face Serum 30ml and matches SKU SKU-SERUM-30."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Serum bottle",
+              "observed": true
+            },
+            {
+              "name": "Dropper",
+              "observed": true
+            },
+            {
+              "name": "Product leaflet",
+              "observed": true
+            }
+          ],
+          "detail": "Verified complete via intact factory seal on the packaging."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "New",
+          "observed_state": "factory_sealed",
+          "detail": "Original packaging is factory sealed with intact tamper sticker."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Face serum in pristine sealed box with tamper sticker"
+    },
+    {
+      "case_id": "EVAL-004",
+      "sku": "SKU-PUZZLE-500",
+      "product_name": "500-Piece Jigsaw Puzzle",
+      "category": "Toys & Games",
+      "evaluation_type": "pristine_sealed",
+      "latency_ms": 5140,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Puzzle pieces": true,
+            "Reference poster": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "New",
+          "observed_state": "factory_sealed"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product matches the expected 500-Piece Jigsaw Puzzle SKU-PUZZLE-500 based on the visible product label and packaging details in the images."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Puzzle pieces",
+              "observed": true
+            },
+            {
+              "name": "Reference poster",
+              "observed": true
+            }
+          ],
+          "detail": "All expected components are verified complete via the intact factory seal and manifest details."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "New",
+          "observed_state": "factory_sealed",
+          "detail": "Original manufacturer packaging is factory sealed with intact shrinkwrap and retail barcode."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Jigsaw puzzle in original clear shrinkwrap"
+    },
+    {
+      "case_id": "EVAL-005",
+      "sku": "SKU-BOTTLE-750",
+      "product_name": "Insulated Water Bottle 750ml",
+      "category": "Sports & Outdoors",
+      "evaluation_type": "pristine_sealed",
+      "latency_ms": 5183,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Bottle": true,
+            "Lid": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "New",
+          "observed_state": "factory_sealed"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product labeling matches the expected SKU-BOTTLE-750 and Insulated Water Bottle 750ml."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Bottle",
+              "observed": true
+            },
+            {
+              "name": "Lid",
+              "observed": true
+            }
+          ],
+          "detail": "Verified complete via intact factory seal and stated component manifest."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "New",
+          "observed_state": "factory_sealed",
+          "detail": "Item is in original factory-sealed packaging with heat-sealed polybag and uncreased hangtag."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Water bottle in original polybag with hangtag attached"
+    },
+    {
+      "case_id": "EVAL-006",
+      "sku": "SKU-CABLE-USBC",
+      "product_name": "USB-C Charging Cable 2m",
+      "category": "Consumer Electronics",
+      "evaluation_type": "pristine_sealed",
+      "latency_ms": 5910,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Cable": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "New",
+          "observed_state": "factory_sealed"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The returned item packaging matches the expected USB-C charging cable product description."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Cable",
+              "observed": true
+            }
+          ],
+          "detail": "The product is factory sealed in its original blister pack, verifying the internal cable component is complete via factory seal integrity."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "New",
+          "observed_state": "factory_sealed",
+          "detail": "The packaging is in uncut thermoformed blister packaging and completely factory sealed."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "USB-C cable in sealed blister pack"
+    },
+    {
+      "case_id": "EVAL-007",
+      "sku": "SKU-TOWEL-BLU",
+      "product_name": "Microfiber Bath Towel Blue",
+      "category": "Home & Textiles",
+      "evaluation_type": "pristine_sealed",
+      "latency_ms": 7376,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Towel": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "New",
+          "observed_state": "factory_sealed"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The returned item matches the expected SKU SKU-TOWEL-BLU for a Microfiber Bath Towel Blue."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Towel",
+              "observed": true
+            }
+          ],
+          "detail": "The expected towel component is present and verified complete."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "New",
+          "observed_state": "factory_sealed",
+          "detail": "The item is in a sealed manufacturer band and factory-sealed state.; Cardboard wrap is undamaged and the towel is unwashed."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Microfiber bath towel in sealed manufacturer band"
+    },
+    {
+      "case_id": "EVAL-008",
+      "sku": "SKU-PROT-1KG",
+      "product_name": "Whey Protein Powder 1kg",
+      "category": "Sports & Nutrition",
+      "evaluation_type": "pristine_sealed",
+      "latency_ms": 5983,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Protein tub": true,
+            "Scoop": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "New",
+          "observed_state": "factory_sealed"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product name 'Whey Protein Powder 1kg' and SKU 'SKU-PROT-1KG' match the visual evidence labels."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Protein tub",
+              "observed": true
+            },
+            {
+              "name": "Scoop",
+              "observed": true
+            }
+          ],
+          "detail": "Factory-sealed completeness inference applied due to intact factory seal.; All expected internal components verified complete via intact factory seal."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "New",
+          "observed_state": "factory_sealed",
+          "detail": "Product is in factory-sealed state with intact security seals and unperforated neck band."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Whey protein tub with outer neck band & inner pressure seal"
+    },
+    {
+      "case_id": "EVAL-009",
+      "sku": "DEMO-LAPTOP-001",
+      "product_name": "15-inch Laptop",
+      "category": "Computers",
+      "evaluation_type": "opened_unused",
+      "latency_ms": 13040,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Laptop": true,
+            "Power adapter / charger": true,
+            "Power cable": true,
+            "User documentation": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided customer return evidence photos consist solely of text placards and metadata summary screens without any visual depiction of the physical product."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User documentation",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the return evidence photos, preventing direct observation of components."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Condition cannot be assessed as the physical merchandise is missing from the provided photos."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Laptop box opened, protective screen film intact, all items present"
+    },
+    {
+      "case_id": "EVAL-010",
+      "sku": "WH-1001",
+      "product_name": "Wireless Headphones (Noise Cancelling)",
+      "category": "Consumer Electronics",
+      "evaluation_type": "opened_unused",
+      "latency_ms": 7098,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Headphones": true,
+            "Charging case": true,
+            "USB-C cable": true,
+            "3.5mm audio cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of text placards and metadata summaries without physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Charging case",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB-C cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the photos, only text status cards."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is absent from the provided return evidence photos, preventing condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Headphones packaging opened to inspect color, never worn, all cables coiled"
+    },
+    {
+      "case_id": "EVAL-011",
+      "sku": "SKU-LAMP-LED",
+      "product_name": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "evaluation_type": "opened_unused",
+      "latency_ms": 4692,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Lamp": true,
+            "USB power cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "detail": "The provided images are UI-based inspection evidence cards containing text and status summaries rather than direct photographs of the physical merchandise.; No actual physical product, logo, or SKU label is visible to verify the product identity."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "components": [
+            {
+              "name": "Lamp",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not displayed in the provided images.; Textual manifest summaries are present, but direct photographic evidence of components is absent."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not shown in the evidence photos, preventing a reliable condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Desk lamp unboxed but base and arm free of any scratches, cables bundled"
+    },
+    {
+      "case_id": "EVAL-012",
+      "sku": "SKU-BOTTLE-750",
+      "product_name": "Insulated Water Bottle 750ml",
+      "category": "Sports & Outdoors",
+      "evaluation_type": "opened_unused",
+      "latency_ms": 4598,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Bottle": true,
+            "Lid": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product matches the expected SKU-BOTTLE-750 for Insulated Water Bottle 750ml."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Bottle",
+              "observed": true
+            },
+            {
+              "name": "Lid",
+              "observed": true
+            }
+          ],
+          "detail": "Both Bottle and Lid are confirmed present in the manifest and inspection notes."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused",
+          "detail": "Water bottle unbagged, zero water residue or odors, lid gasket mint.; Stainless interior dry and spotless."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Water bottle unbagged, zero water residue or odors, lid gasket mint"
+    },
+    {
+      "case_id": "EVAL-013",
+      "sku": "SKU-CABLE-USBC",
+      "product_name": "USB-C Charging Cable 2m",
+      "category": "Consumer Electronics",
+      "evaluation_type": "opened_unused",
+      "latency_ms": 5338,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Cable": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.5,
+          "detail": "The provided evidence photos consist of return status cards and text placards without the actual physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.5,
+          "components": [
+            {
+              "name": "Cable",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise not presented in photo; only text status reports are visible."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.5,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise not visible in photos; unable to assess physical condition."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "USB-C cable blister opened cleanly, cable untied but pristine gold contacts"
+    },
+    {
+      "case_id": "EVAL-014",
+      "sku": "SKU-LEASH-6FT",
+      "product_name": "Heavy-Duty Dog Leash 6ft",
+      "category": "Pet Supplies",
+      "evaluation_type": "opened_unused",
+      "latency_ms": 5128,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Leash": true,
+            "Padded handle": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of text status placards and inspection notes without the physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Leash",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Padded handle",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the photos, only text placards."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise not presented in photo, condition cannot be assessed."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Dog leash removed from card, clip mechanism tested, nylon web pristine"
+    },
+    {
+      "case_id": "EVAL-015",
+      "sku": "SKU-PUZZLE-500",
+      "product_name": "500-Piece Jigsaw Puzzle",
+      "category": "Toys & Games",
+      "evaluation_type": "opened_unused",
+      "latency_ms": 5542,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Puzzle pieces": true,
+            "Reference poster": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product is identified as the 500-Piece Jigsaw Puzzle matching SKU-PUZZLE-500."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Puzzle pieces",
+              "observed": true
+            },
+            {
+              "name": "Reference poster",
+              "observed": true
+            }
+          ],
+          "detail": "Puzzle pieces are present and verified inside the sealed inner bag.; Reference poster is present."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused",
+          "detail": "Outer shrinkwrap removed but the inner piece bag remains airtight factory sealed.; Item appears completely unused with no handling marks or damage."
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Puzzle box shrinkwrap removed, but inner piece bag sealed"
+    },
+    {
+      "case_id": "EVAL-016",
+      "sku": "SKU-TOWEL-BLU",
+      "product_name": "Microfiber Bath Towel Blue",
+      "category": "Home & Textiles",
+      "evaluation_type": "opened_unused",
+      "latency_ms": 5215,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Towel": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "restock",
+        "rule_id": "rule_5a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "restock"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided images consist solely of text status placards/dashboards describing the product rather than showing the physical merchandise itself."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Towel",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the photos, only text descriptions."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not visible in the provided evidence images, preventing condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Towel unfolded once, label intact, zero stains or lint"
+    },
+    {
+      "case_id": "EVAL-017",
+      "sku": "DEMO-LAPTOP-001",
+      "product_name": "15-inch Laptop",
+      "category": "Computers",
+      "evaluation_type": "signs_of_use",
+      "latency_ms": 10084,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Laptop": true,
+            "Power adapter / charger": true,
+            "Power cable": true,
+            "User documentation": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Very Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Very Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Very Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of UI text status cards/placards without the physical merchandise visible.; Physical merchandise is not presented in the customer return photos."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User documentation",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Evidence photos consist solely of textual status cards without physical product evidence.; Cannot determine component presence due to lack of physical merchandise photos."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not presented in the evidence photos, preventing condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Laptop with minor surface fingerprints, complete accessories"
+    },
+    {
+      "case_id": "EVAL-018",
+      "sku": "WH-1001",
+      "product_name": "Wireless Headphones (Noise Cancelling)",
+      "category": "Consumer Electronics",
+      "evaluation_type": "signs_of_use",
+      "latency_ms": 10044,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Headphones": true,
+            "Charging case": true,
+            "USB-C cable": true,
+            "3.5mm audio cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Very Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Very Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Very Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "detail": "The evidence photos consist of UI status placards describing the return rather than direct photographic evidence of the physical product."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Charging case",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB-C cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not directly visible in the provided evidence photos, only text status cards."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not presented in the photos to assess condition."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Headphones with slight headband handling marks, all accessories present"
+    },
+    {
+      "case_id": "EVAL-019",
+      "sku": "SKU-LAMP-LED",
+      "product_name": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "evaluation_type": "signs_of_use",
+      "latency_ms": 6296,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Lamp": true,
+            "USB power cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The provided images display the correct product name LED Desk Lamp and SKU SKU-LAMP-LED as expected."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Lamp",
+              "observed": true
+            },
+            {
+              "name": "USB power cable",
+              "observed": true
+            },
+            {
+              "name": "User manual",
+              "observed": true
+            }
+          ],
+          "detail": "All expected components including the Lamp, USB power cable, and User manual are marked present in the evidence."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use",
+          "detail": "Desk lamp exhibits faint dust and smudge on base with minor dust noted on physical inspection."
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Desk lamp with faint dust and smudge on base, USB cord uncoiled"
+    },
+    {
+      "case_id": "EVAL-020",
+      "sku": "SKU-BOTTLE-750",
+      "product_name": "Insulated Water Bottle 750ml",
+      "category": "Sports & Outdoors",
+      "evaluation_type": "signs_of_use",
+      "latency_ms": 9045,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Bottle": true,
+            "Lid": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Very Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "Provided evidence photos consist solely of text placards and metadata summary screens without the physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Bottle",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Lid",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the photos, making completeness check uncertain."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is absent from the photos; condition cannot be visually assessed."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Bottle with faint hairline water spots on powder coat, lid functional"
+    },
+    {
+      "case_id": "EVAL-021",
+      "sku": "SKU-CABLE-USBC",
+      "product_name": "USB-C Charging Cable 2m",
+      "category": "Consumer Electronics",
+      "evaluation_type": "signs_of_use",
+      "latency_ms": 6996,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Cable": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.4,
+          "detail": "The provided evidence photos consist solely of UI status cards and text logs rather than a clear view of the physical merchandise.; Physical merchandise is not directly presented in the images to confirm SKU-CABLE-USBC."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.4,
+          "components": [
+            {
+              "name": "Cable",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Cannot visually verify component presence because the images show status cards rather than actual physical product photos."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.4,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not presented in the photos, preventing any reliable condition or state assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Cable with light cord bends from winding, functional connectors"
+    },
+    {
+      "case_id": "EVAL-022",
+      "sku": "SKU-LEASH-6FT",
+      "product_name": "Heavy-Duty Dog Leash 6ft",
+      "category": "Pet Supplies",
+      "evaluation_type": "signs_of_use",
+      "latency_ms": 5560,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Leash": true,
+            "Padded handle": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The returned product matches the expected SKU SKU-LEASH-6FT (Heavy-Duty Dog Leash 6ft)."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Leash",
+              "observed": true
+            },
+            {
+              "name": "Padded handle",
+              "observed": true
+            }
+          ],
+          "detail": "All expected components (Leash, Padded handle) are confirmed present in the manifest."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use",
+          "detail": "Leash exhibits light dirt scuff on handle padding with hardware fully intact.; Webbing is strong and the latch is functional."
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Leash with light dirt scuff on handle padding, hardware fully intact"
+    },
+    {
+      "case_id": "EVAL-023",
+      "sku": "DEMO-LAPTOP-001",
+      "product_name": "15-inch Laptop",
+      "category": "Computers",
+      "evaluation_type": "signs_of_use",
+      "latency_ms": 9864,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Laptop": true,
+            "Power adapter / charger": true,
+            "Power cable": true,
+            "User documentation": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "detail": "The customer return evidence photos consist solely of text UI interface status cards describing the product state rather than photographs of the physical merchandise."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User documentation",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not visible in the provided return photos; only system UI status cards are presented."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "observed_state": "uncertain",
+          "detail": "Physical condition cannot be assessed due to the absence of actual product photos in the return evidence."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Laptop with minor palm rest scuffs, complete package"
+    },
+    {
+      "case_id": "EVAL-024",
+      "sku": "WH-1001",
+      "product_name": "Wireless Headphones (Noise Cancelling)",
+      "category": "Consumer Electronics",
+      "evaluation_type": "signs_of_use",
+      "latency_ms": 6176,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Headphones": true,
+            "Charging case": true,
+            "USB-C cable": true,
+            "3.5mm audio cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_5b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The customer return evidence photos consist solely of text status cards and placards without showing the physical merchandise."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Charging case",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB-C cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the evidence photos, making component completeness unverifiable."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not present in the provided images, so condition cannot be assessed."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Headphones with slight headband tension stretch, complete box contents"
+    },
+    {
+      "case_id": "EVAL-025",
+      "sku": "SKU-LAMP-LED",
+      "product_name": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "evaluation_type": "wear_acceptable",
+      "latency_ms": 4422,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Lamp": true,
+            "USB power cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "liquidate",
+        "rule_id": "rule_5d"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of text status cards and placards without the physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Lamp",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the photos, making completeness check uncertain."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not visible in the photos to allow a reliable condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Lamp with noticeable scratches on plastic neck, but intact and fully functional"
+    },
+    {
+      "case_id": "EVAL-026",
+      "sku": "SKU-BOTTLE-750",
+      "product_name": "Insulated Water Bottle 750ml",
+      "category": "Sports & Outdoors",
+      "evaluation_type": "wear_acceptable",
+      "latency_ms": 5376,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Bottle": true,
+            "Lid": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "liquidate",
+        "rule_id": "rule_5d"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of text and status cards/placards without the physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Bottle",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Lid",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise not presented in photos; cannot verify components."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise not presented in photos; condition cannot be assessed."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Bottle with exterior paint chips near base, fully watertight"
+    },
+    {
+      "case_id": "EVAL-027",
+      "sku": "SKU-LEASH-6FT",
+      "product_name": "Heavy-Duty Dog Leash 6ft",
+      "category": "Pet Supplies",
+      "evaluation_type": "wear_acceptable",
+      "latency_ms": 3954,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Leash": true,
+            "Padded handle": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "liquidate",
+        "rule_id": "rule_5d"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product matches the expected Heavy-Duty Dog Leash 6ft SKU-LEASH-6FT as stated in the evidence text."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Leash",
+              "observed": true
+            },
+            {
+              "name": "Padded handle",
+              "observed": true
+            }
+          ],
+          "detail": "Both the Leash and Padded handle components are indicated as present in the inspection manifest."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Leash exhibits frayed decorative trim threads while the main strap is solid.; Physical inspection notes indicate cosmetic thread fraying and designate it as damaged."
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": false
+      },
+      "scenario": "Leash with frayed decorative trim threads, main strap solid"
+    },
+    {
+      "case_id": "EVAL-028",
+      "sku": "SKU-TOWEL-BLU",
+      "product_name": "Microfiber Bath Towel Blue",
+      "category": "Home & Textiles",
+      "evaluation_type": "wear_acceptable",
+      "latency_ms": 5399,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Towel": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "liquidate",
+        "rule_id": "rule_5d"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product matches the expected Microfiber Bath Towel Blue SKU-TOWEL-BLU based on text descriptors and manifests present in the evidence photos."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Towel",
+              "observed": true
+            }
+          ],
+          "detail": "The expected Towel component is present as confirmed by the manifest."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "signs_of_use",
+          "detail": "Towel shows heavy aesthetic wear from being washed multiple times with faded blue color."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_5d"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": false
+      },
+      "scenario": "Towel washed multiple times with faded blue color, no rips"
+    },
+    {
+      "case_id": "EVAL-029",
+      "sku": "DEMO-LAPTOP-001",
+      "product_name": "15-inch Laptop",
+      "category": "Computers",
+      "evaluation_type": "physical_damage",
+      "latency_ms": 8160,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Laptop": true,
+            "Power adapter / charger": true,
+            "Power cable": true,
+            "User documentation": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged"
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "detail": "The customer return evidence photos consist of system-generated report screens rather than direct photographs of the physical merchandise.; The physical product cannot be directly inspected for identity verification from the provided images."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User documentation",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical components cannot be visually verified because the evidence images consist of summary reports rather than photos of the actual items."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not presented in the evidence photos, preventing condition grading."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Laptop with shattered cracked LCD screen, complete in box"
+    },
+    {
+      "case_id": "EVAL-030",
+      "sku": "WH-1001",
+      "product_name": "Wireless Headphones (Noise Cancelling)",
+      "category": "Consumer Electronics",
+      "evaluation_type": "physical_damage",
+      "latency_ms": 6069,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Headphones": true,
+            "Charging case": true,
+            "USB-C cable": true,
+            "3.5mm audio cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged"
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product matches the expected SKU WH-1001 Wireless Headphones (Noise Cancelling)."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": true
+            },
+            {
+              "name": "Charging case",
+              "observed": true
+            },
+            {
+              "name": "USB-C cable",
+              "observed": true
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": true
+            },
+            {
+              "name": "User manual",
+              "observed": true
+            }
+          ],
+          "detail": "All expected components are marked present in the manifest."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Headband is broken in two pieces with severed internal wiring.; Physical damage detected."
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Headphones with snapped headband and severed internal wiring"
+    },
+    {
+      "case_id": "EVAL-031",
+      "sku": "SKU-LAMP-LED",
+      "product_name": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "evaluation_type": "physical_damage",
+      "latency_ms": 2852,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Lamp": true,
+            "USB power cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged"
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product shown in the evidence is identified as an LED Desk Lamp matching the expected SKU-LAMP-LED."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Lamp",
+              "observed": true
+            },
+            {
+              "name": "USB power cable",
+              "observed": true
+            },
+            {
+              "name": "User manual",
+              "observed": true
+            }
+          ],
+          "detail": "All expected components (Lamp, USB power cable, User manual) are explicitly listed as present in the inspection manifest."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Desk lamp has a cracked acrylic base and broken hinge with snapped off parts and loose electrical wires, classified as damaged."
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Desk lamp with cracked acrylic base and broken hinge"
+    },
+    {
+      "case_id": "EVAL-032",
+      "sku": "SKU-BOTTLE-750",
+      "product_name": "Insulated Water Bottle 750ml",
+      "category": "Sports & Outdoors",
+      "evaluation_type": "physical_damage",
+      "latency_ms": 3370,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Bottle": true,
+            "Lid": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged"
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The item shown in the images matches the expected product SKU-BOTTLE-750 (Insulated Water Bottle 750ml)."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Bottle",
+              "observed": true
+            },
+            {
+              "name": "Lid",
+              "observed": true
+            }
+          ],
+          "detail": "Both Bottle and Lid are listed as present in the inspection manifest."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Water bottle crushed and creased on side, puncture near rim.; Vacuum seal breached, wall crushed."
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Water bottle crushed and creased on side, puncture near rim"
+    },
+    {
+      "case_id": "EVAL-033",
+      "sku": "SKU-SERUM-30",
+      "product_name": "Hydrating Face Serum 30ml",
+      "category": "Beauty & Personal Care",
+      "evaluation_type": "physical_damage",
+      "latency_ms": 3262,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Serum bottle": true,
+            "Dropper": true,
+            "Product leaflet": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged"
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "detail": "The product name Hydrating Face Serum 30ml and SKU-SERUM-30 are clearly indicated on the evidence document placards."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "components": [
+            {
+              "name": "Serum bottle",
+              "observed": true
+            },
+            {
+              "name": "Dropper",
+              "observed": true
+            },
+            {
+              "name": "Product leaflet",
+              "observed": true
+            }
+          ],
+          "detail": "Manifest indicates serum bottle, dropper, and product leaflet are present."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Glass dropper bottle broken and shattered with liquid spilled in carton.; Significant physical damage detected."
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Glass dropper bottle broken, liquid spilled in carton"
+    },
+    {
+      "case_id": "EVAL-034",
+      "sku": "SKU-CABLE-USBC",
+      "product_name": "USB-C Charging Cable 2m",
+      "category": "Consumer Electronics",
+      "evaluation_type": "physical_damage",
+      "latency_ms": 7245,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Cable": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged"
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The returned item matches the expected USB-C charging cable product description in the evidence overview."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Cable",
+              "observed": true
+            }
+          ],
+          "detail": "The expected cable component is present in the return."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Physical inspection indicates severe cuts through the cord with a severed outer jacket and exposed copper strands.; Significant physical damage is detected, requiring grade to be set to Used - Acceptable per the grading rubric."
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "USB-C cable with severed outer jacket and exposed copper strands"
+    },
+    {
+      "case_id": "EVAL-035",
+      "sku": "WH-1001",
+      "product_name": "Wireless Headphones (Noise Cancelling)",
+      "category": "Consumer Electronics",
+      "evaluation_type": "missing_non_essential",
+      "latency_ms": 7919,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Headphones": true,
+            "Charging case": true,
+            "USB-C cable": false,
+            "3.5mm audio cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_6b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of UI placards/dashboards summarizing component audits rather than showing the physical merchandise itself."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Charging case",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB-C cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the photos; only text status cards/placards are shown, requiring an UNCERTAIN result per inspection principles."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is absent from the provided photos, preventing reliable condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Headphones returned with charging case and aux cable, but USB-C charging cable missing"
+    },
+    {
+      "case_id": "EVAL-036",
+      "sku": "DEMO-LAPTOP-001",
+      "product_name": "15-inch Laptop",
+      "category": "Computers",
+      "evaluation_type": "missing_non_essential",
+      "latency_ms": 9665,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Laptop": true,
+            "Power adapter / charger": true,
+            "Power cable": true,
+            "User documentation": false
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_6b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Like New",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Like New",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of text status cards and placards without the physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User documentation",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise not presented in photo; evaluation is based entirely on text status display rather than visual inspection of actual items."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise not presented in photo; condition cannot be reliably assessed."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Laptop returned with charger brick and power cable, but user manual missing"
+    },
+    {
+      "case_id": "EVAL-037",
+      "sku": "SKU-LAMP-LED",
+      "product_name": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "evaluation_type": "missing_non_essential",
+      "latency_ms": 4049,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Lamp": true,
+            "USB power cable": true,
+            "User manual": false
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Very Good",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_6b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Very Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Very Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence consists solely of text cards and placards describing the product and manifest, without showing the actual physical merchandise."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Lamp",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "The provided evidence consists solely of text cards without showing the physical product or its components."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "The provided evidence consists solely of text cards without showing the physical merchandise, preventing condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Desk lamp with power cable, but small setup leaflet missing"
+    },
+    {
+      "case_id": "EVAL-038",
+      "sku": "SKU-SERUM-30",
+      "product_name": "Hydrating Face Serum 30ml",
+      "category": "Beauty & Personal Care",
+      "evaluation_type": "missing_non_essential",
+      "latency_ms": 5002,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Serum bottle": true,
+            "Dropper": true,
+            "Product leaflet": false
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "liquidate",
+        "rule_id": "rule_6a"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Acceptable",
+        "disposition": "liquidate"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of text status cards and placards without the physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Serum bottle",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Dropper",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Product leaflet",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise not presented in photo, preventing reliable component assessment."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise not visible in photos; condition cannot be assessed."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": false
+      },
+      "scenario": "Serum bottle and dropper intact, but cardboard outer box/leaflet missing"
+    },
+    {
+      "case_id": "EVAL-039",
+      "sku": "SKU-PUZZLE-500",
+      "product_name": "500-Piece Jigsaw Puzzle",
+      "category": "Toys & Games",
+      "evaluation_type": "missing_non_essential",
+      "latency_ms": 4420,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Puzzle pieces": true,
+            "Reference poster": false
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_6b"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "refurbish"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "detail": "The product SKU SKU-PUZZLE-500 and name 500-Piece Jigsaw Puzzle are clearly stated on the inspection label."
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": [
+            {
+              "name": "Puzzle pieces",
+              "observed": true
+            },
+            {
+              "name": "Reference poster",
+              "observed": false
+            }
+          ],
+          "detail": "Puzzle pieces are present.; Reference poster is explicitly noted as absent / missing."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use",
+          "detail": "Puzzle box opened with puzzle pieces present but missing the reference poster, indicating incomplete contents and previous handling.; No major structural damage is visible on the enclosure."
+        },
+        "disposition": "refurbish",
+        "rule_id": "rule_6b"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Puzzle box with sealed pieces, but reference poster missing"
+    },
+    {
+      "case_id": "EVAL-040",
+      "sku": "DEMO-LAPTOP-001",
+      "product_name": "15-inch Laptop",
+      "category": "Computers",
+      "evaluation_type": "missing_essential",
+      "latency_ms": 11984,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Laptop": true,
+            "Power adapter / charger": false,
+            "Power cable": true,
+            "User documentation": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_6c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Like New",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Like New",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of UI status cards and text summaries without the physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User documentation",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not present in the provided evidence photos, preventing direct component verification."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not presented in the photos, making condition assessment impossible."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": true
+      },
+      "scenario": "Laptop returned with manual and cord, but essential AC power adapter absent"
+    },
+    {
+      "case_id": "EVAL-041",
+      "sku": "WH-1001",
+      "product_name": "Wireless Headphones (Noise Cancelling)",
+      "category": "Consumer Electronics",
+      "evaluation_type": "missing_essential",
+      "latency_ms": 7157,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Headphones": true,
+            "Charging case": false,
+            "USB-C cable": true,
+            "3.5mm audio cable": true,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Very Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_6c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Very Good",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Very Good",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The customer return evidence photos consist solely of text-based status cards and placards describing the return rather than photographs of the physical product.; However, the SKU WH-1001 and product name match the provided context UI."
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": true
+            },
+            {
+              "name": "Charging case",
+              "observed": false
+            },
+            {
+              "name": "USB-C cable",
+              "observed": true
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": true
+            },
+            {
+              "name": "User manual",
+              "observed": true
+            }
+          ],
+          "detail": "The customer return evidence manifest clearly indicates that the charging case is absent/missing."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 1,
+          "observed_state": "uncertain",
+          "detail": "The provided evidence photos consist solely of text status placards and do not show the physical condition of the merchandise."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_4"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": true
+      },
+      "scenario": "Headphones returned with cables and manual, but essential charging case missing"
+    },
+    {
+      "case_id": "EVAL-042",
+      "sku": "SKU-LAMP-LED",
+      "product_name": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "evaluation_type": "missing_essential",
+      "latency_ms": 4882,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Lamp": true,
+            "USB power cable": false,
+            "User manual": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_6c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of text placards and metadata summaries without showing the physical merchandise."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Lamp",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the photos, only text status cards."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not present in the photos to allow condition grading."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": true
+      },
+      "scenario": "Desk lamp returned with manual, but essential USB power cable missing"
+    },
+    {
+      "case_id": "EVAL-043",
+      "sku": "SKU-SERUM-30",
+      "product_name": "Hydrating Face Serum 30ml",
+      "category": "Beauty & Personal Care",
+      "evaluation_type": "missing_essential",
+      "latency_ms": 5023,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Serum bottle": true,
+            "Dropper": false,
+            "Product leaflet": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_6c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product name Hydrating Face Serum 30ml and SKU-SERUM-30 are clearly indicated in the return evidence overview."
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Serum bottle",
+              "observed": true
+            },
+            {
+              "name": "Dropper",
+              "observed": false
+            },
+            {
+              "name": "Product leaflet",
+              "observed": true
+            }
+          ],
+          "detail": "Serum bottle and product leaflet are present.; Dropper is absent/missing."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use",
+          "detail": "The product is opened and missing components, showing signs of handling or partial use."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_6c"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Serum bottle returned with leaflet, but essential dropper top missing"
+    },
+    {
+      "case_id": "EVAL-044",
+      "sku": "SKU-BOTTLE-750",
+      "product_name": "Insulated Water Bottle 750ml",
+      "category": "Sports & Outdoors",
+      "evaluation_type": "missing_essential",
+      "latency_ms": 5003,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "components": {
+            "Bottle": true,
+            "Lid": false
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Very Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_6c"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Very Good",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "Used - Very Good",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.4,
+          "detail": "The provided images contain UI text placards and status notes rather than a clear view of the physical merchandise itself.; Physical merchandise not directly shown in photographs."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.4,
+          "components": [
+            {
+              "name": "Bottle",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Lid",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Photographs contain text reports rather than direct visual evidence of the physical components.; Cannot visually verify presence or absence of components from text-based summary images."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.4,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not visible in the provided photo evidence.; Condition cannot be assessed from software screenshots or placards."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": true
+      },
+      "scenario": "Water bottle body returned, but essential twist-off lid missing"
+    },
+    {
+      "case_id": "EVAL-045",
+      "sku": "SKU-CABLE-USBC",
+      "product_name": "USB-C Charging Cable 2m",
+      "category": "Consumer Electronics",
+      "evaluation_type": "wrong_product",
+      "latency_ms": 6427,
+      "ground_truth": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.95,
+          "components": {
+            "Cable": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Like New",
+          "observed_state": "opened_unused"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_1"
+      },
+      "annotator_1": {
+        "identity": "FAIL",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "FAIL",
+        "completeness": "PASS",
+        "condition": "Used - Like New",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "detail": "The returned item is a different product than expected; Apple Lightning 8-pin connector cable returned instead of USB-C cable"
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Cable",
+              "observed": true
+            }
+          ],
+          "detail": "Cable is present in the return photos"
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 1,
+          "observed_state": "uncertain",
+          "detail": "The provided evidence photos consist of status placards / screenshots rather than clear photos of the physical merchandise condition, making a reliable condition grade unassessable"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_1"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": true
+      },
+      "scenario": "Apple Lightning 8-pin connector cable returned instead of USB-C cable"
+    },
+    {
+      "case_id": "EVAL-046",
+      "sku": "WH-1001",
+      "product_name": "Wireless Headphones (Noise Cancelling)",
+      "category": "Consumer Electronics",
+      "evaluation_type": "wrong_product",
+      "latency_ms": 7877,
+      "ground_truth": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "components": {
+            "Headphones": false,
+            "Charging case": false,
+            "USB-C cable": false,
+            "3.5mm audio cable": false,
+            "User manual": false
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_1"
+      },
+      "annotator_1": {
+        "identity": "FAIL",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "FAIL",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "detail": "The returned item inside the box does not match the expected WH-1001 wireless headphones form factor.; Cheap off-brand wired earbuds were returned instead of the expected wireless over-ear headphones."
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": false
+            },
+            {
+              "name": "Charging case",
+              "observed": false
+            },
+            {
+              "name": "USB-C cable",
+              "observed": false
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": false
+            },
+            {
+              "name": "User manual",
+              "observed": false
+            }
+          ],
+          "detail": "Expected wireless over-ear headphones are missing (replaced by incorrect wired earbuds).; Charging case is missing.; USB-C cable is missing.; 3.5mm audio cable is missing.; User manual is missing."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Product mismatch with incorrect items returned inside the packaging, constituting a compromised or improper return state."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_1"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": false,
+        "condition_verdict": true,
+        "condition_grade": false,
+        "disposition": true
+      },
+      "scenario": "Cheap off-brand wired earbuds returned inside WH-1001 box"
+    },
+    {
+      "case_id": "EVAL-047",
+      "sku": "SKU-BOTTLE-750",
+      "product_name": "Insulated Water Bottle 750ml",
+      "category": "Sports & Outdoors",
+      "evaluation_type": "wrong_product",
+      "latency_ms": 5020,
+      "ground_truth": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "components": {
+            "Bottle": false,
+            "Lid": false
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_1"
+      },
+      "annotator_1": {
+        "identity": "FAIL",
+        "completeness": "FAIL",
+        "condition": "Used - Acceptable",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "FAIL",
+        "completeness": "FAIL",
+        "condition": "Used - Acceptable",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "detail": "The evidence shows a plastic disposable 500ml water bottle returned instead of the expected insulated stainless 750ml flask."
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Bottle",
+              "observed": false
+            },
+            {
+              "name": "Lid",
+              "observed": false
+            }
+          ],
+          "detail": "Expected components Bottle and Lid are absent/missing in the returned item."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 1,
+          "observed_state": "uncertain",
+          "detail": "The provided photos consist of status placards/screenshots with no physical merchandise visible for proper condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_1"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": true
+      },
+      "scenario": "Plastic disposable 500ml water bottle returned instead of insulated stainless 750ml flask"
+    },
+    {
+      "case_id": "EVAL-048",
+      "sku": "SKU-TOWEL-BLU",
+      "product_name": "Microfiber Bath Towel Blue",
+      "category": "Home & Textiles",
+      "evaluation_type": "wrong_product",
+      "latency_ms": 5190,
+      "ground_truth": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "components": {
+            "Towel": false
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_1"
+      },
+      "annotator_1": {
+        "identity": "FAIL",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "FAIL",
+        "completeness": "FAIL",
+        "condition": "Used - Good",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "detail": "The returned item is a red washcloth/hand towel instead of the expected blue microfiber bath towel."
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Towel",
+              "observed": false
+            }
+          ],
+          "detail": "The expected blue microfiber bath towel is absent/missing, with only an incorrect red washcloth returned."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 1,
+          "observed_state": "uncertain",
+          "detail": "Physical condition cannot be reliably graded as the returned item does not match the expected product."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_1"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": false,
+        "condition_verdict": false,
+        "condition_grade": false,
+        "disposition": true
+      },
+      "scenario": "Red hand washcloth returned instead of blue microfiber bath towel"
+    },
+    {
+      "case_id": "EVAL-049",
+      "sku": "SKU-SERUM-30",
+      "product_name": "Hydrating Face Serum 30ml",
+      "category": "Beauty & Personal Care",
+      "evaluation_type": "blurry_evidence",
+      "latency_ms": 4754,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.7
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.7,
+          "components": {
+            "Serum bottle": true,
+            "Dropper": true,
+            "Product leaflet": true
+          }
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "grade": null,
+          "observed_state": "uncertain"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_4"
+      },
+      "annotator_1": {
+        "identity": "UNCERTAIN",
+        "completeness": "UNCERTAIN",
+        "condition": "UNCERTAIN",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "UNCERTAIN",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided evidence photos consist solely of blurred documents or screenshots, with no physical merchandise visible."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Serum bottle",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Dropper",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Product leaflet",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the photos, making component verification impossible."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not present in the photos, preventing any condition assessment."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Photographs severely out-of-focus and darkened, bottle label unreadable"
+    },
+    {
+      "case_id": "EVAL-050",
+      "sku": "DEMO-LAPTOP-001",
+      "product_name": "15-inch Laptop",
+      "category": "Computers",
+      "evaluation_type": "blurry_evidence",
+      "latency_ms": 9653,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.75
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.75,
+          "components": {
+            "Laptop": true,
+            "Power adapter / charger": true,
+            "Power cable": true,
+            "User documentation": true
+          }
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "grade": null,
+          "observed_state": "uncertain"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_4"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "UNCERTAIN",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "UNCERTAIN",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "detail": "The provided customer return evidence photos consist solely of blurred interface screens/text documents without any visible physical merchandise."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": "uncertain"
+            },
+            {
+              "name": "Power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User documentation",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Physical merchandise is not presented in the return evidence photos, making component verification impossible."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0,
+          "observed_state": "uncertain",
+          "detail": "Physical merchandise is not present in the customer return photos to evaluate condition."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": false,
+        "completeness": false,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Photographs taken with extreme glare and camera motion blur across screen and chassis"
+    },
+    {
+      "case_id": "EVAL-051",
+      "sku": "SKU-PROT-1KG",
+      "product_name": "Whey Protein Powder 1kg",
+      "category": "Sports & Nutrition",
+      "evaluation_type": "empty_container",
+      "latency_ms": 2807,
+      "ground_truth": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 0.95
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "components": {
+            "Protein tub": true,
+            "Scoop": true
+          }
+        },
+        "condition": {
+          "verdict": "PASS",
+          "grade": "Used - Acceptable",
+          "observed_state": "empty_box"
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5e"
+      },
+      "annotator_1": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "annotator_2": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The returned product matches the expected SKU SKU-PROT-1KG and product name Whey Protein Powder 1kg based on text labels in evidence."
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Protein tub",
+              "observed": true
+            },
+            {
+              "name": "Scoop",
+              "observed": true
+            }
+          ],
+          "detail": "Protein tub is present.; Scoop is present according to component manifest."
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Protein tub returned completely empty with seal torn open, no powder inside.; Item is categorized as damaged/empty consumable tub."
+        },
+        "disposition": "dispose",
+        "rule_id": "rule_5c"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Protein tub returned completely empty with seal torn open, no powder inside"
+    },
+    {
+      "case_id": "EVAL-052",
+      "sku": "SKU-LAMP-LED",
+      "product_name": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "evaluation_type": "ambiguous_view",
+      "latency_ms": 4452,
+      "ground_truth": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.5
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.5,
+          "components": {
+            "Lamp": "uncertain",
+            "USB power cable": "uncertain",
+            "User manual": "uncertain"
+          }
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "grade": null,
+          "observed_state": "uncertain"
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "annotator_1": {
+        "identity": "UNCERTAIN",
+        "completeness": "UNCERTAIN",
+        "condition": "UNCERTAIN",
+        "disposition": "pending_review"
+      },
+      "annotator_2": {
+        "identity": "UNCERTAIN",
+        "completeness": "UNCERTAIN",
+        "condition": "UNCERTAIN",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "detail": "The product is largely obscured inside a brown shipping carton behind packing paper.; Exact identity cannot be reliably verified from the available visual evidence."
+        },
+        "completeness": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "components": [
+            {
+              "name": "Lamp",
+              "observed": "uncertain"
+            },
+            {
+              "name": "USB power cable",
+              "observed": "uncertain"
+            },
+            {
+              "name": "User manual",
+              "observed": "uncertain"
+            }
+          ],
+          "detail": "Components are obscured by packing paper inside the carton, making verification impossible.; Cannot determine presence or absence of expected components."
+        },
+        "condition": {
+          "verdict": "UNCERTAIN",
+          "confidence": 0.3,
+          "observed_state": "uncertain",
+          "detail": "Physical condition cannot be assessed due to items being obscured by packing paper inside the box."
+        },
+        "disposition": "pending_review",
+        "rule_id": "rule_2"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition_verdict": true,
+        "condition_grade": true,
+        "disposition": true
+      },
+      "scenario": "Photo shows brown shipping carton partially closed with lamp head obscured behind packing paper"
+    }
+  ]
+}

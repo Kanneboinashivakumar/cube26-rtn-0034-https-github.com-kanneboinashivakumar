@@ -1,234 +1,147 @@
 "use client";
 
 /**
- * Screen 1 — Returns Inspection
+ * Screen 1 — Return Inspection Workstation
  *
- * The operator fills in return information, views expected components from the
- * catalogue (read-only), captures/uploads 1–5 photos, and submits for inspection.
+ * A professional enterprise operations layout for warehouse returns processing.
  *
- * Includes Demo Fixture Quick-Select for:
- *   - CASE-01 — Laptop / Missing Charger
- *   - CASE-02 — Headphones / Physical Damage
- *   - CASE-03 — USB-C Cable / Wrong Product
- *
- * On success → navigate to /results/[record_id] with the record stored in
- * sessionStorage (so Screen 2 does not need a separate API call when offline).
+ * Flow:
+ *  1. Operator inputs Return ID, Order ID, and SKU / ASIN.
+ *  2. Operator triggers Catalogue Lookup (or presses Enter).
+ *  3. System automatically retrieves product metadata, expected components (Required/Optional),
+ *     and authentic Catalogue Reference standard photos.
+ *  4. Operator uploads or captures Customer Return Evidence photos.
+ *  5. Operator clicks "Run Inspection", executing the live Gemini multimodal pipeline.
+ *  6. System validates observations, runs deterministic disposition engine, persists to Supabase,
+ *     and routes to Screen 2 (Evidence & Review Workstation).
  */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { EvidenceRecord, ExpectedComponent } from "@/lib/schemas";
 import PhotoCapture from "@/components/PhotoCapture";
-import catalogData from "@/data/demo-catalog.json";
 
 type MimeType = "image/jpeg" | "image/png" | "image/webp";
 
-interface CatalogEntry {
+interface ReferencePhoto {
+  filename: string;
+  title: string;
+  base64: string;
+  mimeType: MimeType;
+  dataUrl: string;
+}
+
+interface ProductDetails {
   sku: string;
   asin?: string;
   product_name: string;
   category: string;
+  description?: string;
   expected_components: ExpectedComponent[];
-}
-
-interface ReferenceImage {
-  filename: string;
-  title: string;
-  dataUrl: string;
-}
-
-const CATALOG = catalogData as CatalogEntry[];
-
-function lookupBySku(sku: string): CatalogEntry | null {
-  return CATALOG.find((e) => e.sku.toLowerCase() === sku.trim().toLowerCase()) ?? null;
-}
-
-// ── Section wrapper ───────────────────────────────────────────────────────────
-function Section({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-      <div className="px-6 py-4 border-b border-gray-100">
-        <h2 className="font-semibold text-gray-900">{title}</h2>
-        {subtitle && <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>}
-      </div>
-      <div className="px-6 py-5">{children}</div>
-    </div>
-  );
-}
-
-// ── Input field ───────────────────────────────────────────────────────────────
-function Field({
-  label,
-  required,
-  children,
-  hint,
-}: {
-  label: string;
-  required?: boolean;
-  children: React.ReactNode;
-  hint?: string;
-}) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-        {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
-      </label>
-      {children}
-      {hint && <p className="text-xs text-gray-400 mt-1">{hint}</p>}
-    </div>
-  );
+  reference_images: ReferencePhoto[];
 }
 
 export default function Screen1() {
   const router = useRouter();
 
-  // Form state
+  // Return & Order Identification
+  const [returnId, setReturnId] = useState("");
   const [orderId, setOrderId] = useState("");
-  const [sku, setSku] = useState("");
-  const [asin, setAsin] = useState("");
-  const [productName, setProductName] = useState("");
-  const [catalogEntry, setCatalogEntry] = useState<CatalogEntry | null>(null);
-  const [images, setImages] = useState<string[]>([]);
-  const [mimeTypes, setMimeTypes] = useState<MimeType[]>([]);
+  const [lookupQuery, setLookupQuery] = useState("");
 
-  // Demo fixtures state
-  const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
-  const [loadingDemoCase, setLoadingDemoCase] = useState(false);
-  const [referenceImages, setReferenceImages] = useState<ReferenceImage[]>([]);
-  const [demoScenario, setDemoScenario] = useState<{
-    scenario: string;
-    controlled_change: string;
-  } | null>(null);
+  // Product Catalogue State
+  const [lookingUp, setLookingUp] = useState(false);
+  const [lookupError, setLookupError] = useState<string | null>(null);
+  const [product, setProduct] = useState<ProductDetails | null>(null);
 
-  // UI state
+  // Return Evidence Photos State (Uploaded by Operator)
+  const [returnImages, setReturnImages] = useState<string[]>([]);
+  const [returnMimeTypes, setReturnMimeTypes] = useState<MimeType[]>([]);
+
+  // Submission State
   const [submitting, setSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  // Auto-fill from catalogue when SKU is entered
-  useEffect(() => {
-    const entry = lookupBySku(sku);
-    if (entry) {
-      setCatalogEntry(entry);
-      setProductName(entry.product_name);
-      setAsin(entry.asin ?? "");
-    } else {
-      setCatalogEntry(null);
+  // ── Catalogue Lookup ────────────────────────────────────────────────────────
+  async function handleLookup(e?: React.FormEvent) {
+    if (e) e.preventDefault();
+    const query = lookupQuery.trim();
+    if (!query) {
+      setLookupError("Please enter a SKU or ASIN to search catalogue.");
+      return;
     }
-  }, [sku]);
 
-  // ── Load Demo Case ──────────────────────────────────────────────────────────
-  async function loadDemoCase(caseId: string) {
-    if (loadingDemoCase) return;
-    setLoadingDemoCase(true);
-    setApiError(null);
-    setFormErrors({});
+    setLookingUp(true);
+    setLookupError(null);
+    setFormErrors((prev) => ({ ...prev, sku: "" }));
 
     try {
-      const res = await fetch(`/api/demo-cases?case_id=${caseId}`);
-      if (!res.ok) {
-        throw new Error(`Failed to load demo case: HTTP ${res.status}`);
-      }
-      const data = await res.json();
-
-      setSelectedCaseId(caseId);
-      setOrderId(`DEMO-ORD-${caseId}`);
-      setSku(data.sku);
-      setProductName(data.product);
-
-      // Match catalogue entry
-      const entry = lookupBySku(data.sku);
-      if (entry) {
-        setCatalogEntry(entry);
-        setAsin(entry.asin ?? "");
-      } else {
-        setCatalogEntry({
-          sku: data.sku,
-          product_name: data.product,
-          category: "General",
-          expected_components: data.expected_components,
-        });
+      // Try SKU first, fallback to ASIN
+      const res = await fetch(`/api/catalogue?sku=${encodeURIComponent(query)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setProduct(data);
+        return;
       }
 
-      // Load reference photos
-      setReferenceImages(data.reference_images || []);
+      // If SKU lookup returned 404, check if it's an ASIN
+      const asinRes = await fetch(`/api/catalogue?asin=${encodeURIComponent(query)}`);
+      if (asinRes.ok) {
+        const data = await asinRes.json();
+        setProduct(data);
+        return;
+      }
 
-      // Load return photos directly into PhotoCapture state
-      const retImgs = (data.return_images || []).map((img: { base64: string }) => img.base64);
-      const retMimes = (data.return_images || []).map(
-        (img: { mimeType: MimeType }) => img.mimeType || "image/jpeg"
-      );
-      setImages(retImgs);
-      setMimeTypes(retMimes);
-
-      setDemoScenario({
-        scenario: data.scenario,
-        controlled_change: data.controlled_change,
-      });
-    } catch (err) {
-      setApiError(err instanceof Error ? err.message : "Failed to load demo case");
+      const errData = await res.json();
+      setProduct(null);
+      setLookupError(errData.error || `No product found matching identifier '${query}'.`);
+    } catch {
+      setLookupError("Catalogue lookup failed. Please verify network connection.");
+      setProduct(null);
     } finally {
-      setLoadingDemoCase(false);
+      setLookingUp(false);
     }
   }
 
-  function clearDemoSelection() {
-    setSelectedCaseId(null);
-    setOrderId("");
-    setSku("");
-    setAsin("");
-    setProductName("");
-    setCatalogEntry(null);
-    setImages([]);
-    setMimeTypes([]);
-    setReferenceImages([]);
-    setDemoScenario(null);
-    setFormErrors({});
-  }
-
-  // ── Validation ──────────────────────────────────────────────────────────────
+  // ── Form Validation ─────────────────────────────────────────────────────────
   function validate(): boolean {
     const errors: Record<string, string> = {};
 
+    if (!returnId.trim()) errors.returnId = "Return ID is required";
     if (!orderId.trim()) errors.orderId = "Order ID is required";
-    if (!sku.trim()) errors.sku = "SKU is required";
-    if (!productName.trim()) errors.productName = "Product name is required";
-    if (!catalogEntry) errors.sku = "SKU not found in catalogue";
-    if (images.length === 0) errors.images = "At least 1 photo is required";
-    if (images.length > 5) errors.images = "Maximum 5 photos allowed";
+    if (!product) errors.sku = "Product must be looked up in catalogue before inspection";
+    if (returnImages.length === 0) errors.images = "At least 1 customer return photo is required";
+    if (returnImages.length > 5) errors.images = "Maximum 5 return photos allowed";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   }
 
-  // ── Submit ──────────────────────────────────────────────────────────────────
+  // ── Run Inspection Submission ───────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setApiError(null);
 
     if (!validate()) return;
-    if (!catalogEntry) return;
+    if (!product) return;
 
     setSubmitting(true);
 
     try {
+      // Prepare payload including both return evidence images and catalogue reference images
       const payload = {
         order_id: orderId.trim(),
-        sku: sku.trim(),
-        asin: asin.trim() || undefined,
-        product_name: productName.trim(),
-        expected_components: catalogEntry.expected_components,
-        images,
-        image_mime_types: mimeTypes,
+        sku: product.sku,
+        asin: product.asin || undefined,
+        product_name: product.product_name,
+        expected_components: product.expected_components,
+        images: returnImages,
+        image_mime_types: returnMimeTypes,
+        reference_images: (product.reference_images || []).map((img) => img.base64),
+        reference_image_mime_types: (product.reference_images || []).map(
+          (img) => img.mimeType || "image/jpeg"
+        ),
       };
 
       const res = await fetch("/api/inspect", {
@@ -249,19 +162,37 @@ export default function Screen1() {
         return;
       }
 
-      // 200 or 207 (persistence partial failure) — both have a record to display
       const record = data.record as EvidenceRecord;
       const persistenceWarning = res.status === 207 ? (data.warning as string) : null;
 
-      // Store in sessionStorage so Screen 2 can read without another API call
-      sessionStorage.setItem(`inspection:${record.record_id}`, JSON.stringify(record));
-      if (persistenceWarning) {
-        sessionStorage.setItem(`inspection:${record.record_id}:warning`, persistenceWarning);
+      // Safely store in sessionStorage for fast Screen 2 load
+      try {
+        // Clear previous inspection data to avoid exceeding the browser 5MB quota
+        for (let i = sessionStorage.length - 1; i >= 0; i--) {
+          const key = sessionStorage.key(i);
+          if (key && key.startsWith("inspection:")) {
+            sessionStorage.removeItem(key);
+          }
+        }
+
+        sessionStorage.setItem(`inspection:${record.record_id}`, JSON.stringify(record));
+        if (persistenceWarning) {
+          sessionStorage.setItem(`inspection:${record.record_id}:warning`, persistenceWarning);
+        }
+        sessionStorage.setItem(
+          `inspection:${record.record_id}:return_data_urls`,
+          JSON.stringify(
+            returnImages.map((b64, i) => `data:${returnMimeTypes[i] || "image/jpeg"};base64,${b64}`)
+          )
+        );
+      } catch (storageErr) {
+        console.warn("sessionStorage quota limit reached; Screen 2 will fetch record from API:", storageErr);
       }
 
       router.push(`/results/${record.record_id}`);
-    } catch {
-      setApiError("Network error — could not reach the inspection API. Check your connection.");
+    } catch (err) {
+      console.error("Inspection request failed:", err);
+      setApiError(err instanceof Error ? err.message : "Inspection service request failed.");
     } finally {
       setSubmitting(false);
     }
@@ -270,303 +201,337 @@ export default function Screen1() {
   const orgId = process.env.NEXT_PUBLIC_ORG_ID ?? "org_demo_alpha";
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
-      {/* Page title */}
-      <div>
-        <h1 className="text-xl font-bold text-gray-900">Returns Inspection</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Select a realistic demo return case below, or fill in return information manually.
-        </p>
-      </div>
-
-      {/* ── Demo Return Selection ─────────────────────────────────────────── */}
-      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      {/* ── Workstation Top Header ────────────────────────────────────────── */}
+      <header className="flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-slate-200 gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+              Return Inspection Workstation
+            </h1>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              Live Terminal
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 mt-1">
+            Multimodal returns verification, component completeness auditing & deterministic disposition routing.
+          </p>
+        </div>
+        <div className="flex items-center gap-4 text-xs text-slate-500 bg-slate-50 border border-slate-200 px-4 py-2 rounded-lg">
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-              Demo Return Cases
+            <span className="font-semibold text-slate-700">Organisation:</span> {orgId}
+          </div>
+          <div className="h-3 w-px bg-slate-200" />
+          <div>
+            <span className="font-semibold text-slate-700">Station:</span> WS-RETURN-04
+          </div>
+          <div className="h-3 w-px bg-slate-200" />
+          <div>
+            <span className="font-semibold text-slate-700">Operator:</span> demo_operator
+          </div>
+        </div>
+      </header>
+
+      {/* ── Form Container ────────────────────────────────────────────────── */}
+      <form onSubmit={handleSubmit} noValidate className="space-y-6">
+        {/* ── Section 1: Identification & Catalogue Lookup ─────────────────── */}
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-blue-600" />
+              1. Return & Product Identification
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Select one of the three realistic demo fixtures to load reference and return evidence:
-            </p>
+            <span className="text-xs text-slate-400">Step 1 of 2</span>
           </div>
-          {selectedCaseId && (
-            <button
-              type="button"
-              onClick={clearDemoSelection}
-              className="text-xs text-slate-600 hover:text-red-600 font-medium underline self-start sm:self-center"
-            >
-              Reset to Blank
-            </button>
-          )}
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
-          <button
-            type="button"
-            onClick={() => loadDemoCase("CASE-01")}
-            disabled={loadingDemoCase}
-            className={`text-left p-3 rounded-lg border text-xs transition-all ${
-              selectedCaseId === "CASE-01"
-                ? "bg-blue-50 border-blue-500 shadow-sm ring-1 ring-blue-500"
-                : "bg-white border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
-            }`}
-          >
-            <div className="font-semibold text-slate-900 flex items-center justify-between">
-              <span>CASE-01</span>
-              <span className="text-[10px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
-                Missing Part
-              </span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                Return ID <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={returnId}
+                onChange={(e) => setReturnId(e.target.value)}
+                placeholder="e.g. RTN-2026-00981"
+                className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono ${
+                  formErrors.returnId ? "border-red-400" : "border-slate-300"
+                }`}
+              />
+              {formErrors.returnId && (
+                <p className="text-xs text-red-500 mt-1">{formErrors.returnId}</p>
+              )}
             </div>
-            <div className="text-slate-700 font-medium mt-1">15-inch Laptop</div>
-            <div className="text-slate-500 text-[11px] mt-0.5">Missing AC Power Charger</div>
-          </button>
 
-          <button
-            type="button"
-            onClick={() => loadDemoCase("CASE-02")}
-            disabled={loadingDemoCase}
-            className={`text-left p-3 rounded-lg border text-xs transition-all ${
-              selectedCaseId === "CASE-02"
-                ? "bg-blue-50 border-blue-500 shadow-sm ring-1 ring-blue-500"
-                : "bg-white border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
-            }`}
-          >
-            <div className="font-semibold text-slate-900 flex items-center justify-between">
-              <span>CASE-02</span>
-              <span className="text-[10px] text-red-700 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
-                Damaged
-              </span>
-            </div>
-            <div className="text-slate-700 font-medium mt-1">Wireless Headphones</div>
-            <div className="text-slate-500 text-[11px] mt-0.5">Cracked Headband / Hinge</div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => loadDemoCase("CASE-03")}
-            disabled={loadingDemoCase}
-            className={`text-left p-3 rounded-lg border text-xs transition-all ${
-              selectedCaseId === "CASE-03"
-                ? "bg-blue-50 border-blue-500 shadow-sm ring-1 ring-blue-500"
-                : "bg-white border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
-            }`}
-          >
-            <div className="font-semibold text-slate-900 flex items-center justify-between">
-              <span>CASE-03</span>
-              <span className="text-[10px] text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded border border-purple-200">
-                Wrong Item
-              </span>
-            </div>
-            <div className="text-slate-700 font-medium mt-1">USB-C Cable (2m)</div>
-            <div className="text-slate-500 text-[11px] mt-0.5">Lightning Cable Returned</div>
-          </button>
-        </div>
-
-        {demoScenario && (
-          <div className="mt-3 pt-3 border-t border-slate-200/80 text-xs">
-            <div className="text-slate-700">
-              <span className="font-semibold text-slate-900">Scenario:</span> {demoScenario.scenario}
-            </div>
-            <div className="text-slate-600 mt-1">
-              <span className="font-semibold text-slate-900">Controlled Change:</span>{" "}
-              {demoScenario.controlled_change}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <form onSubmit={handleSubmit} noValidate className="space-y-5">
-        {/* ── Section A: Return Information ─────────────────────────────── */}
-        <Section
-          title="Return Information"
-          subtitle={`Organisation: ${orgId}`}
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label="Order ID" required>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                Customer Order ID <span className="text-red-500">*</span>
+              </label>
               <input
                 type="text"
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
-                placeholder="e.g. ORD-2026-09-001"
-                className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  formErrors.orderId ? "border-red-400" : "border-gray-300"
+                placeholder="e.g. ORD-2026-09-00821"
+                className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono ${
+                  formErrors.orderId ? "border-red-400" : "border-slate-300"
                 }`}
               />
               {formErrors.orderId && (
                 <p className="text-xs text-red-500 mt-1">{formErrors.orderId}</p>
               )}
-            </Field>
+            </div>
 
-            <Field
-              label="SKU"
-              required
-              hint="Enter a SKU to auto-populate from the catalogue"
-            >
-              <input
-                type="text"
-                value={sku}
-                onChange={(e) => setSku(e.target.value)}
-                placeholder="e.g. WH-1001"
-                list="sku-list"
-                className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  formErrors.sku ? "border-red-400" : catalogEntry ? "border-green-400" : "border-gray-300"
-                }`}
-              />
-              <datalist id="sku-list">
-                {CATALOG.map((e) => (
-                  <option key={e.sku} value={e.sku}>
-                    {e.product_name}
-                  </option>
-                ))}
-              </datalist>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                SKU / ASIN Lookup <span className="text-red-500">*</span>
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={lookupQuery}
+                  onChange={(e) => setLookupQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleLookup();
+                    }
+                  }}
+                  placeholder="Enter SKU (e.g. WH-1001) or ASIN"
+                  className={`flex-1 rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono ${
+                    formErrors.sku ? "border-red-400" : product ? "border-emerald-400" : "border-slate-300"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleLookup()}
+                  disabled={lookingUp}
+                  className="px-4 py-2 bg-blue-700 text-white rounded-lg text-xs font-semibold hover:bg-blue-600 disabled:opacity-50 transition-colors shrink-0 shadow-sm"
+                >
+                  {lookingUp ? "Fetching Standards…" : "Fetch Standards"}
+                </button>
+              </div>
               {formErrors.sku && (
                 <p className="text-xs text-red-500 mt-1">{formErrors.sku}</p>
               )}
-              {catalogEntry && !formErrors.sku && (
-                <p className="text-xs text-green-600 mt-1">
-                  ✓ Found in catalogue — {catalogEntry.category}
+              {lookupError && (
+                <p className="text-xs text-red-600 mt-1 font-medium">{lookupError}</p>
+              )}
+              {product && !lookupError && (
+                <p className="text-xs text-emerald-600 mt-1 font-medium flex items-center gap-1">
+                  ✓ Standards loaded from catalogue — {product.category}
                 </p>
               )}
-            </Field>
-
-            <Field label="ASIN" hint="Optional — auto-filled from catalogue">
-              <input
-                type="text"
-                value={asin}
-                onChange={(e) => setAsin(e.target.value)}
-                placeholder="e.g. B0DEMO1001"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </Field>
-
-            <Field label="Product Name" required>
-              <input
-                type="text"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                placeholder="Auto-filled from SKU lookup"
-                className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  formErrors.productName ? "border-red-400" : "border-gray-300"
-                }`}
-              />
-              {formErrors.productName && (
-                <p className="text-xs text-red-500 mt-1">{formErrors.productName}</p>
-              )}
-            </Field>
+            </div>
           </div>
-        </Section>
+        </div>
 
-        {/* ── Section B: Expected Components ────────────────────────────── */}
-        <Section
-          title="Expected Components"
-          subtitle="From catalogue — display only. The required flag cannot be changed."
-        >
-          {catalogEntry ? (
-            <div className="space-y-2">
-              {catalogEntry.expected_components.map((comp) => (
-                <div
-                  key={comp.name}
-                  className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-4 py-2.5"
-                >
-                  <span className="text-sm text-gray-800">{comp.name}</span>
-                  <span
-                    className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
-                      comp.essential
-                        ? "bg-red-50 text-red-700 border-red-200"
-                        : "bg-gray-100 text-gray-500 border-gray-200"
-                    }`}
-                  >
-                    {comp.essential ? "Required" : "Optional"}
+        {/* ── Section 2: Split Workstation View (Catalogue Reference vs Return Evidence) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* ── Left Column: Catalogue Standard & Expected Components (7 cols) ── */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Product Metadata & Expected Components Card */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-indigo-600" />
+                  Catalogue Reference Standard
+                </h2>
+                {product && (
+                  <span className="text-xs font-mono text-slate-500">
+                    SKU: {product.sku} {product.asin ? `· ASIN: ${product.asin}` : ""}
+                  </span>
+                )}
+              </div>
+
+              {product ? (
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900">{product.product_name}</h3>
+                    {product.description && (
+                      <p className="text-xs text-slate-600 mt-1">{product.description}</p>
+                    )}
+                  </div>
+
+                  {/* Expected Components List */}
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                      Expected Components Checklist
+                    </h4>
+                    <div className="space-y-1.5">
+                      {product.expected_components.map((c) => (
+                        <div
+                          key={c.name}
+                          className="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-50 border border-slate-100 text-xs"
+                        >
+                          <span className="font-medium text-slate-800 flex items-center gap-2">
+                            <span className="text-slate-400">▫</span> {c.name}
+                          </span>
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide border ${
+                              c.essential
+                                ? "bg-red-50 text-red-700 border-red-200"
+                                : "bg-slate-100 text-slate-600 border-slate-200"
+                            }`}
+                          >
+                            {c.essential ? "Essential / Required" : "Optional Accessory"}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-10 text-slate-400">
+                  <div className="text-3xl mb-2">📋</div>
+                  <p className="text-sm font-medium">No product loaded.</p>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Enter a SKU (e.g. <code className="bg-slate-100 px-1 py-0.5 rounded">WH-1001</code>, <code className="bg-slate-100 px-1 py-0.5 rounded">DEMO-LAPTOP-001</code>, or <code className="bg-slate-100 px-1 py-0.5 rounded">SKU-CABLE-USBC</code>) above and click <strong>Fetch Standards</strong>.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Reference Photos Gallery */}
+            {product && product.reference_images && product.reference_images.length > 0 && (
+              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                  <div>
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800">
+                      Authentic Catalogue Reference Photos
+                    </h2>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Pristine reference standards for physical identity, connector shapes, and complete bundle layout.
+                    </p>
+                  </div>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                    {product.reference_images.length} Reference Standards
                   </span>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8 text-gray-400">
-              <div className="text-3xl mb-2">📦</div>
-              <p className="text-sm">Enter a valid SKU above to see expected components.</p>
-            </div>
-          )}
-        </Section>
 
-        {/* ── Section C: Reference / Expected Product Photos ───────────────── */}
-        {referenceImages.length > 0 && (
-          <Section
-            title="Reference / Expected Product Photos"
-            subtitle="Catalog reference standards showing expected product and complete accessories configuration."
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {referenceImages.map((ref, idx) => (
-                <div key={idx} className="rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
-                  <div className="aspect-[4/3] bg-slate-100 relative">
-                    <img
-                      src={ref.dataUrl}
-                      alt={ref.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <span className="absolute top-2 left-2 bg-blue-900/80 text-white text-[10px] uppercase font-bold tracking-wide px-2 py-0.5 rounded shadow">
-                      Reference #{idx + 1}
-                    </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {product.reference_images.map((ref, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-lg border border-slate-200 overflow-hidden bg-slate-50 flex flex-col"
+                    >
+                      <div className="aspect-[4/3] bg-slate-100 relative overflow-hidden">
+                        <img
+                          src={ref.dataUrl}
+                          alt={ref.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute top-2 left-2 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                          REF #{idx + 1}
+                        </span>
+                      </div>
+                      <div className="p-2.5 bg-white border-t border-slate-100">
+                        <p className="text-xs font-semibold text-slate-800">{ref.title}</p>
+                        <p className="text-[10px] text-slate-400 font-mono truncate">{ref.filename}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── Right Column: Customer Return Evidence Upload (5 cols) ────────── */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <div>
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    Customer Return Evidence
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Photographs of the actual physical package and items received.
+                  </p>
+                </div>
+                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+                  {returnImages.length} of 5 photos
+                </span>
+              </div>
+
+              {/* PhotoCapture Component */}
+              <PhotoCapture
+                images={returnImages}
+                mimeTypes={returnMimeTypes}
+                onChange={(imgs, mimes) => {
+                  setReturnImages(imgs);
+                  setReturnMimeTypes(mimes);
+                  if (formErrors.images) {
+                    setFormErrors((prev) => ({ ...prev, images: "" }));
+                  }
+                }}
+                maxPhotos={5}
+              />
+              {formErrors.images && (
+                <p className="text-xs text-red-500 mt-2 font-medium">{formErrors.images}</p>
+              )}
+
+              {/* Standardized Operator Photo Guidelines */}
+              <div className="mt-4 p-3.5 bg-slate-50 border border-slate-200 rounded-lg text-xs space-y-2">
+                <p className="font-semibold text-slate-800 flex items-center gap-1.5">
+                  <span className="text-blue-600">📷</span> Standard Photo Capture Guidelines:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                  <div className="p-2 rounded bg-white border border-slate-200">
+                    <span className="font-semibold text-slate-800">1. Overall View:</span>
+                    <p className="text-slate-500 mt-0.5">Wide shot of returned product, retail packaging, and outer condition.</p>
                   </div>
-                  <div className="p-2.5">
-                    <p className="text-xs font-semibold text-slate-800 capitalize">{ref.title}</p>
-                    <p className="text-[10px] text-slate-500 font-mono mt-0.5">{ref.filename}</p>
+                  <div className="p-2 rounded bg-white border border-slate-200">
+                    <span className="font-semibold text-slate-800">2. Accessory Flat-Lay:</span>
+                    <p className="text-slate-500 mt-0.5">All cables, manuals, and adapters separated and laid flat against contrasting surface.</p>
+                  </div>
+                  <div className="p-2 rounded bg-white border border-slate-200">
+                    <span className="font-semibold text-slate-800">3. ID / Model Close-Up:</span>
+                    <p className="text-slate-500 mt-0.5">Macro shot of barcode, serial number, model stamp, or regulatory badge.</p>
+                  </div>
+                  <div className="p-2 rounded bg-white border border-slate-200">
+                    <span className="font-semibold text-slate-800">4. Damage / Wear Close-Up:</span>
+                    <p className="text-slate-500 mt-0.5">Close-up of any blemishes, scratches, dents, cracks, or confirmation of pristine state.</p>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </Section>
-        )}
+          </div>
+        </div>
 
-        {/* ── Section D: Return Evidence Photos ───────────────────────────── */}
-        <Section
-          title="Return Evidence Photos"
-          subtitle="1–5 photos required. Camera and file upload both feed the same evidence set."
-        >
-          <PhotoCapture
-            images={images}
-            mimeTypes={mimeTypes}
-            onChange={(imgs, mimes) => {
-              setImages(imgs);
-              setMimeTypes(mimes);
-              if (formErrors.images) {
-                setFormErrors((prev) => ({ ...prev, images: "" }));
-              }
-            }}
-            maxPhotos={5}
-          />
-          {formErrors.images && (
-            <p className="text-sm text-red-500 mt-3 font-medium">{formErrors.images}</p>
-          )}
-        </Section>
-
-        {/* ── API error ─────────────────────────────────────────────────── */}
+        {/* ── API / Submission Error ────────────────────────────────────────── */}
         {apiError && (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4">
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4">
             <div className="flex gap-3 items-start">
-              <span className="text-red-500 text-lg">⚠</span>
+              <span className="text-red-500 text-lg leading-none">⚠</span>
               <div>
-                <p className="font-medium text-red-800 text-sm">Inspection failed</p>
-                <p className="text-sm text-red-700 mt-0.5">{apiError}</p>
-                <p className="text-xs text-red-500 mt-1">
-                  Your form and photos are preserved. You can retry.
-                </p>
+                <p className="font-semibold text-red-800 text-sm">Inspection Request Failed</p>
+                <p className="text-xs text-red-700 mt-0.5">{apiError}</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* ── Submit ────────────────────────────────────────────────────── */}
-        <div className="flex items-center justify-between pt-2">
-          <p className="text-xs text-gray-400">
-            {images.length}/5 photos · {catalogEntry?.expected_components.length ?? 0} expected components
-          </p>
+        {/* ── Bottom Workstation Action Bar ─────────────────────────────────── */}
+        <div className="bg-slate-900 text-white rounded-xl p-4 sm:p-5 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-xs text-slate-300">
+            <div className="flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${product ? "bg-emerald-400" : "bg-slate-500"}`} />
+              <span>
+                {product
+                  ? `Product: ${product.product_name} (${product.expected_components.length} components)`
+                  : "Catalogue lookup pending"}
+              </span>
+            </div>
+            <div className="text-[11px] text-slate-400 mt-0.5">
+              Evidence: {returnImages.length} return photo{returnImages.length !== 1 ? "s" : ""} uploaded
+              {product?.reference_images ? ` · ${product.reference_images.length} reference standards attached` : ""}
+            </div>
+          </div>
 
           <button
             type="submit"
-            disabled={submitting}
-            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-colors"
+            disabled={submitting || !product || returnImages.length === 0}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed shadow transition-colors"
           >
             {submitting ? (
               <>
@@ -574,30 +539,30 @@ export default function Screen1() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Inspecting…
+                Processing Live Multimodal Inspection…
               </>
             ) : (
               <>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                 </svg>
-                Run Inspection
+                RUN INSPECTION
               </>
             )}
           </button>
         </div>
 
         {submitting && (
-          <div className="rounded-xl border border-blue-200 bg-blue-50 px-5 py-4">
+          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
             <div className="flex items-center gap-3">
-              <svg className="w-5 h-5 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 animate-spin text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
               <div>
-                <p className="text-sm font-medium text-blue-900">Analysing return evidence…</p>
+                <p className="text-sm font-semibold text-blue-900">Running Live Multimodal Inspection</p>
                 <p className="text-xs text-blue-700 mt-0.5">
-                  Gemini is reviewing {images.length} photo{images.length !== 1 ? "s" : ""}. This may take 10–30 seconds.
+                  Gemini is evaluating Identity, Completeness, and Condition against catalogue standards. This takes ~5–10 seconds.
                 </p>
               </div>
             </div>

@@ -1,13 +1,21 @@
 "use client";
 
 /**
- * Screen 2 — Inspection Results / Evidence & Review
+ * Screen 2 — Inspection Results / Evidence & Review Workstation
  *
- * Reads the EvidenceRecord from sessionStorage (set by Screen 1 after POST /api/inspect).
- * Falls back to GET /api/inspections/[record_id] if not in sessionStorage.
+ * A high-density, professional desktop operations review workstation.
  *
- * Shows all three check results, final disposition, rule trace.
- * Provides Confirm and Override actions.
+ * Layout:
+ *  - Left / Main Area:
+ *      * Overall Disposition Banner & Status
+ *      * Deterministic Rule Trace explanation
+ *      * Independent AI Check Cards (Identity, Completeness, Condition Assessment)
+ *      * Operational Metadata (Latency, Model, Content Hash)
+ *      * Warehouse Operator Actions (Confirm / Override)
+ *  - Right / Evidence Area:
+ *      * Customer Return Evidence Photos (numbered image_1, image_2, ...)
+ *      * Catalogue Reference Standards (authentic expected configuration)
+ *      * Evidence Citations & Observations mapping
  */
 
 import { useEffect, useState } from "react";
@@ -17,35 +25,40 @@ import CheckCard from "@/components/CheckCard";
 import DispositionBadge from "@/components/DispositionBadge";
 import RuleTracePanel from "@/components/RuleTracePanel";
 import OverrideModal from "@/components/OverrideModal";
-import VerdictBadge from "@/components/VerdictBadge";
 
 const ORG_ID = process.env.NEXT_PUBLIC_ORG_ID ?? "org_demo_alpha";
+
+interface ReferencePhoto {
+  filename: string;
+  title: string;
+  dataUrl: string;
+}
 
 // ── Small metadata pair ───────────────────────────────────────────────────────
 function MetaPair({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-[10px] uppercase tracking-wide text-gray-400 font-semibold">{label}</dt>
-      <dd className="text-sm text-gray-800 font-medium mt-0.5">{value}</dd>
+      <dt className="text-[10px] uppercase tracking-wide text-slate-400 font-semibold">{label}</dt>
+      <dd className="text-xs text-slate-800 font-medium mt-0.5 font-mono">{value}</dd>
     </div>
   );
 }
 
-// ── Status badge for overall inspection status ────────────────────────────────
+// ── Status badge ─────────────────────────────────────────────────────────────
 function StatusBadge({ status }: { status: EvidenceRecord["status"] }) {
   const styles = {
-    resolved: "bg-green-100 text-green-800 border-green-200",
+    resolved: "bg-emerald-100 text-emerald-800 border-emerald-200",
     pending_review: "bg-amber-100 text-amber-800 border-amber-200",
     failed: "bg-red-100 text-red-800 border-red-200",
   };
   const labels = {
-    resolved: "Resolved",
-    pending_review: "Pending Review",
+    resolved: "Resolved / Finalized",
+    pending_review: "Pending Operations Review",
     failed: "Inspection Failed",
   };
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${styles[status]}`}
+      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${styles[status]}`}
     >
       {labels[status]}
     </span>
@@ -62,6 +75,10 @@ export default function Screen2() {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [persistenceWarning, setPersistenceWarning] = useState<string | null>(null);
 
+  // Evidence Photos State
+  const [referencePhotos, setReferencePhotos] = useState<ReferencePhoto[]>([]);
+  const [returnDataUrls, setReturnDataUrls] = useState<string[]>([]);
+
   // Override modal state
   const [overrideOpen, setOverrideOpen] = useState(false);
 
@@ -70,41 +87,76 @@ export default function Screen2() {
   const [confirmError, setConfirmError] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
 
-  // ── Load record ─────────────────────────────────────────────────────────────
+  // ── Load Record & Evidence ──────────────────────────────────────────────────
   useEffect(() => {
     if (!recordId) return;
 
-    // Try sessionStorage first (fastest, works without Supabase)
+    // 1. Check sessionStorage for cached EvidenceRecord
     const cached = sessionStorage.getItem(`inspection:${recordId}`);
     const warning = sessionStorage.getItem(`inspection:${recordId}:warning`);
+    const cachedRefs = sessionStorage.getItem(`inspection:${recordId}:reference_photos`);
+    const cachedReturns = sessionStorage.getItem(`inspection:${recordId}:return_data_urls`);
+
+    if (cachedRefs) {
+      try {
+        setReferencePhotos(JSON.parse(cachedRefs));
+      } catch {}
+    }
+
+    if (cachedReturns) {
+      try {
+        setReturnDataUrls(JSON.parse(cachedReturns));
+      } catch {}
+    }
 
     if (cached) {
       try {
-        setRecord(JSON.parse(cached) as EvidenceRecord);
+        const parsed = JSON.parse(cached) as EvidenceRecord;
+        setRecord(parsed);
         if (warning) setPersistenceWarning(warning);
         setLoading(false);
+
+        // If reference photos weren't in session, fetch from catalogue
+        if (!cachedRefs && parsed.subject?.sku) {
+          fetch(`/api/catalogue?sku=${encodeURIComponent(parsed.subject.sku)}`)
+            .then((res) => (res.ok ? res.json() : null))
+            .then((catData) => {
+              if (catData?.reference_images) setReferencePhotos(catData.reference_images);
+            })
+            .catch(() => {});
+        }
         return;
       } catch {
-        // fall through to API fetch
+        // Fall through to API fetch
       }
     }
 
-    // Fallback: fetch from API
+    // 2. Fallback: fetch from API
     fetch(`/api/inspections/${recordId}?org_id=${ORG_ID}`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((data) => setRecord(data.record as EvidenceRecord))
+      .then((data) => {
+        const fetchedRecord = data.record as EvidenceRecord;
+        setRecord(fetchedRecord);
+        // Also load reference photos for this SKU
+        if (fetchedRecord.subject?.sku) {
+          fetch(`/api/catalogue?sku=${encodeURIComponent(fetchedRecord.subject.sku)}`)
+            .then((r) => (r.ok ? r.json() : null))
+            .then((catData) => {
+              if (catData?.reference_images) setReferencePhotos(catData.reference_images);
+            })
+            .catch(() => {});
+        }
+      })
       .catch((err) =>
-        setFetchError(
-          err instanceof Error ? err.message : "Failed to load inspection record."
-        )
+        setFetchError(err instanceof Error ? err.message : "Failed to load inspection record.")
       )
       .finally(() => setLoading(false));
   }, [recordId]);
 
-  // ── Confirm ─────────────────────────────────────────────────────────────────
+  // ── Confirm Decision ────────────────────────────────────────────────────────
   async function handleConfirm() {
     if (!record) return;
     setConfirming(true);
@@ -127,14 +179,10 @@ export default function Screen2() {
       }
 
       setConfirmed(true);
-      setRecord((prev) =>
-        prev ? { ...prev, status: "resolved" } : prev
-      );
+      setRecord((prev) => (prev ? { ...prev, status: "resolved" } : prev));
 
       if (res.status === 207) {
-        setPersistenceWarning(
-          data.warning ?? "Confirmed but could not be saved to the database."
-        );
+        setPersistenceWarning(data.warning ?? "Confirmed but could not be saved to database.");
       }
     } catch {
       setConfirmError("Network error — could not confirm the inspection.");
@@ -143,38 +191,37 @@ export default function Screen2() {
     }
   }
 
-  // ── Override success ─────────────────────────────────────────────────────────
+  // ── Override Success ────────────────────────────────────────────────────────
   function handleOverrideSuccess(updatedRecord: EvidenceRecord) {
     setRecord(updatedRecord);
     setOverrideOpen(false);
-    // Update sessionStorage with the new record
     sessionStorage.setItem(`inspection:${updatedRecord.record_id}`, JSON.stringify(updatedRecord));
   }
 
-  // ── Render states ────────────────────────────────────────────────────────────
+  // ── Loading & Error States ──────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-64 gap-4">
-        <svg className="w-8 h-8 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24">
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-3">
+        <svg className="w-8 h-8 animate-spin text-blue-600" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
-        <p className="text-sm text-gray-500">Loading inspection results…</p>
+        <p className="text-xs text-slate-500 font-medium">Retrieving inspection evidence record…</p>
       </div>
     );
   }
 
   if (fetchError || !record) {
     return (
-      <div className="max-w-xl mx-auto mt-16 text-center">
-        <div className="text-5xl mb-4">⚠️</div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">Could not load inspection</h2>
-        <p className="text-sm text-gray-600 mb-6">{fetchError ?? "Inspection record not found."}</p>
+      <div className="max-w-lg mx-auto my-16 text-center bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+        <div className="text-4xl mb-3">⚠️</div>
+        <h2 className="text-base font-bold text-slate-900 mb-1">Inspection Record Not Found</h2>
+        <p className="text-xs text-slate-600 mb-5">{fetchError ?? "Record could not be loaded."}</p>
         <button
           onClick={() => router.push("/")}
-          className="px-5 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700"
+          className="px-5 py-2.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700"
         >
-          ← Start new inspection
+          ← Return to Inspection Workstation
         </button>
       </div>
     );
@@ -189,7 +236,7 @@ export default function Screen2() {
 
   return (
     <>
-      {/* ── Override modal ──────────────────────────────────────────────── */}
+      {/* ── Override Modal ────────────────────────────────────────────────── */}
       {overrideOpen && (
         <OverrideModal
           record={record}
@@ -198,235 +245,237 @@ export default function Screen2() {
         />
       )}
 
-      <div className="max-w-3xl mx-auto space-y-6">
-        {/* ── Header ──────────────────────────────────────────────────────── */}
-        <div className="flex items-start justify-between gap-4">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        {/* ── Top Header / Breadcrumbs ────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <button
                 onClick={() => router.push("/")}
-                className="text-xs text-blue-600 hover:underline"
+                className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
               >
-                ← New inspection
+                ← Return to Terminal
               </button>
+              <span className="text-slate-300">/</span>
+              <span className="text-xs text-slate-500 font-mono">Record: {record.record_id}</span>
             </div>
-            <h1 className="text-xl font-bold text-gray-900">Inspection Results</h1>
-            <p className="text-xs text-gray-500 mt-1 font-mono">{record.record_id}</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+              Evidence & Disposition Review
+            </h1>
           </div>
-          <StatusBadge status={record.status} />
+          <div className="flex items-center gap-3">
+            <StatusBadge status={record.status} />
+          </div>
         </div>
 
-        {/* ── Persistence warning ─────────────────────────────────────────── */}
+        {/* ── Persistence Warning Banner (if any) ─────────────────────────── */}
         {persistenceWarning && (
-          <div className="rounded-xl border border-amber-200 bg-amber-50 px-5 py-3">
-            <p className="text-sm text-amber-800">
-              <span className="font-semibold">⚠ Persistence Warning:</span>{" "}
-              {persistenceWarning}{" "}
-              <span className="text-amber-600">This result was not durably saved.</span>
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+            <p className="text-xs text-amber-800">
+              <span className="font-bold">⚠ Persistence Notice:</span> {persistenceWarning}{" "}
+              <span className="text-amber-600">The inspection record is active in session.</span>
             </p>
           </div>
         )}
 
-        {/* ── Inspection failed notice ─────────────────────────────────────── */}
+        {/* ── Failed State Notice ─────────────────────────────────────────── */}
         {inspectionFailed && (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4">
-            <p className="font-semibold text-red-800 text-sm mb-1">AI inspection could not complete</p>
-            <p className="text-sm text-red-700">
-              {record.error_detail ?? "An error occurred during inspection. The case has been routed to pending review."}
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4">
+            <p className="font-bold text-red-800 text-xs mb-1">Multimodal Pipeline Fail-Open Active</p>
+            <p className="text-xs text-red-700">
+              {record.error_detail ?? "An unexpected exception occurred. Case routed to pending_review for manual processing."}
             </p>
           </div>
         )}
 
-        {/* ── Section A: Inspection Metadata ──────────────────────────────── */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">Inspection Details</h2>
-          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4">
-            <MetaPair label="Order ID" value={subject.order_id} />
-            <MetaPair label="SKU" value={subject.sku} />
-            {subject.asin && <MetaPair label="ASIN" value={subject.asin} />}
-            <MetaPair label="Product" value={subject.product_name} />
-            <MetaPair label="Organisation" value={record.organization_id} />
-            <MetaPair
-              label="Inspected"
-              value={new Date(record.captured_at).toLocaleString()}
-            />
-            {latencyCheck && (
-              <MetaPair
-                label="Processing time"
-                value={`${(latencyCheck.latency_ms / 1000).toFixed(1)}s`}
-              />
-            )}
-            <MetaPair
-              label="AI model"
-              value={latencyCheck?.model_version ?? agent.name}
-            />
-            <MetaPair label="Policy" value={outcome.policy_version} />
-          </dl>
-        </div>
-
-        {/* ── Sections B, C, D: Checks ─────────────────────────────────────── */}
-        {checks.length > 0 ? (
-          <>
-            <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-              Evidence Analysis
-            </h2>
-            <div className="grid grid-cols-1 gap-4">
-              {checks.map((check) => (
-                <CheckCard key={check.check_key} check={check} />
-              ))}
-            </div>
-          </>
-        ) : inspectionFailed ? null : (
-          <div className="bg-white rounded-xl border border-gray-200 px-6 py-8 text-center text-gray-400">
-            <p className="text-sm">No check results available.</p>
-          </div>
-        )}
-
-        {/* ── Section E: Final Disposition ─────────────────────────────────── */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-gray-700">Final Disposition</h2>
-            {hasOverrides && (
-              <span className="text-xs text-orange-600 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full font-medium">
-                Operator Override Applied
-              </span>
-            )}
-          </div>
-
-          <DispositionBadge disposition={outcome.disposition} size="lg" />
-
-          {/* Show original if overridden */}
-          {latestOverride && (
-            <div className="mt-4 rounded-lg bg-orange-50 border border-orange-200 px-4 py-3 space-y-2">
-              <p className="text-xs font-semibold text-orange-700 uppercase tracking-wide">
-                Override Details
-              </p>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-gray-500">Original AI decision:</span>
-                <DispositionBadge disposition={latestOverride.previous_disposition} size="sm" />
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-gray-500">Overridden to:</span>
-                <DispositionBadge disposition={latestOverride.new_disposition} size="sm" />
-              </div>
-              <p className="text-sm text-orange-800">
-                <span className="font-medium">Reason:</span> {latestOverride.reason}
-              </p>
-              <p className="text-xs text-orange-500">
-                Overridden at {new Date(latestOverride.overridden_at).toLocaleString()} by {latestOverride.operator_id}
-              </p>
-            </div>
-          )}
-
-          {/* UNCERTAIN / pending notice */}
-          {(outcome.disposition === "pending_review" || status === "pending_review") && (
-            <div className="mt-4 rounded-lg bg-amber-50 border border-amber-200 px-4 py-3">
-              <p className="text-sm text-amber-800">
-                <span className="font-semibold">Human review required.</span>{" "}
-                The AI returned uncertain results or insufficient evidence. Please examine the evidence above and use Override to set a final disposition.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* ── Section F: Decision Rules Applied ────────────────────────────── */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-          <h2 className="text-sm font-semibold text-gray-700 mb-1">Decision Rules Applied</h2>
-          <p className="text-xs text-gray-400 mb-4">
-            The disposition is determined by these deterministic rules — not by the AI directly.
-          </p>
-          <RuleTracePanel rules={outcome.rule_trace} />
-        </div>
-
-        {/* ── Confirm / Override actions ────────────────────────────────────── */}
-        {!inspectionFailed && (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-            <h2 className="text-sm font-semibold text-gray-700 mb-4">Operator Actions</h2>
-
-            <div className="flex flex-wrap gap-3 items-start">
-              {/* Confirm */}
-              <div className="flex-1 min-w-48">
-                <button
-                  onClick={handleConfirm}
-                  disabled={!canConfirm}
-                  className={`w-full py-2.5 px-5 rounded-lg font-semibold text-sm transition-colors ${
-                    confirmed
-                      ? "bg-green-100 text-green-800 border border-green-300 cursor-default"
-                      : "bg-green-600 text-white hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed"
-                  }`}
-                >
-                  {confirming ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
-                      Confirming…
-                    </span>
-                  ) : confirmed ? (
-                    "✓ Decision Confirmed"
-                  ) : (
-                    "Confirm Decision"
-                  )}
-                </button>
-                <p className="text-xs text-gray-400 mt-1.5 text-center">
-                  Accept the AI-determined disposition
-                </p>
-                {confirmError && (
-                  <p className="text-xs text-red-500 mt-1 text-center">{confirmError}</p>
+        {/* ── Split Layout: Left Column (Results/Rules) vs Right Column (Visual Evidence) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* ── Left Area: Checks, Disposition & Rules (7 cols) ─────────────── */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* 1. Final Disposition Banner */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                  Deterministic Business Disposition
+                </span>
+                {hasOverrides && (
+                  <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                    Operator Override Active
+                  </span>
                 )}
               </div>
 
-              {/* Override */}
-              <div className="flex-1 min-w-48">
-                <button
-                  onClick={() => setOverrideOpen(true)}
-                  className="w-full py-2.5 px-5 rounded-lg font-semibold text-sm bg-white text-orange-700 border border-orange-300 hover:bg-orange-50 transition-colors"
-                >
-                  Override Decision
-                </button>
-                <p className="text-xs text-gray-400 mt-1.5 text-center">
-                  Change disposition with a documented reason
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── Override history ─────────────────────────────────────────────── */}
-        {overrides.length > 1 && (
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-            <h2 className="text-sm font-semibold text-gray-700 mb-4">Override History</h2>
-            <div className="space-y-3">
-              {overrides.map((ov, i) => (
-                <div
-                  key={ov.override_id}
-                  className="rounded-lg border border-gray-200 px-4 py-3 text-sm"
-                >
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-medium text-gray-400">#{i + 1}</span>
-                    <DispositionBadge disposition={ov.previous_disposition as Disposition} size="sm" />
-                    <span className="text-gray-400">→</span>
-                    <DispositionBadge disposition={ov.new_disposition as Disposition} size="sm" />
-                  </div>
-                  <p className="text-gray-700">{ov.reason}</p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {new Date(ov.overridden_at).toLocaleString()} · {ov.operator_id}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2">
+                <div>
+                  <DispositionBadge disposition={outcome.disposition} size="lg" />
+                  <p className="text-xs text-slate-500 mt-2">
+                    Evaluated by ReturnOps deterministic rules engine (Policy v{outcome.policy_version}).
                   </p>
                 </div>
+
+                {/* Confirm & Override Action Buttons */}
+                <div className="flex items-center gap-2 self-start sm:self-center">
+                  <button
+                    type="button"
+                    onClick={() => setOverrideOpen(true)}
+                    className="px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-700 font-semibold text-xs hover:bg-slate-50 transition-colors shadow-sm"
+                  >
+                    Override…
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleConfirm}
+                    disabled={!canConfirm}
+                    className="px-5 py-2 rounded-lg bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm flex items-center gap-1.5"
+                  >
+                    {confirming ? (
+                      "Confirming…"
+                    ) : confirmed ? (
+                      "✓ Confirmed"
+                    ) : (
+                      "Confirm Disposition"
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {confirmError && (
+                <p className="text-xs text-red-600 mt-2 font-medium">{confirmError}</p>
+              )}
+
+              {/* Override Log Note */}
+              {latestOverride && (
+                <div className="mt-4 rounded-lg bg-amber-50 border border-amber-200 p-3 text-xs space-y-1">
+                  <div className="font-semibold text-amber-900">
+                    Overridden from <span className="uppercase">{latestOverride.previous_disposition}</span> by operator {latestOverride.operator_id}
+                  </div>
+                  <div className="text-amber-800 italic">"{latestOverride.reason}"</div>
+                </div>
+              )}
+            </div>
+
+            {/* 2. Deterministic Rule Trace */}
+            <RuleTracePanel rules={outcome.rule_trace} />
+
+            {/* 3. Independent AI Check Cards */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                  Multimodal Evidence Analysis (3 Independent Checks)
+                </h2>
+                <span className="text-[11px] text-slate-400">Zero cross-contamination</span>
+              </div>
+
+              {checks.map((chk) => (
+                <CheckCard key={chk.check_key} check={chk} />
               ))}
             </div>
-          </div>
-        )}
 
-        {/* ── Footer nav ─────────────────────────────────────────────────── */}
-        <div className="pb-8 text-center">
-          <button
-            onClick={() => router.push("/")}
-            className="text-sm text-blue-600 hover:underline"
-          >
-            ← Start another inspection
-          </button>
+            {/* 4. Inspection Metadata Footer */}
+            <div className="bg-slate-50 rounded-xl border border-slate-200 p-4">
+              <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <MetaPair label="Order ID" value={subject.order_id} />
+                <MetaPair label="SKU" value={subject.sku} />
+                <MetaPair label="Latency" value={`${((latencyCheck?.latency_ms ?? 0) / 1000).toFixed(2)}s`} />
+                <MetaPair label="Model" value={latencyCheck?.model_version ?? agent.name} />
+              </dl>
+              {record.content_hash && (
+                <div className="mt-3 pt-2.5 border-t border-slate-200 text-[10px] text-slate-400 font-mono truncate">
+                  SHA-256: {record.content_hash}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ── Right Area: Visual Evidence Comparison (5 cols) ─────────────── */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Customer Return Evidence Photos */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    Customer Return Evidence ({record.images.length} photos)
+                  </h3>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Actual photographs submitted for multimodal analysis.
+                  </p>
+                </div>
+              </div>
+
+              {returnDataUrls.length > 0 ? (
+                <div className="space-y-3">
+                  {returnDataUrls.map((url, i) => (
+                    <div key={i} className="rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
+                      <div className="aspect-[4/3] bg-slate-100 relative">
+                        <img
+                          src={url}
+                          alt={`Return Photo ${i + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute top-2 left-2 bg-slate-900/80 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded shadow">
+                          image_{i + 1}
+                        </span>
+                      </div>
+                      <div className="p-2 bg-white border-t border-slate-100 text-[11px] text-slate-500 flex justify-between">
+                        <span>Return Evidence Photo #{i + 1}</span>
+                        <span className="font-mono text-[10px]">image_{i + 1}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {record.images.map((imgRef, i) => (
+                    <div
+                      key={i}
+                      className="p-4 rounded-lg bg-slate-50 border border-slate-200 text-center text-xs text-slate-600 font-mono"
+                    >
+                      📷 {imgRef} (Submitted evidence photo #{i + 1})
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Catalogue Reference Standard Photos */}
+            {referencePhotos.length > 0 && (
+              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-blue-600" />
+                      Catalogue Reference Standards ({referencePhotos.length})
+                    </h3>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
+                      Pristine reference photographs for visual comparison.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  {referencePhotos.map((ref, idx) => (
+                    <div key={idx} className="rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
+                      <div className="aspect-[4/3] bg-slate-100 relative">
+                        <img
+                          src={ref.dataUrl}
+                          alt={ref.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute top-2 left-2 bg-blue-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                          REF #{idx + 1}
+                        </span>
+                      </div>
+                      <div className="p-2 bg-white border-t border-slate-100 text-[11px]">
+                        <span className="font-semibold text-slate-800">{ref.title}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>

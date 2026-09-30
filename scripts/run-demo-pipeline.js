@@ -10,7 +10,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT_DIR = path.resolve(__dirname, "..");
-const FIXTURES_DIR = path.join(ROOT_DIR, "evaluation", "fixtures", "demo");
+const FIXTURES_DIR = path.join(ROOT_DIR, "demo-data");
 const RESULTS_DIR = path.join(ROOT_DIR, "evaluation", "results");
 
 async function main() {
@@ -34,6 +34,19 @@ async function main() {
     console.log(`Scenario: ${c.scenario}`);
     console.log(`Controlled Change: ${c.controlled_change}`);
 
+    // Load the reference images as base64
+    const refImages = [];
+    const refMimeTypes = [];
+    if (c.reference_images && Array.isArray(c.reference_images)) {
+      for (const relPath of c.reference_images) {
+        const fullPath = path.join(ROOT_DIR, relPath);
+        if (fs.existsSync(fullPath)) {
+          refImages.push(fs.readFileSync(fullPath).toString("base64"));
+          refMimeTypes.push("image/jpeg");
+        }
+      }
+    }
+
     // Load the 3 return images as base64
     const images = [];
     const mimeTypes = [];
@@ -55,9 +68,11 @@ async function main() {
       expected_components: c.expected_components,
       images,
       image_mime_types: mimeTypes,
+      reference_images: refImages.length > 0 ? refImages : undefined,
+      reference_image_mime_types: refMimeTypes.length > 0 ? refMimeTypes : undefined,
     };
 
-    console.log(`Sending inspection request (${images.length} return images) to http://localhost:3030/api/inspect...`);
+    console.log(`Sending inspection request (${images.length} return images, ${refImages.length} reference images) to http://localhost:3030/api/inspect...`);
     const startTime = Date.now();
 
     const response = await fetch("http://localhost:3030/api/inspect", {

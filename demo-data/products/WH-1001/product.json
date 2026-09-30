@@ -1,0 +1,34 @@
+{
+  "sku": "WH-1001",
+  "asin": "B0DEMO1001",
+  "product_name": "Wireless Headphones (Noise Cancelling)",
+  "category": "Consumer Electronics",
+  "description": "Over-ear noise cancelling wireless headphones with hard carrying case, 3.5mm audio cable, USB-C charging cable, and user manual.",
+  "expected_components": [
+    {
+      "name": "Headphones",
+      "essential": true
+    },
+    {
+      "name": "Charging case",
+      "essential": true
+    },
+    {
+      "name": "USB-C cable",
+      "essential": false
+    },
+    {
+      "name": "3.5mm audio cable",
+      "essential": false
+    },
+    {
+      "name": "User manual",
+      "essential": false
+    }
+  ],
+  "reference_images": [
+    "demo-data/products/WH-1001/reference/01.jpg",
+    "demo-data/products/WH-1001/reference/02.jpg",
+    "demo-data/products/WH-1001/reference/03.jpg"
+  ]
+}

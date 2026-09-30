@@ -1,0 +1,18 @@
+{
+  "sku": "SKU-CABLE-USBC",
+  "asin": "B0DUMMY261",
+  "product_name": "USB-C Charging Cable 2m",
+  "category": "Consumer Electronics",
+  "description": "A 2-meter USB Type-C charging and sync cable with reversible hollow oval connector plugs.",
+  "expected_components": [
+    {
+      "name": "Cable",
+      "essential": true
+    }
+  ],
+  "reference_images": [
+    "demo-data/products/SKU-CABLE-USBC/reference/01.jpg",
+    "demo-data/products/SKU-CABLE-USBC/reference/02.jpg",
+    "demo-data/products/SKU-CABLE-USBC/reference/03.jpg"
+  ]
+}

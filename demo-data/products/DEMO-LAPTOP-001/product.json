@@ -1,0 +1,30 @@
+{
+  "sku": "DEMO-LAPTOP-001",
+  "asin": "B0DEMOLAP01",
+  "product_name": "15-inch Laptop",
+  "category": "Computers",
+  "description": "A 15-inch modern laptop computer with AC power adapter / charger, power cable, and user documentation.",
+  "expected_components": [
+    {
+      "name": "Laptop",
+      "essential": true
+    },
+    {
+      "name": "Power adapter / charger",
+      "essential": true
+    },
+    {
+      "name": "Power cable",
+      "essential": false
+    },
+    {
+      "name": "User documentation",
+      "essential": false
+    }
+  ],
+  "reference_images": [
+    "demo-data/products/DEMO-LAPTOP-001/reference/01.jpg",
+    "demo-data/products/DEMO-LAPTOP-001/reference/02.jpg",
+    "demo-data/products/DEMO-LAPTOP-001/reference/03.jpg"
+  ]
+}

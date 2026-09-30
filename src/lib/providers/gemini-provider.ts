@@ -52,6 +52,12 @@ Verdict rules (apply strictly):
   FAIL      — at least one component has observed: false (and none are "uncertain")
   UNCERTAIN — at least one component has observed: "uncertain" (regardless of others)
 
+=== FACTORY-SEALED COMPLETENESS INFERENCE ===
+If the returned product is in its original manufacturer packaging with intact factory shrinkwrap or unbroken manufacturer tamper seals (observed_state: "factory_sealed"):
+- Internal packaged components (e.g. charging cases, cables, documentation) are verified complete via factory seal integrity.
+- For all expected internal components, mark observed: true and note "Verified complete via intact factory seal".
+- Do NOT mark internal components as "uncertain" merely because the retail box is opaque or unopened.
+
 Report: verdict, confidence, the component list with observed values, observation strings, and evidence image labels.
 
 === CONDITION CHECK ===
@@ -74,6 +80,15 @@ observed_state (ALWAYS required, MUST be one of these exact strings):
   "damaged"          — item has significant damage (cracks, breaks, tears)
   "empty_box"        — packaging present but item missing
   "uncertain"        — cannot determine from photos
+
+=== CONDITION GRADING RUBRIC ===
+When condition verdict is PASS, assign the grade using these strict observable boundaries:
+- "New": Original manufacturer packaging is factory sealed with intact shrinkwrap or unbroken security/tamper stickers, or item is in original open box with all factory protective films/wraps intact and zero handling marks.
+- "Used - Like New": Packaging has been opened, but the physical item and accessories show zero scratches, zero scuffs, zero dust, and zero cosmetic blemishes. Contacts, cables, and surfaces are pristine.
+- "Used - Very Good": Minimal handling evidence only: superficial fingerprints, untied/loosely uncoiled power cables, or barely perceptible micro-scuffs. Fully functional and cosmetically clean.
+- "Used - Good": Obvious signs of regular moderate use: noticeable cosmetic scuffs, faint dust or smudges on casing, water spots, or superficial rubs from normal handling. No structural cracks or deep gouges.
+- "Used - Acceptable": Heavy aesthetic wear (deep scratches, chipped exterior paint, frayed outer trim/threading, faded fabric), OR physical damage (cracked screen, broken enclosure, bent pins, cut cables).
+CRITICAL: If observed_state is "damaged" and verdict is PASS, you MUST explicitly set grade to "Used - Acceptable".
 
 Report: verdict, confidence, grade (if PASS), observed_state, observation strings, evidence image labels.
 
@@ -125,7 +140,7 @@ Note: In "condition", include "grade" ONLY when verdict is "PASS". When verdict 
 === CORE INSPECTION PRINCIPLES ===
 1. BRAND / PRODUCT HALLUCINATION PREVENTION: Do not assume or invent a brand, manufacturer, or exact model that is not clearly visible in the physical product or packaging. Do not infer a brand from a SKU prefix, filename, surrounding text, or metadata alone.
 2. CONDITION ABSTENTION: If image resolution, focus, lighting, obstruction, or other evidence limitations prevent reliable assessment of physical condition, return UNCERTAIN rather than assigning a condition grade.
-3. PHYSICAL EVIDENCE PRIORITY: Prioritize visual evidence from the physical product, accessories, packaging, connectors, labels, and returned contents. Do not treat fixture metadata, filenames, or expected-answer metadata as visual evidence.
+3. PHYSICAL EVIDENCE PRIORITY & MERCHANDISE VERIFICATION: Prioritize visual evidence from the physical product, accessories, packaging, connectors, labels, and returned contents. If the provided evidence photos consist solely of paperwork, shipping manifests, text status cards/placards, or computer screenshots without the physical merchandise visible, you MUST report UNCERTAIN across checks (physical merchandise not presented in photo). Do not treat fixture metadata, filenames, or text placards as physical product evidence.
 4. REFERENCE / RETURN DISTINCTION: Reference images show the expected product/configuration. Return images show the actual returned item. Do not confuse reference evidence with returned evidence.
 5. CHECK INDEPENDENCE: Evaluate Identity, Completeness, and Condition independently. A failure or uncertainty in one check must not automatically determine another check.
 
@@ -174,18 +189,46 @@ export class GeminiProvider implements VisionProvider {
       })),
     };
 
-    // Build parts: context text + image parts
+    // Build parts: context text + reference images (if available) + return evidence images
     const parts: Part[] = [
       {
-        text: `Return inspection context:\n${JSON.stringify(contextPayload, null, 2)}\n\nAnalyze the attached photos and return your inspection results as JSON.`,
+        text: `Return inspection context:\n${JSON.stringify(contextPayload, null, 2)}\n\nAnalyze the photos below and return your inspection results as JSON.`,
       },
-      ...input.images.map((base64, i) => ({
+    ];
+
+    // 1. Customer return evidence images (always evaluated, labeled image_1, image_2, ...)
+    parts.push({
+      text: "=== CUSTOMER RETURN EVIDENCE IMAGES (Actual Returned Package & Contents) ===\nThe following photos show what the customer physically returned. They are labeled image_1, image_2, etc. Your Identity, Completeness, and Condition verdicts must be based STRICTLY on what is present or absent in these customer return photos:",
+    });
+    input.images.forEach((base64, i) => {
+      parts.push({
+        text: `[Customer Return Evidence photo: image_${i + 1}]`,
+      });
+      parts.push({
         inlineData: {
           mimeType: input.image_mime_types[i],
           data: base64,
         },
-      })),
-    ];
+      });
+    });
+
+    // 2. Reference standard images from catalogue (for comparison only)
+    if (input.reference_images && input.reference_images.length > 0) {
+      parts.push({
+        text: "=== CATALOGUE REFERENCE STANDARDS (FOR VISUAL COMPARISON ONLY) ===\nThe following reference photos show an authentic product and complete set for visual comparison only. Do NOT count components shown in these reference photos as returned — only components visible in the Customer Return Evidence photos above were returned by the customer:",
+      });
+      input.reference_images.forEach((base64, i) => {
+        parts.push({
+          text: `[Catalogue Reference Standard #${i + 1}]`,
+        });
+        parts.push({
+          inlineData: {
+            mimeType: input.reference_image_mime_types?.[i] ?? "image/jpeg",
+            data: base64,
+          },
+        });
+      });
+    }
 
     const model = this.genAI.getGenerativeModel({
       model: this.modelId,
@@ -232,6 +275,17 @@ export class GeminiProvider implements VisionProvider {
 
     // Parse JSON — throws if malformed (caller handles fail-open)
     const rawJson = JSON.parse(rawText);
+
+    // Safeguard: Ensure observed_state="damaged" with verdict="PASS" always includes grade="Used - Acceptable"
+    if (
+      rawJson &&
+      typeof rawJson === "object" &&
+      rawJson.condition?.verdict === "PASS" &&
+      rawJson.condition?.observed_state === "damaged" &&
+      !rawJson.condition?.grade
+    ) {
+      rawJson.condition.grade = "Used - Acceptable";
+    }
 
     // Validate against InspectionObservation schema — throws ZodError if invalid
     const observation = InspectionObservation.parse(rawJson);

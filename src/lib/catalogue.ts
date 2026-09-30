@@ -15,7 +15,9 @@ interface CatalogueEntry {
   asin?: string;
   product_name: string;
   category: string;
+  description?: string;
   expected_components: ExpectedComponent[];
+  reference_images?: string[];
 }
 
 const catalogue = catalogData as CatalogueEntry[];
