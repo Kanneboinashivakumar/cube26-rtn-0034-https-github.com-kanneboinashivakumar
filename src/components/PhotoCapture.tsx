@@ -5,17 +5,14 @@
  *
  * Unified camera capture + file upload component.
  * Both sources feed the same images[] array (base64 strings + MIME types).
- * Camera capture uses MediaDevices.getUserMedia().
- * Limit: 1–5 photos total.
  *
- * Props:
- *   images         — current base64 image array
- *   mimeTypes      — parallel MIME type array
- *   onChange       — called with (images, mimeTypes) on every change
- *   maxPhotos      — max total photos (default 5)
+ * Bug fixed: video element is always mounted (hidden when inactive) so
+ * videoRef.current is never null when we attach the MediaStream.
+ * Stream attachment happens in a useEffect that fires after cameraActive=true
+ * causes the video to become visible.
  */
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 type MimeType = "image/jpeg" | "image/png" | "image/webp";
 
@@ -28,7 +25,8 @@ interface PhotoCaptureProps {
 
 function dataUrlToBase64(dataUrl: string): { base64: string; mime: MimeType } {
   const [header, base64] = dataUrl.split(",");
-  const mime = header.match(/:(.*?);/)?.[1] as MimeType ?? "image/jpeg";
+  const mimeMatch = header.match(/:(.*?);/);
+  const mime = (mimeMatch?.[1] ?? "image/jpeg") as MimeType;
   return { base64, mime };
 }
 
@@ -58,6 +56,19 @@ export default function PhotoCapture({
   const atLimit = images.length >= maxPhotos;
   const remaining = maxPhotos - images.length;
 
+  // ── Attach stream AFTER cameraActive=true causes video element to render ───
+  // The video element is always in the DOM (hidden when inactive) so this
+  // effect can reliably find videoRef.current when cameraActive flips to true.
+  useEffect(() => {
+    if (cameraActive && streamRef.current && videoRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch(() => {
+        // play() may throw on some browsers if autoplay is restricted —
+        // user gesture already happened (button click), so this is rare.
+      });
+    }
+  }, [cameraActive]);
+
   // ── Add images helper ─────────────────────────────────────────────────────
   const addImages = useCallback(
     (newImgs: string[], newMimes: MimeType[]) => {
@@ -73,47 +84,55 @@ export default function PhotoCapture({
 
   // ── Remove a single image ─────────────────────────────────────────────────
   const removeImage = (index: number) => {
-    const newImages = images.filter((_, i) => i !== index);
-    const newMimes = mimeTypes.filter((_, i) => i !== index);
-    onChange(newImages, newMimes);
+    onChange(
+      images.filter((_, i) => i !== index),
+      mimeTypes.filter((_, i) => i !== index)
+    );
   };
 
   // ── File upload ───────────────────────────────────────────────────────────
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
-
     const dataUrls = await Promise.all(files.map(fileToDataUrl));
     const parsed = dataUrls.map(dataUrlToBase64);
     addImages(parsed.map((p) => p.base64), parsed.map((p) => p.mime));
-
-    // Reset input so same file can be selected again
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // ── Camera helpers ────────────────────────────────────────────────────────
+  // ── Start camera ──────────────────────────────────────────────────────────
   const startCamera = async () => {
     setCameraError(null);
+
+    // Try rear/environment camera first; fall back to any available camera.
+    let stream: MediaStream | null = null;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
+      stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" },
       });
-      streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-      }
-      setCameraActive(true);
     } catch {
-      setCameraError(
-        "Camera unavailable or permission denied. Use Upload Photos instead."
-      );
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      } catch {
+        setCameraError(
+          "Camera unavailable or permission denied. Use Upload Photos instead."
+        );
+        return;
+      }
     }
+
+    streamRef.current = stream;
+    // Set cameraActive=true. The useEffect above will attach the stream
+    // to videoRef once the component re-renders with cameraActive=true.
+    setCameraActive(true);
   };
 
   const stopCamera = () => {
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
     setCameraActive(false);
   };
 
@@ -122,8 +141,8 @@ export default function PhotoCapture({
     const canvas = canvasRef.current;
     if (!video || !canvas) return;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
     canvas.getContext("2d")?.drawImage(video, 0, 0);
 
     const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
@@ -134,8 +153,10 @@ export default function PhotoCapture({
 
   return (
     <div className="space-y-4">
-      {/* ── Camera viewfinder ─────────────────────────────────────────── */}
-      {cameraActive && (
+      {/* ── Video element — always mounted, visibility toggled via class ────
+          This is critical: keeping it always mounted ensures videoRef.current
+          is never null when we call videoRef.current.srcObject = stream.      */}
+      <div className={cameraActive ? "block" : "hidden"}>
         <div className="relative rounded-lg overflow-hidden bg-black border border-gray-300">
           <video
             ref={videoRef}
@@ -143,7 +164,6 @@ export default function PhotoCapture({
             playsInline
             muted
           />
-          <canvas ref={canvasRef} className="hidden" />
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-3">
             <button
               type="button"
@@ -162,12 +182,12 @@ export default function PhotoCapture({
             </button>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* ── Hidden canvas for capture ─────────────────────────────────── */}
-      {!cameraActive && <canvas ref={canvasRef} className="hidden" />}
+      {/* ── Hidden canvas for frame capture ──────────────────────────────── */}
+      <canvas ref={canvasRef} className="hidden" />
 
-      {/* ── Buttons ───────────────────────────────────────────────────── */}
+      {/* ── Buttons — shown when camera is NOT active ─────────────────────── */}
       {!cameraActive && (
         <div className="flex flex-wrap gap-3">
           <button
@@ -209,14 +229,14 @@ export default function PhotoCapture({
         </div>
       )}
 
-      {/* ── Camera error ──────────────────────────────────────────────── */}
+      {/* ── Camera error ──────────────────────────────────────────────────── */}
       {cameraError && (
         <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
           {cameraError}
         </p>
       )}
 
-      {/* ── Photo count / limit indicator ─────────────────────────────── */}
+      {/* ── Photo count / limit indicator ─────────────────────────────────── */}
       <div className="flex items-center justify-between text-xs text-gray-500">
         <span>
           {images.length} of {maxPhotos} photos
@@ -232,7 +252,7 @@ export default function PhotoCapture({
         )}
       </div>
 
-      {/* ── Image previews ────────────────────────────────────────────── */}
+      {/* ── Image previews ────────────────────────────────────────────────── */}
       {images.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {images.map((b64, i) => (
@@ -258,7 +278,7 @@ export default function PhotoCapture({
         </div>
       )}
 
-      {/* ── Guidance ──────────────────────────────────────────────────── */}
+      {/* ── Guidance (shown when no photos yet) ───────────────────────────── */}
       {images.length === 0 && (
         <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-4">
           <p className="text-xs font-medium text-gray-600 mb-2">Photo guidance</p>

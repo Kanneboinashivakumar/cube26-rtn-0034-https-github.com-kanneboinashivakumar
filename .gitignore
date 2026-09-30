@@ -11,6 +11,8 @@ venv/
 # Next.js
 .next/
 out/
+AGENTS.md
+CLAUDE.md
 
 # Build
 dist/
