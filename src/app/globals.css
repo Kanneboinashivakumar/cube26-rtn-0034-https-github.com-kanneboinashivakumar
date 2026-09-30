@@ -1,7 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
+/* ── CSS custom properties for brand palette ──────────────────── */
 :root {
   --bg: #f9fafb;
   --surface: #ffffff;
@@ -9,16 +8,6 @@
   --text-primary: #111827;
   --text-secondary: #6b7280;
   --text-muted: #9ca3af;
-  --blue: #2563eb;
-  --blue-light: #eff6ff;
-  --green: #16a34a;
-  --green-light: #f0fdf4;
-  --red: #dc2626;
-  --red-light: #fef2f2;
-  --amber: #d97706;
-  --amber-light: #fffbeb;
-  --purple: #7c3aed;
-  --purple-light: #f5f3ff;
 }
 
 body {
