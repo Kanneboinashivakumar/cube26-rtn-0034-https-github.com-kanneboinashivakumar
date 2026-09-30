@@ -192,8 +192,33 @@ export class GeminiProvider implements VisionProvider {
       contents: [{ role: "user", parts }],
     };
 
-    // Single call — measure latency
-    const result = await model.generateContent(request);
+    // Call with retry on temporary 503 / 429 spikes
+    let result: Awaited<ReturnType<typeof model.generateContent>> | undefined;
+    let lastErr: unknown;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        result = await model.generateContent(request);
+        break;
+      } catch (err: unknown) {
+        lastErr = err;
+        const msg = err instanceof Error ? err.message : String(err);
+        const isRetryable =
+          msg.includes("503") ||
+          msg.includes("429") ||
+          msg.includes("high demand") ||
+          msg.includes("Resource has been exhausted");
+        if (isRetryable && attempt < 2) {
+          await new Promise((r) => setTimeout(r, 2500 * (attempt + 1)));
+          continue;
+        }
+        throw err;
+      }
+    }
+
+    if (!result) {
+      throw lastErr instanceof Error ? lastErr : new Error("Failed to generate content");
+    }
+
     const latency_ms = Date.now() - startTime;
 
     const rawText = result.response.text();
