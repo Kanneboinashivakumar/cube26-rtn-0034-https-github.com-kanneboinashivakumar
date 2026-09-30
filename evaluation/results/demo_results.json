@@ -1,6 +1,6 @@
 {
   "dataset_type": "synthetic_demo",
-  "executed_at": "2026-09-30T10:41:56.611Z",
+  "executed_at": "2026-09-30T14:12:50.288Z",
   "total_cases": 3,
   "results": [
     {
@@ -142,9 +142,9 @@
       "case_id": "CASE-02",
       "sku": "WH-1001",
       "product": "Wireless Headphones (Noise Cancelling)",
-      "record_id": "RTN-1790764903831-EU9M0",
-      "status": "pending_review",
-      "latency_ms": 5109,
+      "record_id": "RTN-1790777568239-7GPVV",
+      "status": "resolved",
+      "latency_ms": 8259,
       "expected": {
         "identity": "PASS",
         "completeness": "PASS",
@@ -156,16 +156,16 @@
         "identity": {
           "verdict": "PASS",
           "confidence": 1,
-          "detail": "The returned product is an over-ear wireless headphone matching the product description.; The ear cushions are detached in the return photos but the core product is identifiable as wireless headphones.",
+          "detail": "The returned product is a pair of black over-ear wireless noise-cancelling headphones matching the expected product description.",
           "evidence_refs": [
-            "image_2",
+            "image_1",
             "image_3"
           ]
         },
         "completeness": {
-          "verdict": "FAIL",
+          "verdict": "PASS",
           "confidence": 1,
-          "detail": "Headphones are present.; Charging case, USB-C cable, 3.5mm audio cable, and user manual are missing from the photos.",
+          "detail": "All expected components including headphones, charging case, USB-C cable, 3.5mm audio cable, and user manual are clearly visible in the image.",
           "components": [
             {
               "name": "Headphones",
@@ -173,23 +173,22 @@
             },
             {
               "name": "Charging case",
-              "observed": false
+              "observed": true
             },
             {
               "name": "USB-C cable",
-              "observed": false
+              "observed": true
             },
             {
               "name": "3.5mm audio cable",
-              "observed": false
+              "observed": true
             },
             {
               "name": "User manual",
-              "observed": false
+              "observed": true
             }
           ],
           "evidence_refs": [
-            "image_2",
             "image_3"
           ]
         },
@@ -198,37 +197,37 @@
           "confidence": 1,
           "grade": "Used - Acceptable",
           "observed_state": "damaged",
-          "detail": "Headband is mended with clear adhesive tape.; Both ear cushion pads are completely detached from the headphone earcups.; Significant structural damage/wear is present.",
+          "detail": "The headphones show heavy scuffing, scratches, and a severe structural fracture/crack on the right earcup hinge housing exposing internal wires.",
           "evidence_refs": [
+            "image_1",
             "image_2",
             "image_3"
           ]
         },
-        "disposition": "pending_review",
-        "matched_rule": "rule_6c",
-        "matched_rule_description": "Identity PASS, Completeness FAIL, essential missing or Used-Acceptable → pending_review"
+        "disposition": "dispose",
+        "matched_rule": "rule_5c",
+        "matched_rule_description": "Identity PASS, Completeness PASS, Used-Acceptable + damaged → dispose"
       },
       "agreement": {
         "identity": true,
-        "completeness": false,
+        "completeness": true,
         "condition": true,
-        "disposition": false
+        "disposition": true
       },
       "raw_observation": {
         "identity": {
           "verdict": "PASS",
           "confidence": 1,
           "observations": [
-            "The returned product is an over-ear wireless headphone matching the product description.",
-            "The ear cushions are detached in the return photos but the core product is identifiable as wireless headphones."
+            "The returned product is a pair of black over-ear wireless noise-cancelling headphones matching the expected product description."
           ],
           "evidence_refs": [
-            "image_2",
+            "image_1",
             "image_3"
           ]
         },
         "completeness": {
-          "verdict": "FAIL",
+          "verdict": "PASS",
           "confidence": 1,
           "components": [
             {
@@ -237,27 +236,25 @@
             },
             {
               "name": "Charging case",
-              "observed": false
+              "observed": true
             },
             {
               "name": "USB-C cable",
-              "observed": false
+              "observed": true
             },
             {
               "name": "3.5mm audio cable",
-              "observed": false
+              "observed": true
             },
             {
               "name": "User manual",
-              "observed": false
+              "observed": true
             }
           ],
           "observations": [
-            "Headphones are present.",
-            "Charging case, USB-C cable, 3.5mm audio cable, and user manual are missing from the photos."
+            "All expected components including headphones, charging case, USB-C cable, 3.5mm audio cable, and user manual are clearly visible in the image."
           ],
           "evidence_refs": [
-            "image_2",
             "image_3"
           ]
         },
@@ -267,11 +264,10 @@
           "grade": "Used - Acceptable",
           "observed_state": "damaged",
           "observations": [
-            "Headband is mended with clear adhesive tape.",
-            "Both ear cushion pads are completely detached from the headphone earcups.",
-            "Significant structural damage/wear is present."
+            "The headphones show heavy scuffing, scratches, and a severe structural fracture/crack on the right earcup hinge housing exposing internal wires."
           ],
           "evidence_refs": [
+            "image_1",
             "image_2",
             "image_3"
           ]

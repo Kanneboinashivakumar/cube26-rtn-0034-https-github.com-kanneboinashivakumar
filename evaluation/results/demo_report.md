@@ -1,7 +1,7 @@
 # ReturnOps AI — Realistic Demo Fixtures Execution Report
 
 **Dataset Type**: `synthetic_demo`  
-**Execution Date**: 2026-09-30T10:41:56.616Z  
+**Execution Date**: 2026-09-30T14:12:50.291Z  
 **Model**: `gemini-3.5-flash-lite` (via `GEMINI_MODEL`)  
 **Pipeline**: Full Production Pipeline (HTTP POST `/api/inspect` -> Gemini -> Zod -> Deterministic Rules -> Supabase Persistence)  
 
@@ -12,7 +12,7 @@
 | Case ID | Product | Expected (Id / Comp / Cond / Disp) | Actual (Id / Comp / Cond / Disp) | Agreement | Rule Matched | Latency |
 | :--- | :--- | :--- | :--- | :---: | :--- | :---: |
 | **CASE-01** | 15-inch Laptop | `PASS/FAIL/PASS/pending_review` | `PASS/FAIL/PASS/pending_review` | ✅ FULL | `rule_6c` | 10572ms |
-| **CASE-02** | Wireless Headphones (Noise Cancelling) | `PASS/PASS/PASS/dispose` | `PASS/FAIL/PASS/pending_review` | ⚠️ PARTIAL | `rule_6c` | 5109ms |
+| **CASE-02** | Wireless Headphones (Noise Cancelling) | `PASS/PASS/PASS/dispose` | `PASS/PASS/PASS/dispose` | ✅ FULL | `rule_5c` | 8259ms |
 | **CASE-03** | USB-C Charging Cable 2m | `FAIL/PASS/PASS/pending_review` | `FAIL/PASS/PASS/pending_review` | ✅ FULL | `rule_1` | 5424ms |
 
 ## Case-by-Case Breakdown
@@ -37,22 +37,22 @@
 
 ### CASE-02 — Wireless Headphones (Noise Cancelling) (`WH-1001`)
 
-- **Record ID**: `RTN-1790764903831-EU9M0`
-- **Latency**: 5109 ms
+- **Record ID**: `RTN-1790777568239-7GPVV`
+- **Latency**: 8259 ms
 - **Identity Check**: Actual: **PASS** (conf: 1) vs Expected: **PASS** [AGREE]
-  - *Detail*: The returned product is an over-ear wireless headphone matching the product description.; The ear cushions are detached in the return photos but the core product is identifiable as wireless headphones.
-- **Completeness Check**: Actual: **FAIL** (conf: 1) vs Expected: **PASS** [DISAGREE]
-  - *Detail*: Headphones are present.; Charging case, USB-C cable, 3.5mm audio cable, and user manual are missing from the photos.
+  - *Detail*: The returned product is a pair of black over-ear wireless noise-cancelling headphones matching the expected product description.
+- **Completeness Check**: Actual: **PASS** (conf: 1) vs Expected: **PASS** [AGREE]
+  - *Detail*: All expected components including headphones, charging case, USB-C cable, 3.5mm audio cable, and user manual are clearly visible in the image.
   - *Observed Components*:
     - Headphones: `true`
-    - Charging case: `false`
-    - USB-C cable: `false`
-    - 3.5mm audio cable: `false`
-    - User manual: `false`
+    - Charging case: `true`
+    - USB-C cable: `true`
+    - 3.5mm audio cable: `true`
+    - User manual: `true`
 - **Condition Check**: Actual: **PASS** (Grade: `Used - Acceptable`, State: `damaged`, conf: 1) vs Expected: **PASS** (`Used - Acceptable`) [AGREE]
-  - *Detail*: Headband is mended with clear adhesive tape.; Both ear cushion pads are completely detached from the headphone earcups.; Significant structural damage/wear is present.
-- **Disposition**: Actual: **`pending_review`** vs Expected: **`dispose`** [DISAGREE]
-- **Rule Triggered**: `rule_6c` — *Identity PASS, Completeness FAIL, essential missing or Used-Acceptable → pending_review*
+  - *Detail*: The headphones show heavy scuffing, scratches, and a severe structural fracture/crack on the right earcup hinge housing exposing internal wires.
+- **Disposition**: Actual: **`dispose`** vs Expected: **`dispose`** [AGREE]
+- **Rule Triggered**: `rule_5c` — *Identity PASS, Completeness PASS, Used-Acceptable + damaged → dispose*
 
 ### CASE-03 — USB-C Charging Cable 2m (`SKU-CABLE-USBC`)
 
