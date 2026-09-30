@@ -1,3 +1,6 @@
+const { loadEnvConfig } = require("@next/env");
+loadEnvConfig(process.cwd());
+
 /** @type {import('jest').Config} */
 module.exports = {
   preset: "ts-jest",
