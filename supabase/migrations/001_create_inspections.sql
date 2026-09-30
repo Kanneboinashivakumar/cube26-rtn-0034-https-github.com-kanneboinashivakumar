@@ -73,3 +73,8 @@ CREATE TRIGGER trigger_inspections_updated_at
   BEFORE UPDATE ON inspections
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
+
+-- Enable Row Level Security (RLS)
+-- Server-side operations using service_role key will bypass RLS.
+-- This prevents direct unauthenticated/anonymous access from public clients and clears the Supabase Security Advisor warning.
+ALTER TABLE inspections ENABLE ROW LEVEL SECURITY;
