@@ -62,5 +62,17 @@
       { "name": "Protein tub", "essential": true },
       { "name": "Scoop", "essential": false }
     ]
+  },
+  {
+    "sku": "DEMO-LAPTOP-001",
+    "asin": "B0DEMOLAP01",
+    "product_name": "15-inch Laptop",
+    "category": "Computers",
+    "expected_components": [
+      { "name": "Laptop", "essential": true },
+      { "name": "Power adapter / charger", "essential": true },
+      { "name": "Power cable", "essential": false },
+      { "name": "User documentation", "essential": false }
+    ]
   }
 ]

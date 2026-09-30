@@ -1,0 +1,28 @@
+{
+  "case_id": "CASE-03",
+  "dataset_type": "synthetic_demo",
+  "sku": "SKU-CABLE-USBC",
+  "product": "USB-C Charging Cable 2m",
+  "product_description": "A 2-meter USB Type-C charging and sync cable with reversible hollow oval connector plugs.",
+  "expected_components": [
+    { "name": "Cable", "essential": true }
+  ],
+  "reference_images": [
+    "evaluation/fixtures/demo/CASE-03/reference/REF-01_expected_cable.jpg",
+    "evaluation/fixtures/demo/CASE-03/reference/REF-02_expected_connector.jpg",
+    "evaluation/fixtures/demo/CASE-03/reference/REF-03_expected_package.jpg"
+  ],
+  "return_images": [
+    "evaluation/fixtures/demo/CASE-03/return/IMG-01_return_cable.jpg",
+    "evaluation/fixtures/demo/CASE-03/return/IMG-02_return_connector.jpg",
+    "evaluation/fixtures/demo/CASE-03/return/IMG-03_return_package.jpg"
+  ],
+  "scenario": "Customer ordered a USB-C charging cable but returned a similar-looking Apple 8-pin Lightning cable instead.",
+  "controlled_change": "Wrong connector returned: Apple 8-pin Lightning plug with flat external gold contacts instead of hollow oval USB-C connector.",
+  "expected_identity": "FAIL",
+  "expected_completeness": "PASS",
+  "expected_condition": "PASS",
+  "expected_condition_grade": "Used - Like New",
+  "expected_disposition": "pending_review",
+  "evidence_notes": "The returned cable looks superficially similar (white jacketed sync cable), but IMG-02 macro view proves the connector plug is an Apple proprietary Lightning connector with 8 exposed gold contact pins on a solid flat wafer, rather than the expected USB-C hollow oval receptacle. Check independence preserves condition (clean/functional) and completeness, but Identity fails, triggering rule 1 routing to pending_review."
+}

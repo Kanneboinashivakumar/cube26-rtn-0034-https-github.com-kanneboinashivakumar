@@ -1,0 +1,394 @@
+{
+  "dataset_type": "synthetic_demo",
+  "executed_at": "2026-09-30T10:41:56.611Z",
+  "total_cases": 3,
+  "results": [
+    {
+      "case_id": "CASE-01",
+      "sku": "DEMO-LAPTOP-001",
+      "product": "15-inch Laptop",
+      "record_id": "RTN-1790764895346-7WT5E",
+      "status": "pending_review",
+      "latency_ms": 10572,
+      "expected": {
+        "identity": "PASS",
+        "completeness": "FAIL",
+        "condition": "PASS",
+        "condition_grade": "Used - Like New",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The product is a 15-inch laptop matching the expected item.; Dell branding is visible on the laptop lid in image_2.",
+          "evidence_refs": [
+            "image_1",
+            "image_2"
+          ]
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "detail": "Laptop is present.; Power cable is present, but the power adapter/charger brick is missing.; User guide documentation is present.",
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": true
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": false
+            },
+            {
+              "name": "Power cable",
+              "observed": true
+            },
+            {
+              "name": "User documentation",
+              "observed": true
+            }
+          ],
+          "evidence_refs": [
+            "image_2",
+            "image_3"
+          ]
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use",
+          "detail": "The laptop and user manual show minor wear and smudges consistent with light use.; The power adapter/charger brick is missing from the return.",
+          "evidence_refs": [
+            "image_1",
+            "image_2",
+            "image_3"
+          ]
+        },
+        "disposition": "pending_review",
+        "matched_rule": "rule_6c",
+        "matched_rule_description": "Identity PASS, Completeness FAIL, essential missing or Used-Acceptable → pending_review"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition": true,
+        "disposition": true
+      },
+      "raw_observation": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "observations": [
+            "The product is a 15-inch laptop matching the expected item.",
+            "Dell branding is visible on the laptop lid in image_2."
+          ],
+          "evidence_refs": [
+            "image_1",
+            "image_2"
+          ]
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Laptop",
+              "observed": true
+            },
+            {
+              "name": "Power adapter / charger",
+              "observed": false
+            },
+            {
+              "name": "Power cable",
+              "observed": true
+            },
+            {
+              "name": "User documentation",
+              "observed": true
+            }
+          ],
+          "observations": [
+            "Laptop is present.",
+            "Power cable is present, but the power adapter/charger brick is missing.",
+            "User guide documentation is present."
+          ],
+          "evidence_refs": [
+            "image_2",
+            "image_3"
+          ]
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use",
+          "observations": [
+            "The laptop and user manual show minor wear and smudges consistent with light use.",
+            "The power adapter/charger brick is missing from the return."
+          ],
+          "evidence_refs": [
+            "image_1",
+            "image_2",
+            "image_3"
+          ]
+        },
+        "visible_identifiers": []
+      }
+    },
+    {
+      "case_id": "CASE-02",
+      "sku": "WH-1001",
+      "product": "Wireless Headphones (Noise Cancelling)",
+      "record_id": "RTN-1790764903831-EU9M0",
+      "status": "pending_review",
+      "latency_ms": 5109,
+      "expected": {
+        "identity": "PASS",
+        "completeness": "PASS",
+        "condition": "PASS",
+        "condition_grade": "Used - Acceptable",
+        "disposition": "dispose"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "detail": "The returned product is an over-ear wireless headphone matching the product description.; The ear cushions are detached in the return photos but the core product is identifiable as wireless headphones.",
+          "evidence_refs": [
+            "image_2",
+            "image_3"
+          ]
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "detail": "Headphones are present.; Charging case, USB-C cable, 3.5mm audio cable, and user manual are missing from the photos.",
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": true
+            },
+            {
+              "name": "Charging case",
+              "observed": false
+            },
+            {
+              "name": "USB-C cable",
+              "observed": false
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": false
+            },
+            {
+              "name": "User manual",
+              "observed": false
+            }
+          ],
+          "evidence_refs": [
+            "image_2",
+            "image_3"
+          ]
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "detail": "Headband is mended with clear adhesive tape.; Both ear cushion pads are completely detached from the headphone earcups.; Significant structural damage/wear is present.",
+          "evidence_refs": [
+            "image_2",
+            "image_3"
+          ]
+        },
+        "disposition": "pending_review",
+        "matched_rule": "rule_6c",
+        "matched_rule_description": "Identity PASS, Completeness FAIL, essential missing or Used-Acceptable → pending_review"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": false,
+        "condition": true,
+        "disposition": false
+      },
+      "raw_observation": {
+        "identity": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "observations": [
+            "The returned product is an over-ear wireless headphone matching the product description.",
+            "The ear cushions are detached in the return photos but the core product is identifiable as wireless headphones."
+          ],
+          "evidence_refs": [
+            "image_2",
+            "image_3"
+          ]
+        },
+        "completeness": {
+          "verdict": "FAIL",
+          "confidence": 1,
+          "components": [
+            {
+              "name": "Headphones",
+              "observed": true
+            },
+            {
+              "name": "Charging case",
+              "observed": false
+            },
+            {
+              "name": "USB-C cable",
+              "observed": false
+            },
+            {
+              "name": "3.5mm audio cable",
+              "observed": false
+            },
+            {
+              "name": "User manual",
+              "observed": false
+            }
+          ],
+          "observations": [
+            "Headphones are present.",
+            "Charging case, USB-C cable, 3.5mm audio cable, and user manual are missing from the photos."
+          ],
+          "evidence_refs": [
+            "image_2",
+            "image_3"
+          ]
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 1,
+          "grade": "Used - Acceptable",
+          "observed_state": "damaged",
+          "observations": [
+            "Headband is mended with clear adhesive tape.",
+            "Both ear cushion pads are completely detached from the headphone earcups.",
+            "Significant structural damage/wear is present."
+          ],
+          "evidence_refs": [
+            "image_2",
+            "image_3"
+          ]
+        },
+        "visible_identifiers": []
+      }
+    },
+    {
+      "case_id": "CASE-03",
+      "sku": "SKU-CABLE-USBC",
+      "product": "USB-C Charging Cable 2m",
+      "record_id": "RTN-1790764913357-7GHDQ",
+      "status": "pending_review",
+      "latency_ms": 5424,
+      "expected": {
+        "identity": "FAIL",
+        "completeness": "PASS",
+        "condition": "PASS",
+        "condition_grade": "Used - Like New",
+        "disposition": "pending_review"
+      },
+      "actual": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "detail": "The returned item connector clearly shows a proprietary multi-pin flat design (such as a Lightning connector), which does not match an expected USB-C charging cable.",
+          "evidence_refs": [
+            "image_1",
+            "image_2",
+            "image_3"
+          ]
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "detail": "A cable component is visible in the photographs.",
+          "components": [
+            {
+              "name": "Cable",
+              "observed": true
+            }
+          ],
+          "evidence_refs": [
+            "image_1",
+            "image_2",
+            "image_3"
+          ]
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 0.85,
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use",
+          "detail": "The connector contacts and surrounding plastic show minor scuff marks and light wear indicating prior use, but no major structural damage or breaks.",
+          "evidence_refs": [
+            "image_1",
+            "image_2",
+            "image_3"
+          ]
+        },
+        "disposition": "pending_review",
+        "matched_rule": "rule_1",
+        "matched_rule_description": "Identity FAIL → pending_review"
+      },
+      "agreement": {
+        "identity": true,
+        "completeness": true,
+        "condition": true,
+        "disposition": true
+      },
+      "raw_observation": {
+        "identity": {
+          "verdict": "FAIL",
+          "confidence": 0.95,
+          "observations": [
+            "The returned item connector clearly shows a proprietary multi-pin flat design (such as a Lightning connector), which does not match an expected USB-C charging cable."
+          ],
+          "evidence_refs": [
+            "image_1",
+            "image_2",
+            "image_3"
+          ]
+        },
+        "completeness": {
+          "verdict": "PASS",
+          "confidence": 0.9,
+          "components": [
+            {
+              "name": "Cable",
+              "observed": true
+            }
+          ],
+          "observations": [
+            "A cable component is visible in the photographs."
+          ],
+          "evidence_refs": [
+            "image_1",
+            "image_2",
+            "image_3"
+          ]
+        },
+        "condition": {
+          "verdict": "PASS",
+          "confidence": 0.85,
+          "grade": "Used - Good",
+          "observed_state": "signs_of_use",
+          "observations": [
+            "The connector contacts and surrounding plastic show minor scuff marks and light wear indicating prior use, but no major structural damage or breaks."
+          ],
+          "evidence_refs": [
+            "image_1",
+            "image_2",
+            "image_3"
+          ]
+        },
+        "visible_identifiers": []
+      }
+    }
+  ]
+}

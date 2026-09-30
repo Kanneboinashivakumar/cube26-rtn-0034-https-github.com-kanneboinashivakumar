@@ -122,6 +122,13 @@ Return a single JSON object with this exact shape:
 Note: In "condition", include "grade" ONLY when verdict is "PASS". When verdict is "UNCERTAIN", omit the "grade" key entirely.
 "visible_identifiers" should be an empty list [] if no barcodes/labels are readable.
 
+=== CORE INSPECTION PRINCIPLES ===
+1. BRAND / PRODUCT HALLUCINATION PREVENTION: Do not assume or invent a brand, manufacturer, or exact model that is not clearly visible in the physical product or packaging. Do not infer a brand from a SKU prefix, filename, surrounding text, or metadata alone.
+2. CONDITION ABSTENTION: If image resolution, focus, lighting, obstruction, or other evidence limitations prevent reliable assessment of physical condition, return UNCERTAIN rather than assigning a condition grade.
+3. PHYSICAL EVIDENCE PRIORITY: Prioritize visual evidence from the physical product, accessories, packaging, connectors, labels, and returned contents. Do not treat fixture metadata, filenames, or expected-answer metadata as visual evidence.
+4. REFERENCE / RETURN DISTINCTION: Reference images show the expected product/configuration. Return images show the actual returned item. Do not confuse reference evidence with returned evidence.
+5. CHECK INDEPENDENCE: Evaluate Identity, Completeness, and Condition independently. A failure or uncertainty in one check must not automatically determine another check.
+
 === CRITICAL RULES ===
 1. Each check is INDEPENDENT. A damaged item can still have PASS identity. A wrong product can still have an assessable condition.
 2. If evidence is insufficient for any check, return UNCERTAIN — never guess or infer what you cannot see.

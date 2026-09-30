@@ -1,0 +1,100 @@
+{
+  "dataset_type": "synthetic_demo",
+  "generated_at": "2026-09-30T10:35:00.000Z",
+  "version": "1.0",
+  "disclaimer": "These are synthetic demonstration fixtures created for developer verification and interactive demonstration of the ReturnOps AI inspection pipeline. They are NOT real-return customer data, do NOT modify organizer ground truth, and must NOT be cited as real-world benchmark metrics.",
+  "total_cases": 3,
+  "cases": [
+    {
+      "case_id": "CASE-01",
+      "dataset_type": "synthetic_demo",
+      "sku": "DEMO-LAPTOP-001",
+      "product": "15-inch Laptop",
+      "product_description": "A sleek modern 15-inch laptop computer with AC power adapter / charger, power cable, and user documentation.",
+      "expected_components": [
+        { "name": "Laptop", "essential": true },
+        { "name": "Power adapter / charger", "essential": true },
+        { "name": "Power cable", "essential": false },
+        { "name": "User documentation", "essential": false }
+      ],
+      "reference_images": [
+        "evaluation/fixtures/demo/CASE-01/reference/REF-01_product.jpg",
+        "evaluation/fixtures/demo/CASE-01/reference/REF-02_accessories.jpg",
+        "evaluation/fixtures/demo/CASE-01/reference/REF-03_complete_package.jpg"
+      ],
+      "return_images": [
+        "evaluation/fixtures/demo/CASE-01/return/IMG-01_laptop.jpg",
+        "evaluation/fixtures/demo/CASE-01/return/IMG-02_return_contents.jpg",
+        "evaluation/fixtures/demo/CASE-01/return/IMG-03_accessories.jpg"
+      ],
+      "scenario": "Customer returned the 15-inch laptop with power cord and quick-start guide, but the AC power adapter / charging brick is physically missing from the return.",
+      "controlled_change": "Essential power adapter / charger omitted from return bundle.",
+      "expected_identity": "PASS",
+      "expected_completeness": "FAIL",
+      "expected_condition": "PASS",
+      "expected_condition_grade": "Used - Like New",
+      "expected_disposition": "pending_review",
+      "evidence_notes": "The laptop chassis and screen are intact with no signs of drop or liquid damage. Power cable and user documentation are present on the inspection table, but the AC power brick is physically absent. Because an essential component is missing, Completeness fails and the return triggers rule 6c routing to pending_review."
+    },
+    {
+      "case_id": "CASE-02",
+      "dataset_type": "synthetic_demo",
+      "sku": "WH-1001",
+      "product": "Wireless Headphones (Noise Cancelling)",
+      "product_description": "Over-ear noise cancelling wireless headphones with hard carrying case, 3.5mm audio cable, USB-C charging cable, and user manual.",
+      "expected_components": [
+        { "name": "Headphones", "essential": true },
+        { "name": "Charging case", "essential": true },
+        { "name": "USB-C cable", "essential": false },
+        { "name": "3.5mm audio cable", "essential": false },
+        { "name": "User manual", "essential": false }
+      ],
+      "reference_images": [
+        "evaluation/fixtures/demo/CASE-02/reference/REF-01_product.jpg",
+        "evaluation/fixtures/demo/CASE-02/reference/REF-02_accessories.jpg",
+        "evaluation/fixtures/demo/CASE-02/reference/REF-03_complete_package.jpg"
+      ],
+      "return_images": [
+        "evaluation/fixtures/demo/CASE-02/return/IMG-01_headphones.jpg",
+        "evaluation/fixtures/demo/CASE-02/return/IMG-02_damage.jpg",
+        "evaluation/fixtures/demo/CASE-02/return/IMG-03_return_contents.jpg"
+      ],
+      "scenario": "Customer returned the wireless headphones and all accessories, but the headphones have severe physical damage (cracked headband / broken hinge mechanism).",
+      "controlled_change": "Physical structural damage to headband/hinge on the returned headphones.",
+      "expected_identity": "PASS",
+      "expected_completeness": "PASS",
+      "expected_condition": "PASS",
+      "expected_condition_grade": "Used - Acceptable",
+      "expected_disposition": "dispose",
+      "evidence_notes": "Identity matches the WH-1001 model and all expected accessories (case, cables, manual) are present. However, IMG-02 shows distinct structural cracking/breakage on the headband and hinge assembly. Under rule 5c, an item in Used - Acceptable condition with observed_state 'damaged' is routed to dispose."
+    },
+    {
+      "case_id": "CASE-03",
+      "dataset_type": "synthetic_demo",
+      "sku": "SKU-CABLE-USBC",
+      "product": "USB-C Charging Cable 2m",
+      "product_description": "A 2-meter USB Type-C charging and sync cable with reversible hollow oval connector plugs.",
+      "expected_components": [
+        { "name": "Cable", "essential": true }
+      ],
+      "reference_images": [
+        "evaluation/fixtures/demo/CASE-03/reference/REF-01_expected_cable.jpg",
+        "evaluation/fixtures/demo/CASE-03/reference/REF-02_expected_connector.jpg",
+        "evaluation/fixtures/demo/CASE-03/reference/REF-03_expected_package.jpg"
+      ],
+      "return_images": [
+        "evaluation/fixtures/demo/CASE-03/return/IMG-01_return_cable.jpg",
+        "evaluation/fixtures/demo/CASE-03/return/IMG-02_return_connector.jpg",
+        "evaluation/fixtures/demo/CASE-03/return/IMG-03_return_package.jpg"
+      ],
+      "scenario": "Customer ordered a USB-C charging cable but returned a similar-looking Apple 8-pin Lightning cable instead.",
+      "controlled_change": "Wrong connector returned: Apple 8-pin Lightning plug with flat external gold contacts instead of hollow oval USB-C connector.",
+      "expected_identity": "FAIL",
+      "expected_completeness": "PASS",
+      "expected_condition": "PASS",
+      "expected_condition_grade": "Used - Like New",
+      "expected_disposition": "pending_review",
+      "evidence_notes": "The returned cable looks superficially similar (white jacketed sync cable), but IMG-02 macro view proves the connector plug is an Apple proprietary Lightning connector with 8 exposed gold contact pins on a solid flat wafer, rather than the expected USB-C hollow oval receptacle. Check independence preserves condition (clean/functional) and completeness, but Identity fails, triggering rule 1 routing to pending_review."
+    }
+  ]
+}

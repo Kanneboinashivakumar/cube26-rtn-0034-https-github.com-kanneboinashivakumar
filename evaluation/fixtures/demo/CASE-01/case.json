@@ -1,0 +1,31 @@
+{
+  "case_id": "CASE-01",
+  "dataset_type": "synthetic_demo",
+  "sku": "DEMO-LAPTOP-001",
+  "product": "15-inch Laptop",
+  "product_description": "A sleek modern 15-inch laptop computer with AC power adapter / charger, power cable, and user documentation.",
+  "expected_components": [
+    { "name": "Laptop", "essential": true },
+    { "name": "Power adapter / charger", "essential": true },
+    { "name": "Power cable", "essential": false },
+    { "name": "User documentation", "essential": false }
+  ],
+  "reference_images": [
+    "evaluation/fixtures/demo/CASE-01/reference/REF-01_product.jpg",
+    "evaluation/fixtures/demo/CASE-01/reference/REF-02_accessories.jpg",
+    "evaluation/fixtures/demo/CASE-01/reference/REF-03_complete_package.jpg"
+  ],
+  "return_images": [
+    "evaluation/fixtures/demo/CASE-01/return/IMG-01_laptop.jpg",
+    "evaluation/fixtures/demo/CASE-01/return/IMG-02_return_contents.jpg",
+    "evaluation/fixtures/demo/CASE-01/return/IMG-03_accessories.jpg"
+  ],
+  "scenario": "Customer returned the 15-inch laptop with power cord and quick-start guide, but the AC power adapter / charging brick is physically missing from the return.",
+  "controlled_change": "Essential power adapter / charger omitted from return bundle.",
+  "expected_identity": "PASS",
+  "expected_completeness": "FAIL",
+  "expected_condition": "PASS",
+  "expected_condition_grade": "Used - Like New",
+  "expected_disposition": "pending_review",
+  "evidence_notes": "The laptop chassis and screen are intact with no signs of drop or liquid damage. Power cable and user documentation are present on the inspection table, but the AC power brick is physically absent. Because an essential component is missing, Completeness fails and the return triggers rule 6c routing to pending_review."
+}

@@ -6,6 +6,11 @@
  * The operator fills in return information, views expected components from the
  * catalogue (read-only), captures/uploads 1–5 photos, and submits for inspection.
  *
+ * Includes Demo Fixture Quick-Select for:
+ *   - CASE-01 — Laptop / Missing Charger
+ *   - CASE-02 — Headphones / Physical Damage
+ *   - CASE-03 — USB-C Cable / Wrong Product
+ *
  * On success → navigate to /results/[record_id] with the record stored in
  * sessionStorage (so Screen 2 does not need a separate API call when offline).
  */
@@ -24,6 +29,12 @@ interface CatalogEntry {
   product_name: string;
   category: string;
   expected_components: ExpectedComponent[];
+}
+
+interface ReferenceImage {
+  filename: string;
+  title: string;
+  dataUrl: string;
 }
 
 const CATALOG = catalogData as CatalogEntry[];
@@ -89,6 +100,15 @@ export default function Screen1() {
   const [images, setImages] = useState<string[]>([]);
   const [mimeTypes, setMimeTypes] = useState<MimeType[]>([]);
 
+  // Demo fixtures state
+  const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
+  const [loadingDemoCase, setLoadingDemoCase] = useState(false);
+  const [referenceImages, setReferenceImages] = useState<ReferenceImage[]>([]);
+  const [demoScenario, setDemoScenario] = useState<{
+    scenario: string;
+    controlled_change: string;
+  } | null>(null);
+
   // UI state
   const [submitting, setSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -105,6 +125,75 @@ export default function Screen1() {
       setCatalogEntry(null);
     }
   }, [sku]);
+
+  // ── Load Demo Case ──────────────────────────────────────────────────────────
+  async function loadDemoCase(caseId: string) {
+    if (loadingDemoCase) return;
+    setLoadingDemoCase(true);
+    setApiError(null);
+    setFormErrors({});
+
+    try {
+      const res = await fetch(`/api/demo-cases?case_id=${caseId}`);
+      if (!res.ok) {
+        throw new Error(`Failed to load demo case: HTTP ${res.status}`);
+      }
+      const data = await res.json();
+
+      setSelectedCaseId(caseId);
+      setOrderId(`DEMO-ORD-${caseId}`);
+      setSku(data.sku);
+      setProductName(data.product);
+
+      // Match catalogue entry
+      const entry = lookupBySku(data.sku);
+      if (entry) {
+        setCatalogEntry(entry);
+        setAsin(entry.asin ?? "");
+      } else {
+        setCatalogEntry({
+          sku: data.sku,
+          product_name: data.product,
+          category: "General",
+          expected_components: data.expected_components,
+        });
+      }
+
+      // Load reference photos
+      setReferenceImages(data.reference_images || []);
+
+      // Load return photos directly into PhotoCapture state
+      const retImgs = (data.return_images || []).map((img: { base64: string }) => img.base64);
+      const retMimes = (data.return_images || []).map(
+        (img: { mimeType: MimeType }) => img.mimeType || "image/jpeg"
+      );
+      setImages(retImgs);
+      setMimeTypes(retMimes);
+
+      setDemoScenario({
+        scenario: data.scenario,
+        controlled_change: data.controlled_change,
+      });
+    } catch (err) {
+      setApiError(err instanceof Error ? err.message : "Failed to load demo case");
+    } finally {
+      setLoadingDemoCase(false);
+    }
+  }
+
+  function clearDemoSelection() {
+    setSelectedCaseId(null);
+    setOrderId("");
+    setSku("");
+    setAsin("");
+    setProductName("");
+    setCatalogEntry(null);
+    setImages([]);
+    setMimeTypes([]);
+    setReferenceImages([]);
+    setDemoScenario(null);
+    setFormErrors({});
+  }
 
   // ── Validation ──────────────────────────────────────────────────────────────
   function validate(): boolean {
@@ -186,8 +275,105 @@ export default function Screen1() {
       <div>
         <h1 className="text-xl font-bold text-gray-900">Returns Inspection</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Complete all sections, then run inspection. Gemini will analyse the evidence.
+          Select a realistic demo return case below, or fill in return information manually.
         </p>
+      </div>
+
+      {/* ── Demo Return Selection ─────────────────────────────────────────── */}
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700">
+              Demo Return Cases
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Select one of the three realistic demo fixtures to load reference and return evidence:
+            </p>
+          </div>
+          {selectedCaseId && (
+            <button
+              type="button"
+              onClick={clearDemoSelection}
+              className="text-xs text-slate-600 hover:text-red-600 font-medium underline self-start sm:self-center"
+            >
+              Reset to Blank
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+          <button
+            type="button"
+            onClick={() => loadDemoCase("CASE-01")}
+            disabled={loadingDemoCase}
+            className={`text-left p-3 rounded-lg border text-xs transition-all ${
+              selectedCaseId === "CASE-01"
+                ? "bg-blue-50 border-blue-500 shadow-sm ring-1 ring-blue-500"
+                : "bg-white border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
+            }`}
+          >
+            <div className="font-semibold text-slate-900 flex items-center justify-between">
+              <span>CASE-01</span>
+              <span className="text-[10px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                Missing Part
+              </span>
+            </div>
+            <div className="text-slate-700 font-medium mt-1">15-inch Laptop</div>
+            <div className="text-slate-500 text-[11px] mt-0.5">Missing AC Power Charger</div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => loadDemoCase("CASE-02")}
+            disabled={loadingDemoCase}
+            className={`text-left p-3 rounded-lg border text-xs transition-all ${
+              selectedCaseId === "CASE-02"
+                ? "bg-blue-50 border-blue-500 shadow-sm ring-1 ring-blue-500"
+                : "bg-white border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
+            }`}
+          >
+            <div className="font-semibold text-slate-900 flex items-center justify-between">
+              <span>CASE-02</span>
+              <span className="text-[10px] text-red-700 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
+                Damaged
+              </span>
+            </div>
+            <div className="text-slate-700 font-medium mt-1">Wireless Headphones</div>
+            <div className="text-slate-500 text-[11px] mt-0.5">Cracked Headband / Hinge</div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => loadDemoCase("CASE-03")}
+            disabled={loadingDemoCase}
+            className={`text-left p-3 rounded-lg border text-xs transition-all ${
+              selectedCaseId === "CASE-03"
+                ? "bg-blue-50 border-blue-500 shadow-sm ring-1 ring-blue-500"
+                : "bg-white border-slate-200 hover:border-blue-300 hover:bg-blue-50/50"
+            }`}
+          >
+            <div className="font-semibold text-slate-900 flex items-center justify-between">
+              <span>CASE-03</span>
+              <span className="text-[10px] text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded border border-purple-200">
+                Wrong Item
+              </span>
+            </div>
+            <div className="text-slate-700 font-medium mt-1">USB-C Cable (2m)</div>
+            <div className="text-slate-500 text-[11px] mt-0.5">Lightning Cable Returned</div>
+          </button>
+        </div>
+
+        {demoScenario && (
+          <div className="mt-3 pt-3 border-t border-slate-200/80 text-xs">
+            <div className="text-slate-700">
+              <span className="font-semibold text-slate-900">Scenario:</span> {demoScenario.scenario}
+            </div>
+            <div className="text-slate-600 mt-1">
+              <span className="font-semibold text-slate-900">Controlled Change:</span>{" "}
+              {demoScenario.controlled_change}
+            </div>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-5">
@@ -304,9 +490,38 @@ export default function Screen1() {
           )}
         </Section>
 
-        {/* ── Section C: Return Evidence ─────────────────────────────────── */}
+        {/* ── Section C: Reference / Expected Product Photos ───────────────── */}
+        {referenceImages.length > 0 && (
+          <Section
+            title="Reference / Expected Product Photos"
+            subtitle="Catalog reference standards showing expected product and complete accessories configuration."
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {referenceImages.map((ref, idx) => (
+                <div key={idx} className="rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
+                  <div className="aspect-[4/3] bg-slate-100 relative">
+                    <img
+                      src={ref.dataUrl}
+                      alt={ref.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute top-2 left-2 bg-blue-900/80 text-white text-[10px] uppercase font-bold tracking-wide px-2 py-0.5 rounded shadow">
+                      Reference #{idx + 1}
+                    </span>
+                  </div>
+                  <div className="p-2.5">
+                    <p className="text-xs font-semibold text-slate-800 capitalize">{ref.title}</p>
+                    <p className="text-[10px] text-slate-500 font-mono mt-0.5">{ref.filename}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {/* ── Section D: Return Evidence Photos ───────────────────────────── */}
         <Section
-          title="Return Evidence"
+          title="Return Evidence Photos"
           subtitle="1–5 photos required. Camera and file upload both feed the same evidence set."
         >
           <PhotoCapture

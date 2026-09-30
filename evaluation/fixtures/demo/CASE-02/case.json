@@ -1,0 +1,32 @@
+{
+  "case_id": "CASE-02",
+  "dataset_type": "synthetic_demo",
+  "sku": "WH-1001",
+  "product": "Wireless Headphones (Noise Cancelling)",
+  "product_description": "Over-ear noise cancelling wireless headphones with hard carrying case, 3.5mm audio cable, USB-C charging cable, and user manual.",
+  "expected_components": [
+    { "name": "Headphones", "essential": true },
+    { "name": "Charging case", "essential": true },
+    { "name": "USB-C cable", "essential": false },
+    { "name": "3.5mm audio cable", "essential": false },
+    { "name": "User manual", "essential": false }
+  ],
+  "reference_images": [
+    "evaluation/fixtures/demo/CASE-02/reference/REF-01_product.jpg",
+    "evaluation/fixtures/demo/CASE-02/reference/REF-02_accessories.jpg",
+    "evaluation/fixtures/demo/CASE-02/reference/REF-03_complete_package.jpg"
+  ],
+  "return_images": [
+    "evaluation/fixtures/demo/CASE-02/return/IMG-01_headphones.jpg",
+    "evaluation/fixtures/demo/CASE-02/return/IMG-02_damage.jpg",
+    "evaluation/fixtures/demo/CASE-02/return/IMG-03_return_contents.jpg"
+  ],
+  "scenario": "Customer returned the wireless headphones and all accessories, but the headphones have severe physical damage (cracked headband / broken hinge mechanism).",
+  "controlled_change": "Physical structural damage to headband/hinge on the returned headphones.",
+  "expected_identity": "PASS",
+  "expected_completeness": "PASS",
+  "expected_condition": "PASS",
+  "expected_condition_grade": "Used - Acceptable",
+  "expected_disposition": "dispose",
+  "evidence_notes": "Identity matches the WH-1001 model and all expected accessories (case, cables, manual) are present. However, IMG-02 shows distinct structural cracking/breakage on the headband and hinge assembly. Under rule 5c, an item in Used - Acceptable condition with observed_state 'damaged' is routed to dispose."
+}

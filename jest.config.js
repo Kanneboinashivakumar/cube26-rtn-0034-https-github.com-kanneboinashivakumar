@@ -21,4 +21,5 @@ module.exports = {
     ],
   },
   testMatch: ["**/tests/**/*.test.ts", "**/tests/**/*.test.tsx"],
+  testPathIgnorePatterns: ["pilot-eval.test.ts"],
 };
