@@ -162,12 +162,7 @@ export class GeminiProvider implements VisionProvider {
     if (!apiKey) {
       throw new Error("GEMINI_API_KEY environment variable is not set");
     }
-    const modelId = process.env.GEMINI_MODEL;
-    if (!modelId) {
-      throw new Error(
-        "GEMINI_MODEL environment variable is not set. Set it to the exact model ID (e.g. gemini-2.5-flash)."
-      );
-    }
+    const modelId = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
     this.genAI = new GoogleGenerativeAI(apiKey);
     this.modelId = modelId;
   }
