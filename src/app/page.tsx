@@ -129,7 +129,10 @@ export default function Screen1() {
     setSubmitting(true);
 
     try {
-      // Prepare payload including both return evidence images and catalogue reference images
+      // Prepare payload: send customer return evidence photos.
+      // Omit bulky reference images from the HTTP body so the request stays lightweight (<1MB)
+      // and safely under Vercel's 4.5MB serverless limit.
+      // The server inspect-service will automatically load catalogue reference standards.
       const payload = {
         order_id: orderId.trim(),
         sku: product.sku,
@@ -138,10 +141,6 @@ export default function Screen1() {
         expected_components: product.expected_components,
         images: returnImages,
         image_mime_types: returnMimeTypes,
-        reference_images: (product.reference_images || []).map((img) => img.base64),
-        reference_image_mime_types: (product.reference_images || []).map(
-          (img) => img.mimeType || "image/jpeg"
-        ),
       };
 
       const res = await fetch("/api/inspect", {
@@ -150,7 +149,23 @@ export default function Screen1() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      let data: any = null;
+      try {
+        const text = await res.text();
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        if (res.status === 413) {
+          setApiError("Upload payload exceeds Vercel request limit (4.5MB). Please upload fewer or smaller photos.");
+          return;
+        }
+        setApiError(`Server error (${res.status}): ${res.statusText || "Unexpected response"}`);
+        return;
+      }
+
+      if (res.status === 413) {
+        setApiError("Upload payload exceeds Vercel request limit (4.5MB). Please upload fewer or smaller photos.");
+        return;
+      }
 
       if (res.status === 400) {
         setApiError(data.error ?? "Invalid inspection request. Check your inputs.");
@@ -185,6 +200,12 @@ export default function Screen1() {
             returnImages.map((b64, i) => `data:${returnMimeTypes[i] || "image/jpeg"};base64,${b64}`)
           )
         );
+        if (product.reference_images && product.reference_images.length > 0) {
+          sessionStorage.setItem(
+            `inspection:${record.record_id}:reference_photos`,
+            JSON.stringify(product.reference_images)
+          );
+        }
       } catch (storageErr) {
         console.warn("sessionStorage quota limit reached; Screen 2 will fetch record from API:", storageErr);
       }
