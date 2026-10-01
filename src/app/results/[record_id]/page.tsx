@@ -25,6 +25,7 @@ import CheckCard from "@/components/CheckCard";
 import DispositionBadge from "@/components/DispositionBadge";
 import RuleTracePanel from "@/components/RuleTracePanel";
 import OverrideModal from "@/components/OverrideModal";
+import { resolveReturnEvidenceUrls } from "@/lib/catalogue";
 
 const ORG_ID = process.env.NEXT_PUBLIC_ORG_ID ?? "org_demo_alpha";
 
@@ -116,6 +117,12 @@ export default function Screen2() {
         if (warning) setPersistenceWarning(warning);
         setLoading(false);
 
+        // If return photos weren't cached in session, resolve demo evidence fixtures
+        if (!cachedReturns) {
+          const fallbackReturns = resolveReturnEvidenceUrls(recordId, parsed.subject?.sku, parsed.subject?.order_id);
+          if (fallbackReturns.length > 0) setReturnDataUrls(fallbackReturns);
+        }
+
         // If reference photos weren't in session, fetch from catalogue
         if (!cachedRefs && parsed.subject?.sku) {
           fetch(`/api/catalogue?sku=${encodeURIComponent(parsed.subject.sku)}`)
@@ -140,6 +147,10 @@ export default function Screen2() {
       .then((data) => {
         const fetchedRecord = data.record as EvidenceRecord;
         setRecord(fetchedRecord);
+        if (!cachedReturns) {
+          const fallbackReturns = resolveReturnEvidenceUrls(recordId, fetchedRecord.subject?.sku, fetchedRecord.subject?.order_id);
+          if (fallbackReturns.length > 0) setReturnDataUrls(fallbackReturns);
+        }
         // Also load reference photos for this SKU
         if (fetchedRecord.subject?.sku) {
           fetch(`/api/catalogue?sku=${encodeURIComponent(fetchedRecord.subject.sku)}`)
@@ -254,14 +265,17 @@ export default function Screen2() {
                 onClick={() => router.push("/")}
                 className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
               >
-                ← Return to Terminal
+                ← Back to Inspection
               </button>
               <span className="text-slate-300">/</span>
               <span className="text-xs text-slate-500 font-mono">Record: {record.record_id}</span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-              Evidence & Disposition Review
+              Inspection Review & Decision
             </h1>
+            <p className="text-xs text-slate-500 mt-1">
+              Review inspection results, evidence, and final disposition.
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <StatusBadge status={record.status} />
@@ -385,6 +399,39 @@ export default function Screen2() {
                   SHA-256: {record.content_hash}
                 </div>
               )}
+            </div>
+
+            {/* 5. View Evidence & Audit Action Card */}
+            <div
+              onClick={() => router.push(`/results/${record.record_id}/evidence`)}
+              className="bg-white rounded-xl border border-blue-200 shadow-sm p-4 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer group bg-gradient-to-r from-blue-50/40 via-white to-blue-50/20"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+                    📄
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors flex items-center gap-1.5">
+                      View Evidence & Audit
+                      <span className="text-blue-600 font-normal group-hover:translate-x-0.5 transition-transform">→</span>
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      View full evidence, reasoning, rule trace, structured record and audit trail.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/results/${record.record_id}/evidence`);
+                  }}
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition-colors shadow-sm self-start sm:self-center shrink-0"
+                >
+                  View Evidence & Audit →
+                </button>
+              </div>
             </div>
           </div>
 

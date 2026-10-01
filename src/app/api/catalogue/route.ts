@@ -26,21 +26,49 @@ export async function GET(request: Request) {
 
     // Load reference photos as base64 data URLs if configured
     const referencePhotos = (entry.reference_images || []).map((relPath, idx) => {
-      const fullPath = path.join(/*turbopackIgnore: true*/ process.cwd(), relPath);
-      if (fs.existsSync(fullPath)) {
-        const buffer = fs.readFileSync(fullPath);
-        const filename = path.basename(relPath);
-        const base64 = buffer.toString("base64");
-        const titles = ["Product View", "Accessories / Connectors", "Packaging & Complete Set"];
-        return {
-          filename,
-          title: titles[idx] || `Reference #${idx + 1}`,
-          base64,
-          mimeType: "image/jpeg" as const,
-          dataUrl: `data:image/jpeg;base64,${base64}`,
-        };
+      const cleanRel = relPath.replace(/^\/+/, "");
+      const publicPath = path.join(/*turbopackIgnore: true*/ process.cwd(), "public", cleanRel);
+      const rootPath = path.join(/*turbopackIgnore: true*/ process.cwd(), cleanRel);
+      const fullPath = fs.existsSync(publicPath) ? publicPath : fs.existsSync(rootPath) ? rootPath : null;
+
+      const filename = path.basename(relPath);
+      const titles = ["Product View", "Accessories / Connectors", "Packaging & Complete Set"];
+      const title = titles[idx] || `Reference #${idx + 1}`;
+      const staticUrl = `/${cleanRel}`;
+
+      if (fullPath) {
+        try {
+          const buffer = fs.readFileSync(fullPath);
+          const base64 = buffer.toString("base64");
+          return {
+            filename,
+            title,
+            base64,
+            mimeType: "image/jpeg" as const,
+            dataUrl: `data:image/jpeg;base64,${base64}`,
+            url: staticUrl,
+          };
+        } catch {
+          return {
+            filename,
+            title,
+            base64: "",
+            mimeType: "image/jpeg" as const,
+            dataUrl: staticUrl,
+            url: staticUrl,
+          };
+        }
       }
-      return null;
+
+      // Fallback: If not on local disk, supply static URL so the browser can load it directly
+      return {
+        filename,
+        title,
+        base64: "",
+        mimeType: "image/jpeg" as const,
+        dataUrl: staticUrl,
+        url: staticUrl,
+      };
     }).filter(Boolean);
 
     return NextResponse.json({

@@ -14,7 +14,7 @@
       "expected_components": [
         { "name": "Laptop", "essential": true },
         { "name": "Power adapter / charger", "essential": true },
-        { "name": "Power cable", "essential": false },
+        { "name": "Power cable", "essential": true },
         { "name": "User documentation", "essential": false }
       ],
       "reference_images": [

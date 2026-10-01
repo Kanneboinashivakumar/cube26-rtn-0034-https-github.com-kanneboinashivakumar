@@ -219,7 +219,7 @@ export default function Screen1() {
         </div>
         <div className="flex items-center gap-4 text-xs text-slate-500 bg-slate-50 border border-slate-200 px-4 py-2 rounded-lg">
           <div>
-            <span className="font-semibold text-slate-700">Organisation:</span> {orgId}
+            <span className="font-semibold text-slate-700">Organisation:</span> Apex Global Logistics
           </div>
           <div className="h-3 w-px bg-slate-200" />
           <div>
@@ -227,7 +227,7 @@ export default function Screen1() {
           </div>
           <div className="h-3 w-px bg-slate-200" />
           <div>
-            <span className="font-semibold text-slate-700">Operator:</span> demo_operator
+            <span className="font-semibold text-slate-700">Operator:</span> Ayush Kumar (Lead Inspector)
           </div>
         </div>
       </header>

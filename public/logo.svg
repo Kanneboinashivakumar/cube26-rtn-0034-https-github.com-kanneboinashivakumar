@@ -1,0 +1,159 @@
+<svg width="200" height="220" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Left Face Gradient (Royal Blue to Deep Indigo) -->
+    <linearGradient id="boxLeft" x1="28" y1="62" x2="98" y2="176" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="60%" stop-color="#1D4ED8" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+
+    <!-- Right Face Gradient (Midnight Slate to Deep Navy) -->
+    <linearGradient id="boxRight" x1="102" y1="62" x2="172" y2="176" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="50%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#080D1A" />
+    </linearGradient>
+
+    <!-- Top Left Flap Gradient (Luminous Sky Blue) -->
+    <linearGradient id="boxTopLeft" x1="30" y1="58" x2="124" y2="82" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+
+    <!-- Top Right Flap Gradient (Vibrant Azure) -->
+    <linearGradient id="boxTopRight" x1="76" y1="22" x2="170" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#60A5FA" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <!-- Central Tape Ribbon Gradient (Glowing Electric Cyan with Subtle Sheen) -->
+    <linearGradient id="tapeBody" x1="56" y1="34" x2="146" y2="126" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E0F2FE" />
+      <stop offset="30%" stop-color="#38BDF8" />
+      <stop offset="70%" stop-color="#00D8F6" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <!-- Shimmer Light Beam Gradient -->
+    <linearGradient id="tapeShimmer" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+      <stop offset="45%" stop-color="rgba(255,255,255,0.05)" />
+      <stop offset="50%" stop-color="rgba(255,255,255,0.7)" />
+      <stop offset="55%" stop-color="rgba(255,255,255,0.05)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+    </linearGradient>
+
+    <!-- Tape Drop Shadow -->
+    <filter id="tapeShadow" x="116" y="68" width="40" height="70" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="-1.5" dy="2.5" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
+
+    <!-- Ground Shadow Filter -->
+    <filter id="groundBlur" x="20" y="180" width="160" height="40" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="6" />
+    </filter>
+
+    <clipPath id="boxClip">
+      <polygon points="30,62 98,22 170,58 170,140 100,175 30,140" />
+    </clipPath>
+  </defs>
+
+  <style>
+    @keyframes floatBox {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-6px) rotate(-0.5deg);
+      }
+    }
+
+    @keyframes flutterTape {
+      0%, 100% {
+        transform: scaleY(1) skewX(0deg);
+      }
+      30% {
+        transform: scaleY(1.025) skewX(-1deg);
+      }
+      60% {
+        transform: scaleY(0.985) skewX(1deg);
+      }
+    }
+
+    @keyframes sweepShimmer {
+      0% {
+        transform: translateX(-120px) translateY(-80px);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      40%, 100% {
+        transform: translateX(180px) translateY(120px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes pulseShadow {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.4;
+      }
+      50% {
+        transform: scale(0.85);
+        opacity: 0.2;
+      }
+    }
+
+    .anim-box {
+      animation: floatBox 3.8s ease-in-out infinite;
+      transform-origin: 100px 100px;
+    }
+
+    .anim-tape {
+      animation: flutterTape 3.8s ease-in-out infinite;
+      transform-origin: 135px 71px;
+    }
+
+    .anim-shimmer {
+      animation: sweepShimmer 4.5s ease-in-out infinite;
+    }
+
+    .anim-shadow {
+      animation: pulseShadow 3.8s ease-in-out infinite;
+      transform-origin: 100px 198px;
+    }
+  </style>
+
+  <!-- Ambient Ground Shadow -->
+  <ellipse cx="100" cy="198" rx="52" ry="11" fill="#0284c7" class="anim-shadow" filter="url(#groundBlur)" />
+
+  <!-- Main Floating Isometric Box -->
+  <g class="anim-box">
+    <!-- Left Face -->
+    <polygon points="30,62 97,97 97,175 30,140" fill="url(#boxLeft)" />
+
+    <!-- Right Face with Tape Cutout -->
+    <polygon points="103,97 124,86 124,124 135,113 146,124 146,75 170,62 170,140 103,175" fill="url(#boxRight)" />
+
+    <!-- Top Left Flap -->
+    <polygon points="32,58 56,46 123,82 99,94" fill="url(#boxTopLeft)" />
+
+    <!-- Top Right Flap -->
+    <polygon points="76,34 98,22 168,58 146,69" fill="url(#boxTopRight)" />
+
+    <!-- Central Tape Ribbon across top -->
+    <polygon points="56,46 76,34 146,71 124,82" fill="url(#tapeBody)" />
+
+    <!-- Hanging Tape with Swallowtail Notch -->
+    <g class="anim-tape">
+      <polygon points="124,82 146,71 146,124 135,113 124,124" fill="url(#tapeBody)" filter="url(#tapeShadow)" />
+      <line x1="124" y1="82" x2="146" y2="71" stroke="rgba(255,255,255,0.75)" stroke-width="1.2" stroke-linecap="round" />
+    </g>
+
+    <!-- Specular Light Beam Shimmer -->
+    <g clip-path="url(#boxClip)">
+      <rect x="0" y="0" width="200" height="200" fill="url(#tapeShimmer)" class="anim-shimmer" />
+    </g>
+  </g>
+</svg>

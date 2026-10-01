@@ -1,0 +1,1634 @@
+[
+  {
+    "record_id": "RTN-1790760865964-I68VM",
+    "subject": {
+      "sku": "WH-1001",
+      "asin": "B0DEMO1001",
+      "order_id": "ORD-PILOT-CASE-01",
+      "product_name": "Wireless Headphones (Noise Cancelling)"
+    },
+    "checks": [
+      {
+        "detail": "The product packaging clearly indicates Sony WH-1000XM5, which does not match the expected SKU WH-1001.",
+        "verdict": "FAIL",
+        "check_key": "identity",
+        "confidence": 0.95,
+        "latency_ms": 5033,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "All five expected components are clearly visible in the open packaging layout.",
+        "verdict": "PASS",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Headphones",
+            "observed": true
+          },
+          {
+            "name": "Charging case",
+            "observed": true
+          },
+          {
+            "name": "USB-C cable",
+            "observed": true
+          },
+          {
+            "name": "3.5mm audio cable",
+            "observed": true
+          },
+          {
+            "name": "User manual",
+            "observed": true
+          }
+        ],
+        "confidence": 0.95,
+        "latency_ms": 5033,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "grade": "Used - Like New",
+        "detail": "Packaging has been opened, but all internal components appear clean, undamaged, and unused.",
+        "verdict": "PASS",
+        "check_key": "condition",
+        "confidence": 0.9,
+        "latency_ms": 5033,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "opened_unused"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "FAIL"
+          },
+          "matched": true,
+          "outcome": "pending_review",
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        }
+      ],
+      "disposition": "pending_review",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "FAIL",
+        "confidence": 0.95,
+        "observations": [
+          "The product packaging clearly indicates Sony WH-1000XM5, which does not match the expected SKU WH-1001."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "grade": "Used - Like New",
+        "verdict": "PASS",
+        "confidence": 0.9,
+        "observations": [
+          "Packaging has been opened, but all internal components appear clean, undamaged, and unused."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "opened_unused"
+      },
+      "completeness": {
+        "verdict": "PASS",
+        "components": [
+          {
+            "name": "Headphones",
+            "observed": true
+          },
+          {
+            "name": "Charging case",
+            "observed": true
+          },
+          {
+            "name": "USB-C cable",
+            "observed": true
+          },
+          {
+            "name": "3.5mm audio cable",
+            "observed": true
+          },
+          {
+            "name": "User manual",
+            "observed": true
+          }
+        ],
+        "confidence": 0.95,
+        "observations": [
+          "All five expected components are clearly visible in the open packaging layout."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "model_number",
+          "value": "WH-1000XM5",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  },
+  {
+    "record_id": "RTN-1790760878362-UGJJS",
+    "subject": {
+      "sku": "WH-1001",
+      "asin": "B0DEMO1001",
+      "order_id": "ORD-PILOT-CASE-02",
+      "product_name": "Wireless Headphones (Noise Cancelling)"
+    },
+    "checks": [
+      {
+        "detail": "The product box and the headphones match the expected Wireless Headphones SKU WH-1001.",
+        "verdict": "PASS",
+        "check_key": "identity",
+        "confidence": 1,
+        "latency_ms": 9542,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "Headphones are present.; Charging case is missing from its designated compartment in the packaging.; USB-C cable is present.; 3.5mm audio cable is present.; User manual is present.",
+        "verdict": "FAIL",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Headphones",
+            "observed": true
+          },
+          {
+            "name": "Charging case",
+            "observed": false
+          },
+          {
+            "name": "USB-C cable",
+            "observed": true
+          },
+          {
+            "name": "3.5mm audio cable",
+            "observed": true
+          },
+          {
+            "name": "User manual",
+            "observed": true
+          }
+        ],
+        "confidence": 1,
+        "latency_ms": 9542,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "grade": "Used - Good",
+        "detail": "Headphone ear pads show visible wear and scuffing.; Packaging is opened and missing components.",
+        "verdict": "PASS",
+        "check_key": "condition",
+        "confidence": 0.9,
+        "latency_ms": 9542,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "signs_of_use"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "completeness_verdict": "FAIL"
+          },
+          "matched": false,
+          "rule_id": "rule_3",
+          "description": "Completeness UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_4",
+          "description": "Condition UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Good",
+            "identity_verdict": "PASS",
+            "essential_missing": true,
+            "completeness_verdict": "FAIL"
+          },
+          "matched": false,
+          "rule_id": "rule_6b",
+          "description": "Identity PASS, Completeness FAIL, no essential missing, resale-suitable/repairable → refurbish"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Good",
+            "identity_verdict": "PASS",
+            "essential_missing": true,
+            "completeness_verdict": "FAIL"
+          },
+          "matched": true,
+          "outcome": "pending_review",
+          "rule_id": "rule_6c",
+          "description": "Identity PASS, Completeness FAIL, essential missing or Used-Acceptable → pending_review"
+        }
+      ],
+      "disposition": "pending_review",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "The product box and the headphones match the expected Wireless Headphones SKU WH-1001."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "grade": "Used - Good",
+        "verdict": "PASS",
+        "confidence": 0.9,
+        "observations": [
+          "Headphone ear pads show visible wear and scuffing.",
+          "Packaging is opened and missing components."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "signs_of_use"
+      },
+      "completeness": {
+        "verdict": "FAIL",
+        "components": [
+          {
+            "name": "Headphones",
+            "observed": true
+          },
+          {
+            "name": "Charging case",
+            "observed": false
+          },
+          {
+            "name": "USB-C cable",
+            "observed": true
+          },
+          {
+            "name": "3.5mm audio cable",
+            "observed": true
+          },
+          {
+            "name": "User manual",
+            "observed": true
+          }
+        ],
+        "confidence": 1,
+        "observations": [
+          "Headphones are present.",
+          "Charging case is missing from its designated compartment in the packaging.",
+          "USB-C cable is present.",
+          "3.5mm audio cable is present.",
+          "User manual is present."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "serial_number",
+          "value": "AP-ICM100-224S",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  },
+  {
+    "record_id": "RTN-1790760888607-L0RZD",
+    "subject": {
+      "sku": "SKU-CABLE-USBC",
+      "asin": "B0DUMMY261",
+      "order_id": "ORD-PILOT-CASE-03",
+      "product_name": "USB-C Charging Cable 2m"
+    },
+    "checks": [
+      {
+        "detail": "The product box indicates an Anker USB-C to USB-C cable.; The visible cable matches the expected product type.",
+        "verdict": "PASS",
+        "check_key": "identity",
+        "confidence": 0.9,
+        "latency_ms": 7370,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "The cable is clearly visible inside the packaging tray.",
+        "verdict": "PASS",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Cable",
+            "observed": true
+          }
+        ],
+        "confidence": 1,
+        "latency_ms": 7370,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "grade": "Used - Like New",
+        "detail": "The outer box has been opened.; The cable inside remains neatly coiled and appears unused.",
+        "verdict": "PASS",
+        "check_key": "condition",
+        "confidence": 0.9,
+        "latency_ms": 7370,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "opened_unused"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "completeness_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_3",
+          "description": "Completeness UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_4",
+          "description": "Condition UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Like New",
+            "identity_verdict": "PASS",
+            "completeness_verdict": "PASS"
+          },
+          "matched": true,
+          "outcome": "restock",
+          "rule_id": "rule_5a",
+          "description": "Identity PASS, Completeness PASS, resale-suitable grade → restock"
+        }
+      ],
+      "disposition": "restock",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "PASS",
+        "confidence": 0.9,
+        "observations": [
+          "The product box indicates an Anker USB-C to USB-C cable.",
+          "The visible cable matches the expected product type."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "grade": "Used - Like New",
+        "verdict": "PASS",
+        "confidence": 0.9,
+        "observations": [
+          "The outer box has been opened.",
+          "The cable inside remains neatly coiled and appears unused."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "opened_unused"
+      },
+      "completeness": {
+        "verdict": "PASS",
+        "components": [
+          {
+            "name": "Cable",
+            "observed": true
+          }
+        ],
+        "confidence": 1,
+        "observations": [
+          "The cable is clearly visible inside the packaging tray."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "model_number",
+          "value": "PowerLine III USB-C to USB-C Cable 6ft/1.8m White",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  },
+  {
+    "record_id": "RTN-1790760903735-H3SMK",
+    "subject": {
+      "sku": "SKU-LAMP-LED",
+      "asin": "B0DUMMY357",
+      "order_id": "ORD-PILOT-CASE-04",
+      "product_name": "LED Desk Lamp"
+    },
+    "checks": [
+      {
+        "detail": "The product matches the expected LED Desk Lamp based on visual appearance and the product box labeling.",
+        "verdict": "PASS",
+        "check_key": "identity",
+        "confidence": 1,
+        "latency_ms": 9942,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "The Lamp is present but severely damaged.; The USB power cable is not present in the image (the lamp features an attached two-prong AC power cord instead of a USB cable).; The User manual is not present.",
+        "verdict": "FAIL",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Lamp",
+            "observed": true
+          },
+          {
+            "name": "USB power cable",
+            "observed": false
+          },
+          {
+            "name": "User manual",
+            "observed": false
+          }
+        ],
+        "confidence": 1,
+        "latency_ms": 9942,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "grade": "Used - Acceptable",
+        "detail": "The lamp has major physical damage, with a severe crack/break in the upper arm structure exposing internal wires and loose plastic pieces.",
+        "verdict": "PASS",
+        "check_key": "condition",
+        "confidence": 1,
+        "latency_ms": 9942,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "damaged"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "completeness_verdict": "FAIL"
+          },
+          "matched": false,
+          "rule_id": "rule_3",
+          "description": "Completeness UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_4",
+          "description": "Condition UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Acceptable",
+            "identity_verdict": "PASS",
+            "essential_missing": true,
+            "completeness_verdict": "FAIL"
+          },
+          "matched": false,
+          "rule_id": "rule_6b",
+          "description": "Identity PASS, Completeness FAIL, no essential missing, resale-suitable/repairable → refurbish"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Acceptable",
+            "identity_verdict": "PASS",
+            "essential_missing": true,
+            "completeness_verdict": "FAIL"
+          },
+          "matched": true,
+          "outcome": "pending_review",
+          "rule_id": "rule_6c",
+          "description": "Identity PASS, Completeness FAIL, essential missing or Used-Acceptable → pending_review"
+        }
+      ],
+      "disposition": "pending_review",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "The product matches the expected LED Desk Lamp based on visual appearance and the product box labeling."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "grade": "Used - Acceptable",
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "The lamp has major physical damage, with a severe crack/break in the upper arm structure exposing internal wires and loose plastic pieces."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "damaged"
+      },
+      "completeness": {
+        "verdict": "FAIL",
+        "components": [
+          {
+            "name": "Lamp",
+            "observed": true
+          },
+          {
+            "name": "USB power cable",
+            "observed": false
+          },
+          {
+            "name": "User manual",
+            "observed": false
+          }
+        ],
+        "confidence": 1,
+        "observations": [
+          "The Lamp is present but severely damaged.",
+          "The USB power cable is not present in the image (the lamp features an attached two-prong AC power cord instead of a USB cable).",
+          "The User manual is not present."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "model_number",
+          "value": "LT-780",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  },
+  {
+    "record_id": "RTN-1790760917748-W7ERJ",
+    "subject": {
+      "sku": "SKU-SERUM-30",
+      "asin": "B0DUMMY031",
+      "order_id": "ORD-PILOT-CASE-05",
+      "product_name": "Hydrating Face Serum 30ml"
+    },
+    "checks": [
+      {
+        "detail": "The product label is partially obscured or out of focus in the image.; Cannot definitively confirm the SKU or ASIN from the visible text.",
+        "verdict": "UNCERTAIN",
+        "check_key": "identity",
+        "confidence": 0.5,
+        "latency_ms": 11185,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "Serum bottle and attached dropper are clearly visible.; Product leaflet is not present in the image.",
+        "verdict": "FAIL",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Serum bottle",
+            "observed": true
+          },
+          {
+            "name": "Dropper",
+            "observed": true
+          },
+          {
+            "name": "Product leaflet",
+            "observed": false
+          }
+        ],
+        "confidence": 0.9,
+        "latency_ms": 11185,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "grade": "Used - Good",
+        "detail": "Bottle is opened and dropper is separated from the bottle.; No major visible damage, cracks, or heavy wear observed.",
+        "verdict": "PASS",
+        "check_key": "condition",
+        "confidence": 0.8,
+        "latency_ms": 11185,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "signs_of_use"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "UNCERTAIN"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "UNCERTAIN"
+          },
+          "matched": true,
+          "outcome": "pending_review",
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        }
+      ],
+      "disposition": "pending_review",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "UNCERTAIN",
+        "confidence": 0.5,
+        "observations": [
+          "The product label is partially obscured or out of focus in the image.",
+          "Cannot definitively confirm the SKU or ASIN from the visible text."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "grade": "Used - Good",
+        "verdict": "PASS",
+        "confidence": 0.8,
+        "observations": [
+          "Bottle is opened and dropper is separated from the bottle.",
+          "No major visible damage, cracks, or heavy wear observed."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "signs_of_use"
+      },
+      "completeness": {
+        "verdict": "FAIL",
+        "components": [
+          {
+            "name": "Serum bottle",
+            "observed": true
+          },
+          {
+            "name": "Dropper",
+            "observed": true
+          },
+          {
+            "name": "Product leaflet",
+            "observed": false
+          }
+        ],
+        "confidence": 0.9,
+        "observations": [
+          "Serum bottle and attached dropper are clearly visible.",
+          "Product leaflet is not present in the image."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": []
+    }
+  },
+  {
+    "record_id": "RTN-1790760927923-CPXIQ",
+    "subject": {
+      "sku": "SKU-PROT-1KG",
+      "asin": "B0DUMMY357",
+      "order_id": "ORD-PILOT-CASE-06",
+      "product_name": "Whey Protein Powder 1kg"
+    },
+    "checks": [
+      {
+        "detail": "Outer Packaging Matches SKU-PROT-1KG",
+        "verdict": "PASS",
+        "check_key": "identity",
+        "confidence": 1,
+        "latency_ms": 7338,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "Protein tub is present but empty; Measuring Scoop is missing",
+        "verdict": "FAIL",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Protein tub",
+            "observed": true
+          },
+          {
+            "name": "Scoop",
+            "observed": false
+          }
+        ],
+        "confidence": 1,
+        "latency_ms": 7338,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "grade": "Used - Acceptable",
+        "detail": "Powder Contents: 0% FILLED (EMPTY TUB); Factory Foil Seal: TORN / MISSING; Defect: Empty container",
+        "verdict": "PASS",
+        "check_key": "condition",
+        "confidence": 1,
+        "latency_ms": 7338,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "empty_box"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "completeness_verdict": "FAIL"
+          },
+          "matched": false,
+          "rule_id": "rule_3",
+          "description": "Completeness UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_4",
+          "description": "Condition UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Acceptable",
+            "identity_verdict": "PASS",
+            "essential_missing": false,
+            "completeness_verdict": "FAIL"
+          },
+          "matched": false,
+          "rule_id": "rule_6b",
+          "description": "Identity PASS, Completeness FAIL, no essential missing, resale-suitable/repairable → refurbish"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Acceptable",
+            "identity_verdict": "PASS",
+            "essential_missing": false,
+            "completeness_verdict": "FAIL"
+          },
+          "matched": true,
+          "outcome": "pending_review",
+          "rule_id": "rule_6c",
+          "description": "Identity PASS, Completeness FAIL, essential missing or Used-Acceptable → pending_review"
+        }
+      ],
+      "disposition": "pending_review",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "Outer Packaging Matches SKU-PROT-1KG"
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "grade": "Used - Acceptable",
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "Powder Contents: 0% FILLED (EMPTY TUB)",
+          "Factory Foil Seal: TORN / MISSING",
+          "Defect: Empty container"
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "empty_box"
+      },
+      "completeness": {
+        "verdict": "FAIL",
+        "components": [
+          {
+            "name": "Protein tub",
+            "observed": true
+          },
+          {
+            "name": "Scoop",
+            "observed": false
+          }
+        ],
+        "confidence": 1,
+        "observations": [
+          "Protein tub is present but empty",
+          "Measuring Scoop is missing"
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "SKU",
+          "value": "SKU-PROT-1KG",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  },
+  {
+    "record_id": "RTN-1790760936218-F166M",
+    "subject": {
+      "sku": "WH-1001",
+      "asin": "B0DEMO1001",
+      "order_id": "ORD-PILOT-CASE-07",
+      "product_name": "Wireless Headphones (Noise Cancelling)"
+    },
+    "checks": [
+      {
+        "detail": "The product name 'Wireless Headphones (Noise Cancelling)' is clearly displayed in the image.; The SKU 'WH-1001' is clearly visible at the top right of the inspection placard.",
+        "verdict": "PASS",
+        "check_key": "identity",
+        "confidence": 1,
+        "latency_ms": 5533,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "Observation notes on the image confirm headphones, charging case, all cables, and manual are present.",
+        "verdict": "PASS",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Headphones",
+            "observed": true
+          },
+          {
+            "name": "Charging case",
+            "observed": true
+          },
+          {
+            "name": "USB-C cable",
+            "observed": true
+          },
+          {
+            "name": "3.5mm audio cable",
+            "observed": true
+          },
+          {
+            "name": "User manual",
+            "observed": true
+          }
+        ],
+        "confidence": 1,
+        "latency_ms": 5533,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "grade": "Used - Very Good",
+        "detail": "The inspection text indicates condition is 'USED - VERY GOOD - MINOR COSMETIC MARKS'.; Observations state headphones have a light scuff on the right yoke and minor cosmetic wear.",
+        "verdict": "PASS",
+        "check_key": "condition",
+        "confidence": 1,
+        "latency_ms": 5533,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "signs_of_use"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "completeness_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_3",
+          "description": "Completeness UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_4",
+          "description": "Condition UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Very Good",
+            "identity_verdict": "PASS",
+            "completeness_verdict": "PASS"
+          },
+          "matched": true,
+          "outcome": "restock",
+          "rule_id": "rule_5a",
+          "description": "Identity PASS, Completeness PASS, resale-suitable grade → restock"
+        }
+      ],
+      "disposition": "restock",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "The product name 'Wireless Headphones (Noise Cancelling)' is clearly displayed in the image.",
+          "The SKU 'WH-1001' is clearly visible at the top right of the inspection placard."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "grade": "Used - Very Good",
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "The inspection text indicates condition is 'USED - VERY GOOD - MINOR COSMETIC MARKS'.",
+          "Observations state headphones have a light scuff on the right yoke and minor cosmetic wear."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "signs_of_use"
+      },
+      "completeness": {
+        "verdict": "PASS",
+        "components": [
+          {
+            "name": "Headphones",
+            "observed": true
+          },
+          {
+            "name": "Charging case",
+            "observed": true
+          },
+          {
+            "name": "USB-C cable",
+            "observed": true
+          },
+          {
+            "name": "3.5mm audio cable",
+            "observed": true
+          },
+          {
+            "name": "User manual",
+            "observed": true
+          }
+        ],
+        "confidence": 1,
+        "observations": [
+          "Observation notes on the image confirm headphones, charging case, all cables, and manual are present."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "model_number",
+          "value": "WH-1001",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  },
+  {
+    "record_id": "RTN-1790760943356-516L9",
+    "subject": {
+      "sku": "SKU-PUZZLE-500",
+      "asin": "B0DUMMY729",
+      "order_id": "ORD-PILOT-CASE-08",
+      "product_name": "500-Piece Jigsaw Puzzle"
+    },
+    "checks": [
+      {
+        "detail": "The product name '500-Piece Jigsaw Puzzle' and SKU 'SKU-PUZZLE-500' are clearly visible at the top of the fixture image.; The image displays information corresponding to the expected product.",
+        "verdict": "PASS",
+        "check_key": "identity",
+        "confidence": 0.9,
+        "latency_ms": 4340,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "Puzzle piece bag observed intact.; Reference foldout poster present.",
+        "verdict": "PASS",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Puzzle pieces",
+            "observed": true
+          },
+          {
+            "name": "Reference poster",
+            "observed": true
+          }
+        ],
+        "confidence": 0.9,
+        "latency_ms": 4340,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "The provided image shows a text-based inspection interface rather than a direct photograph of the item's physical condition.; Barcode and SKU area are noted as covered by a sticker, but the exact physical grade cannot be reliably determined from this display.",
+        "verdict": "UNCERTAIN",
+        "check_key": "condition",
+        "confidence": 0.5,
+        "latency_ms": 4340,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "uncertain"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "completeness_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_3",
+          "description": "Completeness UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_verdict": "UNCERTAIN"
+          },
+          "matched": true,
+          "outcome": "pending_review",
+          "rule_id": "rule_4",
+          "description": "Condition UNCERTAIN → pending_review"
+        }
+      ],
+      "disposition": "pending_review",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "PASS",
+        "confidence": 0.9,
+        "observations": [
+          "The product name '500-Piece Jigsaw Puzzle' and SKU 'SKU-PUZZLE-500' are clearly visible at the top of the fixture image.",
+          "The image displays information corresponding to the expected product."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "verdict": "UNCERTAIN",
+        "confidence": 0.5,
+        "observations": [
+          "The provided image shows a text-based inspection interface rather than a direct photograph of the item's physical condition.",
+          "Barcode and SKU area are noted as covered by a sticker, but the exact physical grade cannot be reliably determined from this display."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "uncertain"
+      },
+      "completeness": {
+        "verdict": "PASS",
+        "components": [
+          {
+            "name": "Puzzle pieces",
+            "observed": true
+          },
+          {
+            "name": "Reference poster",
+            "observed": true
+          }
+        ],
+        "confidence": 0.9,
+        "observations": [
+          "Puzzle piece bag observed intact.",
+          "Reference foldout poster present."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "SKU",
+          "value": "SKU-PUZZLE-500",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  },
+  {
+    "record_id": "RTN-1790760949267-PQMBV",
+    "subject": {
+      "sku": "SKU-LAMP-LED",
+      "asin": "B0DUMMY357",
+      "order_id": "ORD-PILOT-CASE-09",
+      "product_name": "LED Desk Lamp"
+    },
+    "checks": [
+      {
+        "detail": "The product name 'LED Desk Lamp' and SKU 'SKU-LAMP-LED' are clearly displayed in the provided image.; Physical inspection observations confirm LED Lamp Assembly Visible.",
+        "verdict": "PASS",
+        "check_key": "identity",
+        "confidence": 1,
+        "latency_ms": 3131,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "LED Lamp Assembly is visible.; Cord is visible under divider flap, but plug head is hidden making the USB power cable status uncertain.; Instruction Manual is in pocket.",
+        "verdict": "UNCERTAIN",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Lamp",
+            "observed": true
+          },
+          {
+            "name": "USB power cable",
+            "observed": "uncertain"
+          },
+          {
+            "name": "User manual",
+            "observed": true
+          }
+        ],
+        "confidence": 0.8,
+        "latency_ms": 3131,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "The physical condition and state cannot be fully determined due to incomplete visibility of all components and packaging status.",
+        "verdict": "UNCERTAIN",
+        "check_key": "condition",
+        "confidence": 0.5,
+        "latency_ms": 3131,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "uncertain"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "completeness_verdict": "UNCERTAIN"
+          },
+          "matched": true,
+          "outcome": "pending_review",
+          "rule_id": "rule_3",
+          "description": "Completeness UNCERTAIN → pending_review"
+        }
+      ],
+      "disposition": "pending_review",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "The product name 'LED Desk Lamp' and SKU 'SKU-LAMP-LED' are clearly displayed in the provided image.",
+          "Physical inspection observations confirm LED Lamp Assembly Visible."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "verdict": "UNCERTAIN",
+        "confidence": 0.5,
+        "observations": [
+          "The physical condition and state cannot be fully determined due to incomplete visibility of all components and packaging status."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "uncertain"
+      },
+      "completeness": {
+        "verdict": "UNCERTAIN",
+        "components": [
+          {
+            "name": "Lamp",
+            "observed": true
+          },
+          {
+            "name": "USB power cable",
+            "observed": "uncertain"
+          },
+          {
+            "name": "User manual",
+            "observed": true
+          }
+        ],
+        "confidence": 0.8,
+        "observations": [
+          "LED Lamp Assembly is visible.",
+          "Cord is visible under divider flap, but plug head is hidden making the USB power cable status uncertain.",
+          "Instruction Manual is in pocket."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "SKU",
+          "value": "SKU-LAMP-LED",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  },
+  {
+    "record_id": "RTN-1790760960630-2283F",
+    "subject": {
+      "sku": "SKU-SERUM-30",
+      "asin": "B0DUMMY031",
+      "order_id": "ORD-PILOT-CASE-10",
+      "product_name": "Hydrating Face Serum 30ml"
+    },
+    "checks": [
+      {
+        "detail": "The product name 'Hydrating Face Serum 30ml' and SKU-SERUM-30 are clearly visible in the image.",
+        "verdict": "PASS",
+        "check_key": "identity",
+        "confidence": 1,
+        "latency_ms": 8440,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "detail": "Serum bottle and dropper are reported present.; Product leaflet is absent from the observed components list.",
+        "verdict": "FAIL",
+        "check_key": "completeness",
+        "components": [
+          {
+            "name": "Serum bottle",
+            "observed": true
+          },
+          {
+            "name": "Dropper",
+            "observed": true
+          },
+          {
+            "name": "Product leaflet",
+            "observed": false
+          }
+        ],
+        "confidence": 1,
+        "latency_ms": 8440,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite"
+      },
+      {
+        "grade": "Used - Acceptable",
+        "detail": "Liquid is cloudy with unusual sediment.; Fill line is at 18ml / 30ml showing depletion.; Residue crust on dropper threads.",
+        "verdict": "PASS",
+        "check_key": "condition",
+        "confidence": 0.9,
+        "latency_ms": 8440,
+        "evidence_refs": [
+          "image_1"
+        ],
+        "model_version": "gemini-3.5-flash-lite",
+        "observed_state": "signs_of_use"
+      }
+    ],
+    "outcome": {
+      "rule_trace": [
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_1",
+          "description": "Identity FAIL → pending_review"
+        },
+        {
+          "inputs": {
+            "identity_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_2",
+          "description": "Identity UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "completeness_verdict": "FAIL"
+          },
+          "matched": false,
+          "rule_id": "rule_3",
+          "description": "Completeness UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_verdict": "PASS"
+          },
+          "matched": false,
+          "rule_id": "rule_4",
+          "description": "Condition UNCERTAIN → pending_review"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Acceptable",
+            "identity_verdict": "PASS",
+            "essential_missing": false,
+            "completeness_verdict": "FAIL"
+          },
+          "matched": false,
+          "rule_id": "rule_6b",
+          "description": "Identity PASS, Completeness FAIL, no essential missing, resale-suitable/repairable → refurbish"
+        },
+        {
+          "inputs": {
+            "condition_grade": "Used - Acceptable",
+            "identity_verdict": "PASS",
+            "essential_missing": false,
+            "completeness_verdict": "FAIL"
+          },
+          "matched": true,
+          "outcome": "pending_review",
+          "rule_id": "rule_6c",
+          "description": "Identity PASS, Completeness FAIL, essential missing or Used-Acceptable → pending_review"
+        }
+      ],
+      "disposition": "pending_review",
+      "policy_version": "1.0"
+    },
+    "raw_observation": {
+      "identity": {
+        "verdict": "PASS",
+        "confidence": 1,
+        "observations": [
+          "The product name 'Hydrating Face Serum 30ml' and SKU-SERUM-30 are clearly visible in the image."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "condition": {
+        "grade": "Used - Acceptable",
+        "verdict": "PASS",
+        "confidence": 0.9,
+        "observations": [
+          "Liquid is cloudy with unusual sediment.",
+          "Fill line is at 18ml / 30ml showing depletion.",
+          "Residue crust on dropper threads."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ],
+        "observed_state": "signs_of_use"
+      },
+      "completeness": {
+        "verdict": "FAIL",
+        "components": [
+          {
+            "name": "Serum bottle",
+            "observed": true
+          },
+          {
+            "name": "Dropper",
+            "observed": true
+          },
+          {
+            "name": "Product leaflet",
+            "observed": false
+          }
+        ],
+        "confidence": 1,
+        "observations": [
+          "Serum bottle and dropper are reported present.",
+          "Product leaflet is absent from the observed components list."
+        ],
+        "evidence_refs": [
+          "image_1"
+        ]
+      },
+      "visible_identifiers": [
+        {
+          "type": "SKU",
+          "value": "SKU-SERUM-30",
+          "image_ref": "image_1"
+        }
+      ]
+    }
+  }
+]

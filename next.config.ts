@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "10mb",
     },
   },
+  outputFileTracingIncludes: {
+    "/api/**/*": ["./public/demo-data/**/*", "./demo-data/**/*"],
+  },
 };
 
 export default nextConfig;
