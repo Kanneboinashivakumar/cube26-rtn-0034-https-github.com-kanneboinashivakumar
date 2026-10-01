@@ -1,7 +1,24 @@
-# ReturnOps AI
+<p align="center">
+  <img src="public/logo.svg" alt="ReturnOps AI Logo" width="130" height="143" />
+</p>
 
-**Evidence-First Returns Inspection & Disposition Agent**  
-*Inspect. Verify. Explain. Recover.*
+<h1 align="center">ReturnOps AI</h1>
+
+<p align="center">
+  <strong>Evidence-First Returns Inspection & Disposition Agent</strong><br>
+  <em>Inspect. Verify. Explain. Recover.</em>
+</p>
+
+<p align="center">
+  <a href="https://returnops-ai.vercel.app"><img src="https://img.shields.io/badge/Deployment-returnops--ai.vercel.app-2563eb?style=for-the-badge&logo=vercel" alt="Live Deployment" /></a>
+  <a href="https://github.com/Kanneboinashivakumar/cube26-rtn-0034-https-github.com-kanneboinashivakumar"><img src="https://img.shields.io/badge/GitHub-Repository-1e293b?style=for-the-badge&logo=github" alt="GitHub Repository" /></a>
+  <img src="https://img.shields.io/badge/Tests-104%2F104%20Passing-16a34a?style=for-the-badge" alt="Tests 104/104 Passing" />
+</p>
+
+<p align="center">
+  <strong>Track:</strong> Returns Manager (RTN) &bull;
+  <strong>Live App:</strong> <a href="https://returnops-ai.vercel.app">https://returnops-ai.vercel.app</a>
+</p>
 
 ---
 
@@ -137,14 +154,16 @@ The full TypeScript interface is defined in `src/lib/schemas.ts` and detailed in
 | Layer | Component | Version | Purpose in ReturnOps |
 | :--- | :--- | :---: | :--- |
 | **Framework** | Next.js (App Router) | `16.3.7` | Full-stack application, API routes, Turbopack |
-| **UI Library** | React | `19.3.0` | Operator workstation interfaces |
+| **UI Library** | React & React DOM | `19.3.0` | Operator workstation interfaces |
 | **Styling** | Tailwind CSS | `4.3.3` | Clean workstation layout & side-by-side evidence views |
-| **Language** | TypeScript | `5.9.3` | Type safety and strict `EvidenceRecord` contract |
+| **Language** | TypeScript | `5.9.3` | Strict type safety and formal `EvidenceRecord` contract |
 | **AI Model** | Google Gemini 3.5 Flash-Lite | `@google/generative-ai` `^0.24.1` | Single-call multimodal visual inspection |
 | **Validation** | Zod | `^4.6.5` | Strict schema validation for inputs and observations |
 | **Database** | Supabase (PostgreSQL) | `@supabase/supabase-js` `^2.117.2` | Multi-tenant inspection persistence with tenant/client scoping |
 | **Failover Store** | Browser `sessionStorage` | Native | Local offline cache if database is unreachable |
-| **Testing** | Jest & ts-jest | `^29.7.0` | Comprehensive unit and integration test suites |
+| **Testing** | Jest & ts-jest | `^29.7.0` | Comprehensive unit and integration test suites (12 suites, 104 tests) |
+| **Deployment** | Vercel Platform | Cloud | Live production deployment: [https://returnops-ai.vercel.app](https://returnops-ai.vercel.app) |
+| **Security** | SHA-256 Digest | Native Node.js | Immutable cryptographic hash for EvidenceRecord audit |
 
 ---
 
@@ -157,8 +176,8 @@ The full TypeScript interface is defined in `src/lib/schemas.ts` and detailed in
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/shivesh-04/ReturnOps.git
-cd ReturnOps/returnops-ai
+git clone https://github.com/Kanneboinashivakumar/cube26-rtn-0034-https-github.com-kanneboinashivakumar.git
+cd cube26-rtn-0034-https-github.com-kanneboinashivakumar
 npm install
 ```
 
@@ -295,10 +314,11 @@ A detailed system specification, boundary analysis, sequence diagrams, and engin
 
 | Item | Link / Status |
 | :--- | :--- |
-| **GitHub Repository** | [https://github.com/shivesh-04/ReturnOps](https://github.com/shivesh-04/ReturnOps) |
-| **Live Web App** | *TODO: Deployment URL (e.g. Cloud Run / Vercel)* |
-| **Demo Video** | *TODO: Video URL (Loom / YouTube)* |
-| **LinkedIn Post** | *TODO: LinkedIn Post URL (tagging CodeQuesters & Sydon.AI)* |
+| **Live Web App** | [https://returnops-ai.vercel.app](https://returnops-ai.vercel.app) |
+| **GitHub Repository** | [https://github.com/Kanneboinashivakumar/cube26-rtn-0034-https-github.com-kanneboinashivakumar](https://github.com/Kanneboinashivakumar/cube26-rtn-0034-https-github.com-kanneboinashivakumar) |
+| **Round 2 Submission Workspace** | [`submissions/Kanneboinashivakumar/`](submissions/Kanneboinashivakumar/) |
+| **Demo Video** | *[Placeholder — Record 3-minute walkthrough: Screen 1 intake, Screen 2 disposition, Screen 3 evidence audit]* |
+| **LinkedIn Post** | *[Placeholder — Post tagging CodeQuesters & Sydon.AI]* |
 
 ---
 
