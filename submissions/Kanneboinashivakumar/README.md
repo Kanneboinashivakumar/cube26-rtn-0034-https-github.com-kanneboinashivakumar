@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="../../public/logo.svg" alt="ReturnOps AI Logo" width="120" height="132" />
+</p>
+
 # Kanneboinashivakumar · Returns Manager
 
 **Agent:** ReturnOps AI — Evidence-First Returns Inspection & Disposition Agent  
